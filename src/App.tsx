@@ -22,6 +22,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/join" element={<Join />} />
               <Route path="/room/:id" element={<Room />} />
+              <Route path="/room/:id/player" element={<Join />} />
               <Route path="/room/:id/player/:playerId" element={<Player />} />
             </Routes>
           </BrowserRouter>

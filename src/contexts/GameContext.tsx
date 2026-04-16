@@ -58,28 +58,37 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadRoom = useCallback((roomId: string) => {
-    if (currentRoomId.current === roomId) return;
-    if (unsubRef.current) unsubRef.current();
+    // Always unsubscribe previous listener
+    if (unsubRef.current) {
+      unsubRef.current();
+      unsubRef.current = null;
+    }
     currentRoomId.current = roomId;
     setLoading(true);
 
     const roomRef = ref(database, `rooms/${roomId}`);
     const unsub = onValue(roomRef, (snapshot) => {
       const data = snapshot.val();
+      console.log('[Krimi] Firebase data for room', roomId, data);
       if (!data) {
         setLoading(false);
         return;
       }
       if (data.room) {
         try {
-          setRoomState(deserializeRoom<KrimiPlayerData>(data.room));
-        } catch {
+          const parsed = deserializeRoom<KrimiPlayerData>(data.room);
+          setRoomState(parsed);
+        } catch (e) {
+          console.warn('[Krimi] deserializeRoom failed, using raw', e);
           setRoomState(data.room as RoomState<KrimiPlayerData>);
         }
       }
       if (data.game) {
         setGameState(data.game as KrimiGameState);
       }
+      setLoading(false);
+    }, (error) => {
+      console.error('[Krimi] Firebase listener error:', error);
       setLoading(false);
     });
     unsubRef.current = unsub;
@@ -92,12 +101,19 @@ export function GameProvider({ children }: { children: ReactNode }) {
       requireFull: false,
     });
     const roomId = room.roomId;
+    console.log('[Krimi] Creating room', roomId, room);
     const roomRef = ref(database, `rooms/${roomId}`);
-    await set(roomRef, {
-      room,
-      game: null,
-      lang,
-    });
+    try {
+      await set(roomRef, {
+        room: JSON.parse(JSON.stringify(room)),
+        game: null,
+        lang,
+      });
+      console.log('[Krimi] Room created successfully');
+    } catch (e) {
+      console.error('[Krimi] Failed to create room:', e);
+      throw e;
+    }
     return roomId;
   }, []);
 

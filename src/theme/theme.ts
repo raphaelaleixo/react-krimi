@@ -10,7 +10,7 @@ const krimiTheme = createTheme({
       secondary: '#094067',
     },
     background: {
-      default: 'transparent',
+      default: '#f0f0f0',
       paper: '#fff',
     },
   },
