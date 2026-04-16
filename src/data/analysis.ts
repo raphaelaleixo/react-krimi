@@ -1,0 +1,66 @@
+export interface AnalysisItem {
+  title: string;
+  type: 0 | 1 | 2;
+  options: string[];
+}
+
+const analysis: { en: AnalysisItem[]; pt_br: AnalysisItem[] } = {
+  en: [
+    { title: "Cause of death", type: 0, options: ["Suffocation", "Severe injury", "Loss of blood", "Illness/disease", "Poisoning", "Accident"] },
+    { title: "Location of crime", type: 1, options: ["Vacation home", "Park", "Supermarket", "School", "Woods", "Bank"] },
+    { title: "Location of crime", type: 1, options: ["Pub", "Bookstore", "Restaurant", "Hotel", "Hospital", "Building site"] },
+    { title: "Location of crime", type: 1, options: ["Playground", "Classroom", "Dormitory", "Cafeteria", "Elevator", "Toilet"] },
+    { title: "Location of crime", type: 1, options: ["Living room", "Bedroom", "Storeroom", "Bathroom", "Kitchen", "Balcony"] },
+    { title: "Sudden Incident", type: 2, options: ["Power failure", "Fire", "Conflict", "Loss of Valuables", "Scream", "Nothing"] },
+    { title: "In Progress", type: 2, options: ["Entertainment", "Relaxation", "Assembly", "Trading", "Visit", "Dining"] },
+    { title: "Time of Death", type: 2, options: ["Dawn", "Morning", "Noon", "Afternoon", "Evening", "Midnight"] },
+    { title: "Victim's Occupation", type: 2, options: ["Boss", "Professional", "Worker", "Student", "Unemployed", "Retired"] },
+    { title: "Duration of Crime", type: 2, options: ["Instantaneous", "Brief", "Gradual", "Prolonged", "Few days", "Unclear"] },
+    { title: "Victim's Clothes", type: 2, options: ["Neat", "Untidy", "Elegant", "Shabby", "Bizarre", "Naked"] },
+    { title: "General impression", type: 2, options: ["Common", "Creative", "Fishy", "Cruel", "Horrrible", "Suspenseful"] },
+    { title: "State of the scene", type: 2, options: ["Bits and pieces", "Ashes", "Water stain", "Cracked", "Disorderly", "Tidy"] },
+    { title: "Murderer's Personality", type: 2, options: ["Arrogant", "Despicable", "Furious", "Greedy", "Forceful", "Perverted"] },
+    { title: "Trace at the Scene", type: 2, options: ["Fingerprint", "Footprint", "Bruise", "Blood stain", "Body fluid", "Scar"] },
+    { title: "Social relationship", type: 2, options: ["Relatives", "Friends", "Colleagues", "Employer/employee", "Lovers", "Strangers"] },
+    { title: "Weather", type: 2, options: ["Sunny", "Stormy", "Dry", "Humid", "Cold", "Hot"] },
+    { title: "Corpse condition", type: 2, options: ["Still warm", "Stiff", "Decayed", "Incomplete", "Intact", "Twisted"] },
+    { title: "Hint on corpse", type: 2, options: ["Head", "Chest", "Arm", "Leg", "Partial", "All over"] },
+    { title: "Motive of Crime", type: 2, options: ["Hatred", "Power", "Money", "Love", "Jealousy", "Justice"] },
+    { title: "Victim's Build", type: 2, options: ["Large", "Thin", "Tall", "Short", "Disfigured", "Fit"] },
+    { title: "Day of Crime", type: 2, options: ["Weekday", "Weekend", "Spring", "Summer", "Autumn", "Winter"] },
+    { title: "Evidence left Behind", type: 2, options: ["Natural", "Artistic", "Written", "Synthetic", "Personal", "Unrelated"] },
+    { title: "Victim's Identity", type: 2, options: ["Child", "Young Adult", "Middle-aged", "Senior", "Male", "Female"] },
+    { title: "Victim's expression", type: 2, options: ["Peaceful", "Struggling", "Frightened", "In Pain", "Blank", "Angry"] },
+    { title: "Noticed by Bystander", type: 2, options: ["Sudden sound", "Prolonged sound", "Smell", "Visual", "Action", "Nothing"] },
+  ],
+  pt_br: [
+    { title: "Causa da morte", type: 0, options: ["Sufocamento", "Ferimento grave", "Perda de sangue", "Enfermidade/doença", "Envenenamento", "Acidente"] },
+    { title: "Local do crime", type: 1, options: ["Casa de férias", "Parque", "Supermercado", "Escola", "Floresta", "Banco"] },
+    { title: "Local do crime", type: 1, options: ["Bar", "Livraria", "Restaurante", "Hotel", "Hospital", "Obra"] },
+    { title: "Local do crime", type: 1, options: ["Playground", "Sala de aula", "Dormitório", "Cafeteria", "Elevador", "Banheiro"] },
+    { title: "Local do crime", type: 1, options: ["Sala de estar", "Quarto", "Dispensa", "Banheiro", "Cozinha", "Varanda"] },
+    { title: "Acontecimento repentino", type: 2, options: ["Falta de energia", "Fogo", "Conflito", "Perda de algo valioso", "Grito", "Nada"] },
+    { title: "O que a vítima fazia", type: 2, options: ["Entretendo", "Relaxando", "Reunião", "Negociando", "Visitando", "Jantando"] },
+    { title: "Hora da morte", type: 2, options: ["Amanhecer", "Manhã", "Meio-dia", "Tarde", "Noite", "Madrugada"] },
+    { title: "Ocupação da vítima", type: 2, options: ["Chefe", "Autônomo", "Trabalhador", "Estudante", "Desempregado", "Aposentado"] },
+    { title: "Duração do crime", type: 2, options: ["Instantânea", "Breve", "Gradual", "Prolongado", "Poucos dias", "Incerto"] },
+    { title: "Roupas da vítima", type: 2, options: ["Arrumadas", "Desarrumadas", "Elegantes", "Usadas", "Excêntricas", "Sem roupa"] },
+    { title: "Impressão geral", type: 2, options: ["Comum", "Criativo", "Suspeito", "Cruel", "Horrível", "Dramático"] },
+    { title: "Estado da cena", type: 2, options: ["Cacos e pedaços", "Cinzas", "Mancha de água", "Rachado", "Desordenada", "Arrumada"] },
+    { title: "Personalidade do assassino", type: 2, options: ["Arrogante", "Desprezível", "Furioso", "Ganancioso", "Energético", "Pervertido"] },
+    { title: "Vestígio na cena", type: 2, options: ["Digitais", "Pegada", "Esmagado", "Mancha de sangue", "Fluido corporal", "Arranhado"] },
+    { title: "Relacionamento social", type: 2, options: ["Parentes", "Amigos", "Colegas", "Empregador / Empregado", "Amantes", "Estranhos"] },
+    { title: "Clima", type: 2, options: ["Ensolarado", "Tempestade", "Seco", "Úmido", "Frio", "Quente"] },
+    { title: "Condição do corpo", type: 2, options: ["Ainda quente", "Rígido", "Apodrecido", "Incompleto", "Intacto", "Retorcido"] },
+    { title: "Indicação no corpo", type: 2, options: ["Cabeça", "Tronco", "Braço", "Perna", "Parcial", "Todo o corpo"] },
+    { title: "Motivação do crime", type: 2, options: ["Ódio", "Poder", "Dinheiro", "Amor", "Ciúme", "Justiça"] },
+    { title: "Porte da vítima", type: 2, options: ["Grande", "Magro", "Alto", "Pequeno", "Desfigurado", "Em forma"] },
+    { title: "Dia do crime", type: 2, options: ["Dia de semana", "Fim de semana", "Primavera", "Verão", "Outono", "Inverno"] },
+    { title: "Evidência deixada", type: 2, options: ["Natural", "Artística", "Escrita", "sintética", "Pessoal", "Não relacionada"] },
+    { title: "Identidade da vítima", type: 2, options: ["Criança", "Jovem", "Meia-idadea", "Velho", "Homem", "Mulher"] },
+    { title: "Expressão da vítima", type: 2, options: ["Serena", "Lutando", "Assustada", "Com dor", "Sem expressão", "Raiva"] },
+    { title: "Notado por um transeunte", type: 2, options: ["Som repentino", "Som prolongado", "Cheiro", "Avistou algo", "Ação", "Nada"] },
+  ],
+};
+
+export default analysis;
