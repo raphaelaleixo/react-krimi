@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useGame } from '../contexts/GameContext';
 import CorkBoard from './board/CorkBoard';
 import PolaroidCard from './board/PolaroidCard';
+import ForensicSheet from './board/ForensicSheet';
 import { useI18n } from '../hooks/useI18n';
 
 function randomRotation() {
@@ -34,11 +33,6 @@ export default function Board() {
     });
     return offsets;
   }, [gameState?.playerOrder]);
-
-  const analysisRotations = useMemo(() => {
-    if (!gameState?.forensicAnalysis) return [];
-    return gameState.forensicAnalysis.map(() => randomRotation());
-  }, [gameState?.forensicAnalysis]);
 
   if (!gameState) return null;
 
@@ -95,77 +89,13 @@ export default function Board() {
           </Box>
         </Box>
 
-        {/* Analysis sidebar */}
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h4" sx={{ mb: 4 }}>
-            {t('Analysis')}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                fontFamily: '"Shadows Into Light", cursive',
-              }}
-            >
-              <Box
-                component="span"
-                sx={{
-                  fontSize: '1.25em',
-                  color: '#3da9fc',
-                  letterSpacing: 0,
-                }}
-              >
-                {detectiveName}
-              </Box>
-              <Box
-                component="span"
-                sx={{
-                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: '0.5em',
-                  lineHeight: 1.2,
-                  wordSpacing: '5px',
-                  borderTop: '1px dashed #094067',
-                }}
-              >
-                {t('Forensic Scientist')}
-              </Box>
-            </Box>
-          </Typography>
-
-          {gameState.forensicAnalysis &&
-            gameState.forensicAnalysis.map((item, index) => (
-              <Card
-                key={index}
-                sx={{
-                  mb: 2,
-                  transform: `rotate(${analysisRotations[index] || 0}deg)`,
-                }}
-              >
-                <CardContent>
-                  <Box
-                    component="strong"
-                    sx={{
-                      fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                      mr: 1,
-                    }}
-                  >
-                    {index + 1} {gameState.analysis[index]?.title}:
-                  </Box>
-                  <Box
-                    component="span"
-                    sx={{
-                      fontFamily: '"Shadows Into Light", cursive',
-                      fontWeight: 'bold',
-                      fontSize: '1.5em',
-                      color: '#3da9fc',
-                      display: 'inline-block',
-                    }}
-                  >
-                    {item}
-                  </Box>
-                </CardContent>
-              </Card>
-            ))}
-        </Box>
+        <ForensicSheet
+          detectiveName={detectiveName}
+          analysis={gameState.analysis}
+          forensicAnalysis={gameState.forensicAnalysis}
+          round={gameState.round}
+          forensicScientistLabel={t('Forensic Scientist')}
+        />
       </Box>
     </CorkBoard>
   );
