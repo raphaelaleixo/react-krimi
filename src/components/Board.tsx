@@ -1,13 +1,11 @@
 import { useMemo } from 'react';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import { useGame } from '../contexts/GameContext';
 import CorkBoard from './board/CorkBoard';
+import PolaroidCard from './board/PolaroidCard';
 import { useI18n } from '../hooks/useI18n';
 
 function randomRotation() {
@@ -28,6 +26,15 @@ export default function Board() {
     return rotations;
   }, [gameState?.playerOrder]);
 
+  const cardOffsets = useMemo(() => {
+    if (!gameState) return {};
+    const offsets: Record<number, number> = {};
+    gameState.playerOrder.forEach((pid) => {
+      offsets[pid] = Math.floor(Math.random() * 20) - 10;
+    });
+    return offsets;
+  }, [gameState?.playerOrder]);
+
   const analysisRotations = useMemo(() => {
     if (!gameState?.forensicAnalysis) return [];
     return gameState.forensicAnalysis.map(() => randomRotation());
@@ -42,18 +49,12 @@ export default function Board() {
   const detectiveName =
     gameState.playerNames[gameState.playerOrder[gameState.detective]] || 'Detective';
 
-  const allPlayers = gameState.playerOrder.map((pid, idx) => ({
-    id: pid,
-    index: idx,
-    name: gameState.playerNames[pid],
-  }));
-
   return (
     <CorkBoard>
       <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
         <Box sx={{ flex: 3 }}>
-          <Grid container>
-            <Grid size={12}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, alignItems: 'flex-start' }}>
+            <Box sx={{ width: '100%' }}>
               <Typography variant="h2">
                 {t('Game')}{' '}
                 <Box
@@ -69,151 +70,29 @@ export default function Board() {
               <Typography variant="h4" sx={{ my: 4 }}>
                 {t('Suspects of the crime:')}
               </Typography>
-            </Grid>
+            </Box>
 
             {suspects.map((player) => {
-              const rotation = cardRotations[player.id] || { card: 0, stamp: 0 };
+              const rotation = cardRotations[player.id]?.card || 0;
+              const offsetY = cardOffsets[player.id] || 0;
               const playerMeans = gameState.means.slice(player.index * 4, player.index * 4 + 4);
               const playerClues = gameState.clues.slice(player.index * 4, player.index * 4 + 4);
 
               return (
-                <Grid
-                  key={player.id}
-                  size={{ md: 6, xl: 3 }}
-                  sx={{
-                    position: 'relative',
-                    // Sticky tape effect
-                    '&::before': {
-                      content: '""',
-                      display: 'block',
-                      width: '5em',
-                      height: '2em',
-                      position: 'absolute',
-                      top: 0,
-                      left: '50%',
-                      zIndex: 1,
-                      background: 'rgba(255, 255, 200, 0.4)',
-                      boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
-                      transform: 'translate(-50%, -10%)',
-                    },
-                  }}
-                >
-                  {/* Stamp overlay */}
-                  {gameState.finished && (
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        width: '100%',
-                        top: '50%',
-                        left: '50%',
-                        zIndex: 2,
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: '2em',
-                        fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                        letterSpacing: '-1px',
-                        textTransform: 'uppercase',
-                        color: '#00000080',
-                        textShadow:
-                          '1px -1px rgba(0, 0, 0, 0.7), -1px 1px rgba(255, 255, 255, 0.7)',
-                        transform: `translate(-50%, -50%) rotate(${rotation.stamp}deg)`,
-                      }}
-                    >
-                      {gameState.murderer === player.index ? (
-                        <Box component="span" sx={{ color: '#ff5252' }}>
-                          Murderer
-                        </Box>
-                      ) : (
-                        <span>Detective</span>
-                      )}
-                    </Box>
-                  )}
-
-                  <Card
-                    sx={{
-                      transform: `rotate(${rotation.card}deg)`,
-                      transition: 'all 0.3s ease-out',
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h6">{player.name}</Typography>
-
-                      {gameState.passedTurns && gameState.passedTurns[player.index] && (
-                        <Typography
-                          sx={{
-                            fontFamily: '"Shadows Into Light", cursive',
-                            fontSize: 18,
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {t('Passed this turn')}
-                        </Typography>
-                      )}
-
-                      {gameState.guesses &&
-                        gameState.guesses[player.index] &&
-                        typeof gameState.guesses[player.index] === 'object' && (
-                          <Typography
-                            sx={{
-                              fontFamily: '"Shadows Into Light", cursive',
-                              fontSize: 18,
-                              fontWeight: 'bold',
-                              color: '#5f6c7b',
-                            }}
-                          >
-                            {t('Guessed that the murderer was')}{' '}
-                            {allPlayers[(gameState.guesses[player.index] as any).player]?.name},{' '}
-                            {t('the M.O. was')}{' '}
-                            {(gameState.guesses[player.index] as any).mean}{' '}
-                            {t('and the key evidence was')}{' '}
-                            {(gameState.guesses[player.index] as any).key}
-                          </Typography>
-                        )}
-
-                      <Divider sx={{ my: 2 }} />
-
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
-                        {playerMeans.map((mean) => (
-                          <Chip
-                            key={mean}
-                            label={mean}
-                            size="small"
-                            sx={{ bgcolor: '#bbdefb' }}
-                          />
-                        ))}
-                      </Box>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {playerClues.map((clue) => (
-                          <Chip
-                            key={clue}
-                            label={clue}
-                            size="small"
-                            sx={{ bgcolor: '#ffcdd2' }}
-                          />
-                        ))}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                <Box key={player.id} sx={{ width: 220 }}>
+                  <PolaroidCard
+                    name={player.name}
+                    means={playerMeans}
+                    clues={playerClues}
+                    rotation={rotation}
+                    offsetY={offsetY}
+                    passedTurn={gameState.passedTurns?.[player.index]}
+                    passedTurnLabel={t('Passed this turn')}
+                  />
+                </Box>
               );
             })}
-
-            {gameState.finished && (
-              <Grid size={12}>
-                <Typography
-                  sx={{
-                    mt: 2,
-                    fontSize: '2em',
-                    color: '#ff5252',
-                    fontWeight: 'bold',
-                    fontFamily: '"Shadows Into Light", cursive',
-                  }}
-                >
-                  The game is finished. The {gameState.winner} won!
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
+          </Box>
         </Box>
 
         {/* Analysis sidebar */}
