@@ -7,6 +7,7 @@ import PolaroidCard from './board/PolaroidCard';
 import ForensicSheet from './board/ForensicSheet';
 import GuessNote from './board/GuessNote';
 import RedStrings from './board/RedStrings';
+import Pushpin from './board/Pushpin';
 import { useI18n } from '../hooks/useI18n';
 import { useStringPositions } from '../hooks/useStringPositions';
 
@@ -123,21 +124,44 @@ export default function Board() {
         <Box sx={{ flex: 3 }}>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, alignItems: 'flex-start' }}>
             <Box sx={{ width: '100%' }}>
-              <Typography variant="h2">
-                {t('Game')}{' '}
+              <Box
+                sx={{
+                  position: 'relative',
+                  display: 'inline-block',
+                  mb: 1,
+                }}
+              >
+                <Pushpin color="#094067" />
                 <Box
-                  component="code"
-                  sx={{ color: 'error.main', textTransform: 'uppercase' }}
+                  sx={{
+                    bgcolor: '#f8f6f0',
+                    px: 2,
+                    py: 1,
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+                  }}
                 >
-                  {gameState.playerOrder.length > 0 ? '' : ''}
+                  <Typography
+                    sx={{
+                      fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                      fontSize: '1.5rem',
+                      color: '#094067',
+                      letterSpacing: '-1px',
+                    }}
+                  >
+                    {t('Game')} — {t('Round')} {gameState.round} {t('of')} 3
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                      fontSize: '0.9rem',
+                      color: '#5f6c7b',
+                      letterSpacing: '-1px',
+                    }}
+                  >
+                    {t('Suspects of the crime:')}
+                  </Typography>
                 </Box>
-                <Typography component="small" sx={{ ml: { lg: 4 }, fontSize: '0.5em' }}>
-                  {t('Round')} {gameState.round} {t('of')} 3
-                </Typography>
-              </Typography>
-              <Typography variant="h4" sx={{ my: 4 }}>
-                {t('Suspects of the crime:')}
-              </Typography>
+              </Box>
             </Box>
 
             {suspects.map((player) => {
