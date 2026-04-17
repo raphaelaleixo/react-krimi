@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import Box from '@mui/material/Box';
+import CoffeeStains from './CoffeeStains';
 
 interface CorkBoardProps {
   children: ReactNode;
@@ -49,6 +50,7 @@ export default function CorkBoard({ children, corkRef }: CorkBoardProps) {
             `,
           }}
         >
+          <CoffeeStains />
           {children}
         </Box>
       </Box>
