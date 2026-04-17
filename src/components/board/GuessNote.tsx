@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Pushpin from './Pushpin';
+
 
 interface GuessNoteProps {
   accuserName: string;
@@ -36,16 +36,20 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
       ref={ref}
       sx={{
         position: 'relative',
-        width: 180,
+        width: 200,
         transform: `rotate(${rotation}deg)`,
       }}
     >
-      <Pushpin color="#d4a437" />
-
       <Box
         sx={{
           bgcolor: '#faf5e8',
-          p: 1.5,
+          width: 200,
+          height: 200,
+          p: 2,
+          boxSizing: 'border-box',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
           filter: 'sepia(0.05)',
         }}
@@ -55,14 +59,38 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
             fontFamily: '"Shadows Into Light", cursive',
             fontSize: '0.9rem',
             fontWeight: 'bold',
-            color: '#5f6c7b',
+            color: '#333',
             textDecoration: isWrong ? 'line-through' : 'none',
             textDecorationColor: '#cc3333',
             textDecorationThickness: '2px',
+            textAlign: 'center',
+            '& span': {
+              fontFamily: '"Permanent Marker", cursive',
+            },
           }}
         >
-          {accuserName} {saidThatLabel} {accusedName} {didItLabel}, {moLabel}{' '}
-          {mean} {keyEvidenceLabel} {evidenceKey}
+          <span>{accuserName}</span> {saidThatLabel}{' '}
+          <Box
+            component="span"
+            sx={{
+              position: 'relative',
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                left: -2,
+                right: -2,
+                bottom: -1,
+                height: 3,
+                bgcolor: 'rgba(51,51,51,0.5)',
+                transform: 'rotate(-1deg)',
+                borderRadius: '2px',
+              },
+            }}
+          >
+            {accusedName}
+          </Box>{' '}
+          {didItLabel}, {moLabel}{' '}
+          <span style={{ color: '#1565c0' }}>{mean}</span> {keyEvidenceLabel} <span style={{ color: '#c62828' }}>{evidenceKey}</span>
         </Typography>
       </Box>
     </Box>

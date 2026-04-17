@@ -92,6 +92,14 @@ export default function Board() {
       }>;
   }, [gameState]);
 
+  const guessCountByPlayer = useMemo(() => {
+    const counts: Record<number, number> = {};
+    guessData.forEach((g) => {
+      counts[g.accusedPid] = (counts[g.accusedPid] || 0) + 1;
+    });
+    return counts;
+  }, [guessData]);
+
   const guessNoteRotations = useMemo(() => {
     return guessData.map(() => Math.floor(3 - Math.random() * 6));
   }, [guessData.length]);
@@ -99,12 +107,12 @@ export default function Board() {
   return (
     <CorkBoard corkRef={corkRef}>
       <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
-        <Box sx={{ flex: 3 }}>
+        <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
           <Box
             sx={{
               position: 'relative',
               display: 'inline-block',
-              mb: 8,
+              mb: 4,
             }}
           >
             <Pushpin color="#094067" />
@@ -139,6 +147,7 @@ export default function Board() {
             </Box>
           </Box>
 
+          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <Box ref={masonryRef} sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}>
             {suspects.map((player, i) => {
               const rotation = cardRotations[player.id]?.card || 0;
@@ -163,16 +172,17 @@ export default function Board() {
                     rotation={rotation}
                     offsetY={offsetY}
                     stamp={gameState.passedTurns?.[player.index] ? t('Passed') : undefined}
+                    guessCount={guessCountByPlayer[player.id] || 0}
                   />
                 </Box>
               );
             })}
           </Box>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 4 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 4, justifyContent: 'center' }}>
             {guessData.map((guess, i) => (
+              <Box key={guess.playerIndex} sx={{ ml: i > 0 ? -2 : 0, mt: `${guessNoteRotations[i] * 3}px` }}>
               <GuessNote
-                key={guess.playerIndex}
                 ref={(el: HTMLDivElement | null) => setElementRef(`guess-${guess.playerIndex}`, el)}
                 accuserName={guess.accuserName}
                 accusedName={guess.accusedName}
@@ -185,10 +195,13 @@ export default function Board() {
                 saidThatLabel={t('said that')}
                 didItLabel={t('did it')}
               />
+              </Box>
             ))}
+          </Box>
           </Box>
         </Box>
 
+        <Box sx={{ ml: 'auto' }}>
         <ForensicSheet
           detectiveName={detectiveName}
           analysis={gameState.analysis}
@@ -196,6 +209,7 @@ export default function Board() {
           round={gameState.round}
           forensicScientistLabel={t('Forensic Scientist')}
         />
+        </Box>
       </Box>
     </CorkBoard>
   );

@@ -63,6 +63,8 @@ const MOCK_GAME_STATE: KrimiGameState = {
     { title: "Victim's Build", type: 2, options: ['Large', 'Thin', 'Tall', 'Short', 'Disfigured', 'Fit'] },
     // Round 2 extra clue
     { title: 'Murderer\'s Personality', type: 2, options: ['Arrogant', 'Despicable', 'Furious', 'Greedy', 'Forceful', 'Perverted'] },
+    // Round 3 extra clue
+    { title: 'Trace at the Scene', type: 2, options: ['Fingerprint', 'Footprint', 'Bruise', 'Blood stain', 'Body fluid', 'Scar'] },
   ],
   forensicAnalysis: [
     'Poisoning',    // Cause of death
@@ -72,6 +74,7 @@ const MOCK_GAME_STATE: KrimiGameState = {
     'Stormy',       // Weather
     'Thin',         // Victim's build
     'Greedy',       // Round 2 clue (glued-on note)
+    'Fingerprint',  // Round 3 clue (glued-on note)
   ],
   murdererChoice: { mean: 'Sulfuric Acid', key: 'Glasses' },
   round: 2,
@@ -81,17 +84,17 @@ const MOCK_GAME_STATE: KrimiGameState = {
   // Some guesses: player 2 (Miss Marple) guessed player 4, player 5 (Sam Spade) guessed player 3
   guesses: [
     false,  // player 1 — detective, no guess
-    { player: 3, mean: 'Sulfuric Acid', key: 'Button' },  // Miss Marple accuses Philip Marlowe
-    false,  // Sherlock Holmes — hasn't guessed yet
+    { player: 3, mean: 'Sulfuric Acid', key: 'Button' },   // Miss Marple accuses Philip Marlowe
+    { player: 3, mean: 'Razor', key: 'Lipstick' },         // Sherlock Holmes accuses Philip Marlowe
     false,  // Philip Marlowe — murderer, no guess
-    { player: 2, mean: 'Sniper Rifle', key: 'Map' },      // Sam Spade accuses Sherlock Holmes
-    false,  // Nancy Drew
-    false,  // Jessica Fletcher
-    { player: 5, mean: 'Ice Pick', key: 'Glove' },        // Columbo accuses Sam Spade
-    false,  // Inspector Clouseau
-    false,  // Veronica Mars
-    false,  // Jake Peralta
-    false,  // Benoit Blanc
+    { player: 2, mean: 'Sniper Rifle', key: 'Map' },       // Sam Spade accuses Sherlock Holmes
+    { player: 7, mean: 'Knife', key: 'Perfume' },          // Nancy Drew accuses Jessica Fletcher
+    { player: 3, mean: 'Hammer', key: 'Glasses' },         // Jessica Fletcher accuses Philip Marlowe
+    { player: 5, mean: 'Ice Pick', key: 'Glove' },         // Columbo accuses Sam Spade
+    { player: 11, mean: 'Syringe', key: 'Tape' },          // Inspector Clouseau accuses Jake Peralta
+    { player: 3, mean: 'Sulfuric Acid', key: 'Wine glass' }, // Veronica Mars accuses Philip Marlowe
+    { player: 8, mean: 'Dynamite', key: 'Umbrella' },      // Jake Peralta accuses Columbo
+    { player: 3, mean: 'Sulfuric Acid', key: 'Glasses' },  // Benoit Blanc accuses Philip Marlowe — correct!
   ],
   passedTurns: [false, false, false, false, false, true, false, false, false, true, false, false],
 };

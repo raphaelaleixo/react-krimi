@@ -24,6 +24,7 @@ interface SuspectCardProps {
   rotation: number;
   offsetY: number;
   stamp?: string;
+  guessCount?: number;
 }
 
 export default function PolaroidCard({
@@ -33,6 +34,7 @@ export default function PolaroidCard({
   rotation,
   offsetY,
   stamp,
+  guessCount = 0,
 }: SuspectCardProps) {
   const tornEdge = useMemo(() => generateTornEdge(), []);
 
@@ -65,6 +67,22 @@ export default function PolaroidCard({
           pb: 4,
         }}
       >
+        {/* Guess count */}
+        {guessCount > 0 && (
+          <Typography
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 10,
+              fontFamily: '"Permanent Marker", cursive',
+              fontSize: '1.3rem',
+              color: '#cc3333',
+            }}
+          >
+            {guessCount}x
+          </Typography>
+        )}
+
         {/* Player name at the top */}
         <Typography
           sx={{

@@ -37,7 +37,7 @@ export default function ForensicSheet({
   const laterItems = forensicAnalysis.slice(ROUND_1_COUNT);
 
   return (
-    <Box sx={{ position: 'relative', width: 280 }}>
+    <Box sx={{ position: 'relative', width: 340 }}>
       <Pushpin color="#4a7c59" />
 
       {/* Main sheet */}
@@ -56,7 +56,7 @@ export default function ForensicSheet({
         <Typography
           sx={{
             fontFamily: '"kingthings_trypewriter_2Rg", serif',
-            fontSize: '1rem',
+            fontSize: '1.4rem',
             letterSpacing: '2px',
             textTransform: 'uppercase',
             color: '#094067',
@@ -74,6 +74,7 @@ export default function ForensicSheet({
             sx={{
               fontFamily: '"Shadows Into Light", cursive',
               fontSize: '1.3rem',
+              fontWeight: 'bold',
               color: '#3da9fc',
             }}
           >
@@ -90,7 +91,7 @@ export default function ForensicSheet({
           <Typography
             sx={{
               fontFamily: '"kingthings_trypewriter_2Rg", serif',
-              fontSize: '0.6rem',
+              fontSize: '0.8rem',
               letterSpacing: '1px',
               color: '#5f6c7b',
             }}
@@ -106,7 +107,7 @@ export default function ForensicSheet({
               component="span"
               sx={{
                 fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                fontSize: '0.8rem',
+                fontSize: '1rem',
                 color: '#094067',
               }}
             >
@@ -118,7 +119,7 @@ export default function ForensicSheet({
                 fontFamily: '"Shadows Into Light", cursive',
                 fontWeight: 'bold',
                 fontSize: '1.2rem',
-                color: '#3da9fc',
+                color: '#cc3333',
               }}
             >
               {item}
@@ -168,7 +169,7 @@ export default function ForensicSheet({
                 component="span"
                 sx={{
                   fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: '0.8rem',
+                  fontSize: '1rem',
                   color: '#094067',
                 }}
               >
@@ -180,7 +181,7 @@ export default function ForensicSheet({
                   fontFamily: '"Shadows Into Light", cursive',
                   fontWeight: 'bold',
                   fontSize: '1.2rem',
-                  color: '#3da9fc',
+                  color: '#cc3333',
                 }}
               >
                 {item}
