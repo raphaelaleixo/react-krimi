@@ -1,11 +1,12 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import Box from '@mui/material/Box';
 
 interface CorkBoardProps {
   children: ReactNode;
+  corkRef?: Ref<HTMLDivElement>;
 }
 
-export default function CorkBoard({ children }: CorkBoardProps) {
+export default function CorkBoard({ children, corkRef }: CorkBoardProps) {
   return (
     // Wall — dark precinct wall behind the board
     <Box
@@ -32,6 +33,7 @@ export default function CorkBoard({ children }: CorkBoardProps) {
       >
         {/* Cork surface */}
         <Box
+          ref={corkRef}
           sx={{
             width: '100%',
             height: '100%',

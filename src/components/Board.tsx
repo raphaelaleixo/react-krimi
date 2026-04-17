@@ -1,11 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useGame } from '../contexts/GameContext';
 import CorkBoard from './board/CorkBoard';
 import PolaroidCard from './board/PolaroidCard';
 import ForensicSheet from './board/ForensicSheet';
+import GuessNote from './board/GuessNote';
+import RedStrings from './board/RedStrings';
 import { useI18n } from '../hooks/useI18n';
+import { useStringPositions } from '../hooks/useStringPositions';
 
 function randomRotation() {
   return parseInt(String(3 - Math.random() * 6));
@@ -34,6 +37,25 @@ export default function Board() {
     return offsets;
   }, [gameState?.playerOrder]);
 
+  const corkRef = useRef<HTMLDivElement>(null);
+  const elementRefs = useRef<Map<string, HTMLElement | null>>(new Map());
+  const [corkSize, setCorkSize] = useState({ width: 0, height: 0 });
+
+  const setElementRef = useCallback((key: string, el: HTMLElement | null) => {
+    elementRefs.current.set(key, el);
+  }, []);
+
+  // Measure cork surface for SVG dimensions
+  useEffect(() => {
+    if (!corkRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      const { width, height } = entries[0].contentRect;
+      setCorkSize({ width, height });
+    });
+    observer.observe(corkRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (!gameState) return null;
 
   const suspects = gameState.playerOrder
@@ -43,8 +65,60 @@ export default function Board() {
   const detectiveName =
     gameState.playerNames[gameState.playerOrder[gameState.detective]] || 'Detective';
 
+  const guessData = useMemo(() => {
+    if (!gameState?.guesses) return [];
+    return gameState.guesses
+      .map((guess, playerIndex) => {
+        if (!guess || typeof guess !== 'object') return null;
+        const accuserName = gameState.playerNames[gameState.playerOrder[playerIndex]];
+        const accusedPid = gameState.playerOrder[guess.player];
+        const accusedName = gameState.playerNames[accusedPid];
+        const isWrong = gameState.finished && !(
+          gameState.murdererChoice &&
+          guess.mean === gameState.murdererChoice.mean &&
+          guess.key === gameState.murdererChoice.key
+        );
+        return {
+          playerIndex,
+          accuserName,
+          accusedName,
+          accusedPid,
+          mean: guess.mean,
+          evidenceKey: guess.key,
+          isWrong,
+        };
+      })
+      .filter(Boolean) as Array<{
+        playerIndex: number;
+        accuserName: string;
+        accusedName: string;
+        accusedPid: number;
+        mean: string;
+        evidenceKey: string;
+        isWrong: boolean;
+      }>;
+  }, [gameState]);
+
+  const stringConnections = useMemo(() => {
+    return guessData.map((g) => ({
+      fromKey: `guess-${g.playerIndex}`,
+      toKey: `card-${g.accusedPid}`,
+    }));
+  }, [guessData]);
+
+  const guessNoteRotations = useMemo(() => {
+    return guessData.map(() => Math.floor(3 - Math.random() * 6));
+  }, [guessData.length]);
+
+  const stringPositions = useStringPositions(corkRef, elementRefs.current, stringConnections);
+
   return (
-    <CorkBoard>
+    <CorkBoard corkRef={corkRef}>
+      <RedStrings
+        connections={stringPositions}
+        width={corkSize.width}
+        height={corkSize.height}
+      />
       <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
         <Box sx={{ flex: 3 }}>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, alignItems: 'flex-start' }}>
@@ -73,7 +147,11 @@ export default function Board() {
               const playerClues = gameState.clues.slice(player.index * 4, player.index * 4 + 4);
 
               return (
-                <Box key={player.id} sx={{ width: 220 }}>
+                <Box
+                  key={player.id}
+                  ref={(el: HTMLDivElement | null) => setElementRef(`card-${player.id}`, el)}
+                  sx={{ width: 220 }}
+                >
                   <PolaroidCard
                     name={player.name}
                     means={playerMeans}
@@ -86,6 +164,25 @@ export default function Board() {
                 </Box>
               );
             })}
+          </Box>
+
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+            {guessData.map((guess, i) => (
+              <GuessNote
+                key={guess.playerIndex}
+                ref={(el: HTMLDivElement | null) => setElementRef(`guess-${guess.playerIndex}`, el)}
+                accuserName={guess.accuserName}
+                accusedName={guess.accusedName}
+                mean={guess.mean}
+                evidenceKey={guess.evidenceKey}
+                isWrong={guess.isWrong}
+                rotation={guessNoteRotations[i]}
+                moLabel={t('the M.O. was')}
+                keyEvidenceLabel={t('and the key evidence was')}
+                saidThatLabel={t('said that')}
+                didItLabel={t('did it')}
+              />
+            ))}
           </Box>
         </Box>
 
