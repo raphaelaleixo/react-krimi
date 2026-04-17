@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import { useGame } from '../contexts/GameContext';
+import CorkBoard from './board/CorkBoard';
 import { useI18n } from '../hooks/useI18n';
 
 function randomRotation() {
@@ -49,9 +49,9 @@ export default function Board() {
   }));
 
   return (
-    <Container sx={{ height: '100%', py: 4 }}>
-      <Grid container sx={{ height: '100%', alignItems: 'flex-start' }}>
-        <Grid size={{ md: 9 }}>
+    <CorkBoard>
+      <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
+        <Box sx={{ flex: 3 }}>
           <Grid container>
             <Grid size={12}>
               <Typography variant="h2">
@@ -214,10 +214,10 @@ export default function Board() {
               </Grid>
             )}
           </Grid>
-        </Grid>
+        </Box>
 
         {/* Analysis sidebar */}
-        <Grid size={{ md: 3 }}>
+        <Box sx={{ flex: 1 }}>
           <Typography variant="h4" sx={{ mb: 4 }}>
             {t('Analysis')}
             <Box
@@ -286,8 +286,8 @@ export default function Board() {
                 </CardContent>
               </Card>
             ))}
-        </Grid>
-      </Grid>
-    </Container>
+        </Box>
+      </Box>
+    </CorkBoard>
   );
 }
