@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { useMemo, useRef, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useGame } from '../contexts/GameContext';
@@ -6,10 +6,9 @@ import CorkBoard from './board/CorkBoard';
 import PolaroidCard from './board/PolaroidCard';
 import ForensicSheet from './board/ForensicSheet';
 import GuessNote from './board/GuessNote';
-import RedStrings from './board/RedStrings';
 import Pushpin from './board/Pushpin';
 import { useI18n } from '../hooks/useI18n';
-import { useStringPositions } from '../hooks/useStringPositions';
+import { useMasonryLayout } from '../hooks/useMasonryLayout';
 
 function randomRotation() {
   return parseInt(String(3 - Math.random() * 6));
@@ -39,23 +38,16 @@ export default function Board() {
   }, [gameState?.playerOrder]);
 
   const corkRef = useRef<HTMLDivElement>(null);
+  const masonryRef = useRef<HTMLDivElement>(null);
   const elementRefs = useRef<Map<string, HTMLElement | null>>(new Map());
-  const [corkSize, setCorkSize] = useState({ width: 0, height: 0 });
-
   const setElementRef = useCallback((key: string, el: HTMLElement | null) => {
     elementRefs.current.set(key, el);
   }, []);
 
-  // Measure cork surface for SVG dimensions
-  useEffect(() => {
-    if (!corkRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      setCorkSize({ width, height });
-    });
-    observer.observe(corkRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const suspectCount = gameState ? gameState.playerOrder.length - 1 : 0;
+  const masonry = useMasonryLayout(masonryRef, suspectCount, 220, 24);
+
+
 
   if (!gameState) return null;
 
@@ -100,81 +92,69 @@ export default function Board() {
       }>;
   }, [gameState]);
 
-  const stringConnections = useMemo(() => {
-    return guessData.map((g) => ({
-      fromKey: `guess-${g.playerIndex}`,
-      toKey: `card-${g.accusedPid}`,
-    }));
-  }, [guessData]);
-
   const guessNoteRotations = useMemo(() => {
     return guessData.map(() => Math.floor(3 - Math.random() * 6));
   }, [guessData.length]);
 
-  const stringPositions = useStringPositions(corkRef, elementRefs.current, stringConnections);
-
   return (
     <CorkBoard corkRef={corkRef}>
-      <RedStrings
-        connections={stringPositions}
-        width={corkSize.width}
-        height={corkSize.height}
-      />
       <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
         <Box sx={{ flex: 3 }}>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, alignItems: 'flex-start' }}>
-            <Box sx={{ width: '100%' }}>
-              <Box
+          <Box
+            sx={{
+              position: 'relative',
+              display: 'inline-block',
+              mb: 8,
+            }}
+          >
+            <Pushpin color="#094067" />
+            <Box
+              sx={{
+                bgcolor: '#f8f6f0',
+                px: 2,
+                py: 1,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+              }}
+            >
+              <Typography
                 sx={{
-                  position: 'relative',
-                  display: 'inline-block',
-                  mb: 1,
+                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                  fontSize: '1.5rem',
+                  color: '#094067',
+                  letterSpacing: '-1px',
                 }}
               >
-                <Pushpin color="#094067" />
-                <Box
-                  sx={{
-                    bgcolor: '#f8f6f0',
-                    px: 2,
-                    py: 1,
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                      fontSize: '1.5rem',
-                      color: '#094067',
-                      letterSpacing: '-1px',
-                    }}
-                  >
-                    {t('Game')} — {t('Round')} {gameState.round} {t('of')} 3
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                      fontSize: '0.9rem',
-                      color: '#5f6c7b',
-                      letterSpacing: '-1px',
-                    }}
-                  >
-                    {t('Suspects of the crime:')}
-                  </Typography>
-                </Box>
-              </Box>
+                {t('Game')} — {t('Round')} {gameState.round} {t('of')} 3
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                  fontSize: '0.9rem',
+                  color: '#5f6c7b',
+                  letterSpacing: '-1px',
+                }}
+              >
+                {t('Suspects of the crime:')}
+              </Typography>
             </Box>
+          </Box>
 
-            {suspects.map((player) => {
+          <Box ref={masonryRef} sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}>
+            {suspects.map((player, i) => {
               const rotation = cardRotations[player.id]?.card || 0;
               const offsetY = cardOffsets[player.id] || 0;
               const playerMeans = gameState.means.slice(player.index * 4, player.index * 4 + 4);
               const playerClues = gameState.clues.slice(player.index * 4, player.index * 4 + 4);
+              const masonryStyle = masonry.styles[i];
 
               return (
                 <Box
                   key={player.id}
-                  ref={(el: HTMLDivElement | null) => setElementRef(`card-${player.id}`, el)}
-                  sx={{ width: 220 }}
+                  ref={(el: HTMLDivElement | null) => {
+                    setElementRef(`card-${player.id}`, el);
+                    masonry.setItemRef(i, el);
+                  }}
+                  sx={{ width: 220, ...(masonryStyle || {}) }}
                 >
                   <PolaroidCard
                     name={player.name}
@@ -182,15 +162,14 @@ export default function Board() {
                     clues={playerClues}
                     rotation={rotation}
                     offsetY={offsetY}
-                    passedTurn={gameState.passedTurns?.[player.index]}
-                    passedTurnLabel={t('Passed this turn')}
+                    stamp={gameState.passedTurns?.[player.index] ? t('Passed') : undefined}
                   />
                 </Box>
               );
             })}
           </Box>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 4 }}>
             {guessData.map((guess, i) => (
               <GuessNote
                 key={guess.playerIndex}

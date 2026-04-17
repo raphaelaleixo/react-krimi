@@ -42,7 +42,7 @@ interface GameContextValue {
   makeGuess: (playerOrderIndex: number, guess: GuessData) => Promise<void>;
 }
 
-const GameContext = createContext<GameContextValue | null>(null);
+export const GameContext = createContext<GameContextValue | null>(null);
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [roomState, setRoomState] = useState<RoomState<KrimiPlayerData> | null>(null);

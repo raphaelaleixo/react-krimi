@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Join from './pages/Join';
 import Room from './pages/Room';
 import Player from './pages/Player';
+import MockBoard from './pages/MockBoard';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
               <Route path="/room/:id" element={<Room />} />
               <Route path="/room/:id/player" element={<Join />} />
               <Route path="/room/:id/player/:playerId" element={<Player />} />
+              <Route path="/mock" element={<MockBoard />} />
             </Routes>
           </BrowserRouter>
         </GameProvider>

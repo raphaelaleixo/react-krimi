@@ -1,16 +1,29 @@
+import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 import Pushpin from './Pushpin';
 
-interface PolaroidCardProps {
+function generateTornEdge() {
+  const points: string[] = ['0% 0%', '100% 0%'];
+  const steps = 30;
+  // Right side down to bottom-right
+  points.push('100% 95%');
+  // Jagged bottom edge, right to left
+  for (let i = steps; i >= 0; i--) {
+    const x = (i / steps) * 100;
+    const y = 95 + Math.random() * 3;
+    points.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
+  }
+  return `polygon(${points.join(', ')})`;
+}
+
+interface SuspectCardProps {
   name: string;
   means: string[];
   clues: string[];
   rotation: number;
   offsetY: number;
-  passedTurn?: boolean;
-  passedTurnLabel: string;
+  stamp?: string;
 }
 
 export default function PolaroidCard({
@@ -19,9 +32,10 @@ export default function PolaroidCard({
   clues,
   rotation,
   offsetY,
-  passedTurn,
-  passedTurnLabel,
-}: PolaroidCardProps) {
+  stamp,
+}: SuspectCardProps) {
+  const tornEdge = useMemo(() => generateTornEdge(), []);
+
   return (
     <Box
       sx={{
@@ -33,75 +47,93 @@ export default function PolaroidCard({
     >
       <Pushpin />
 
-      {/* Polaroid frame */}
+      {/* Notebook page */}
       <Box
         sx={{
-          bgcolor: '#fff',
-          p: '10px',
-          pb: '40px',
-          boxShadow: '0 3px 8px rgba(0,0,0,0.25)',
+          bgcolor: '#f8f6f0',
+          p: 2,
+          boxShadow: '0 3px 8px rgba(0,0,0,0.2)',
           position: 'relative',
+          // Ruled lines
+          backgroundImage:
+            'repeating-linear-gradient(transparent, transparent 23px, #e8e4da 23px, #e8e4da 24px)',
+          backgroundPosition: '0 36px',
+          // Red margin line
+          borderLeft: '2px solid rgba(220, 80, 80, 0.3)',
+          // Torn bottom edge
+          clipPath: tornEdge,
+          pb: 4,
         }}
       >
-        {/* Polaroid interior — yellowed paper */}
-        <Box
-          sx={{
-            bgcolor: '#faf5e8',
-            p: 1.5,
-            filter: 'sepia(0.05)',
-          }}
-        >
-          {passedTurn && (
-            <Typography
-              sx={{
-                fontFamily: '"Shadows Into Light", cursive',
-                fontSize: 16,
-                fontWeight: 'bold',
-                mb: 1,
-              }}
-            >
-              {passedTurnLabel}
-            </Typography>
-          )}
-
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
-            {means.map((mean) => (
-              <Chip
-                key={mean}
-                label={mean}
-                size="small"
-                sx={{ bgcolor: '#bbdefb', fontSize: '0.75rem' }}
-              />
-            ))}
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {clues.map((clue) => (
-              <Chip
-                key={clue}
-                label={clue}
-                size="small"
-                sx={{ bgcolor: '#ffcdd2', fontSize: '0.75rem' }}
-              />
-            ))}
-          </Box>
-        </Box>
-
-        {/* Player name — handwritten on polaroid border */}
+        {/* Player name at the top */}
         <Typography
           sx={{
-            position: 'absolute',
-            bottom: 8,
-            left: 0,
-            right: 0,
-            textAlign: 'center',
-            fontFamily: '"Shadows Into Light", cursive',
+            fontFamily: '"Permanent Marker", cursive',
             fontSize: '1.1rem',
             fontWeight: 'bold',
             color: '#333',
+            mb: 1.5,
+            borderBottom: '1px solid #e8e4da',
+            pb: 0.5,
           }}
         >
           {name}
         </Typography>
+
+        <Typography
+          sx={{
+            fontFamily: '"Shadows Into Light", cursive',
+            fontSize: '1.15rem',
+            fontWeight: 'bold',
+            color: '#1565c0',
+            lineHeight: 1.6,
+          }}
+        >
+          {means.join(', ')}
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: '"Shadows Into Light", cursive',
+            fontSize: '1.15rem',
+            fontWeight: 'bold',
+            color: '#c62828',
+            lineHeight: 1.6,
+          }}
+        >
+          {clues.join(', ')}
+        </Typography>
+
+        {/* Rubber stamp overlay */}
+        {stamp && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%) rotate(-15deg)',
+              zIndex: 2,
+              border: '3px solid rgba(0, 0, 0, 0.3)',
+              borderRadius: '4px',
+              px: 1.5,
+              py: 0.5,
+              pointerEvents: 'none',
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                fontSize: '1.4rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                color: 'rgba(0, 0, 0, 0.35)',
+                letterSpacing: '2px',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {stamp}
+            </Typography>
+          </Box>
+        )}
       </Box>
     </Box>
   );
