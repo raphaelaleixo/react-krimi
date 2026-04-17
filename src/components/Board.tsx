@@ -1,22 +1,59 @@
-import { useMemo, useRef, useCallback } from 'react';
+import { useMemo, useRef, useCallback, useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { motion, AnimatePresence } from 'motion/react';
 import { useGame } from '../contexts/GameContext';
+import { RoomQRCode, buildJoinUrl } from 'react-gameroom';
 import CorkBoard from './board/CorkBoard';
 import PolaroidCard from './board/PolaroidCard';
 import ForensicSheet from './board/ForensicSheet';
 import GuessNote from './board/GuessNote';
-import Pushpin from './board/Pushpin';
+
 import { useI18n } from '../hooks/useI18n';
 import { useMasonryLayout } from '../hooks/useMasonryLayout';
+
 
 function randomRotation() {
   return parseInt(String(3 - Math.random() * 6));
 }
 
+function generateDistressedLine() {
+  const topPoints: string[] = [];
+  const bottomPoints: string[] = [];
+  const steps = 20;
+  for (let i = 0; i <= steps; i++) {
+    const x = (i / steps) * 100;
+    const topBite = Math.random() < 0.35 ? Math.random() * 30 : 0;
+    const bottomBite = Math.random() < 0.35 ? Math.random() * 30 : 0;
+    topPoints.push(`${x.toFixed(1)}% ${topBite.toFixed(1)}%`);
+    bottomPoints.unshift(`${x.toFixed(1)}% ${(100 - bottomBite).toFixed(1)}%`);
+  }
+  return `polygon(${[...topPoints, ...bottomPoints].join(', ')})`;
+}
+
+function generateDistressedCircle() {
+  const points: string[] = [];
+  const steps = 72;
+  for (let i = 0; i < steps; i++) {
+    const angle = (i / steps) * Math.PI * 2;
+    // Mostly clean edge with occasional random notches
+    const bite = Math.random() < 0.3 ? (Math.random() * 8) : 0;
+    const r = 50 - bite;
+    const x = 50 + r * Math.cos(angle);
+    const y = 50 + r * Math.sin(angle);
+    points.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
+  }
+  return `polygon(${points.join(', ')})`;
+}
+
 export default function Board() {
-  const { gameState } = useGame();
+  const { gameState, roomState } = useGame();
   const { t } = useI18n();
+
+  const joinUrl = useMemo(
+    () => buildJoinUrl(roomState?.roomId || ''),
+    [roomState?.roomId]
+  );
 
   // Memoize random rotations so they don't change on re-render
   const cardRotations = useMemo(() => {
@@ -46,6 +83,26 @@ export default function Board() {
 
   const suspectCount = gameState ? gameState.playerOrder.length - 1 : 0;
   const masonry = useMasonryLayout(masonryRef, suspectCount, 220, 24);
+
+  // Calculate vertical centering offset manually so we can animate it
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [centerOffset, setCenterOffset] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      const container = containerRef.current;
+      const content = contentRef.current;
+      if (!container || !content) return;
+      const spare = container.clientHeight - content.scrollHeight;
+      setCenterOffset(Math.max(0, spare / 2));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (containerRef.current) observer.observe(containerRef.current);
+    if (contentRef.current) observer.observe(contentRef.current);
+    return () => observer.disconnect();
+  });
 
 
 
@@ -100,6 +157,18 @@ export default function Board() {
     return counts;
   }, [guessData]);
 
+  const stampClipPaths = useMemo(() => [
+    generateDistressedCircle(),
+    generateDistressedCircle(),
+    generateDistressedCircle(),
+  ], []);
+
+  const crossClipPaths = useMemo(() => [
+    [generateDistressedLine(), generateDistressedLine()],
+    [generateDistressedLine(), generateDistressedLine()],
+    [generateDistressedLine(), generateDistressedLine()],
+  ], []);
+
   const guessNoteRotations = useMemo(() => {
     return guessData.map(() => Math.floor(3 - Math.random() * 6));
   }, [guessData.length]);
@@ -107,47 +176,139 @@ export default function Board() {
   return (
     <CorkBoard corkRef={corkRef}>
       <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
-        <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Box>
+          {/* Join QR polaroid */}
+          {roomState && (
           <Box
+            component="a"
+            href={joinUrl}
+            target="_blank"
             sx={{
-              position: 'relative',
-              display: 'inline-block',
-              mb: 4,
+              mb: 3,
+              display: 'block',
+              textDecoration: 'none',
+              transform: 'rotate(2deg)',
+              transition: 'transform 0.2s ease',
+              '&:hover': { transform: 'rotate(0deg) scale(1.03)' },
             }}
           >
-            <Pushpin color="#094067" />
             <Box
               sx={{
-                bgcolor: '#f8f6f0',
-                px: 2,
-                py: 1,
-                boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+                bgcolor: '#f5f5f0',
+                p: 1.5,
+                pb: 4,
+                boxShadow: '0 3px 10px rgba(0,0,0,0.25)',
               }}
             >
+              <Box sx={{
+                bgcolor: '#fff',
+                border: '1px solid #e0ddd5',
+                p: 2,
+                display: 'flex',
+                justifyContent: 'center',
+                '& svg': { width: '100%', maxWidth: 150, height: 'auto', display: 'block' },
+              }}>
+                <RoomQRCode
+                  roomId={roomState.roomId}
+                  url={joinUrl}
+                  size={150}
+                />
+              </Box>
               <Typography
                 sx={{
                   fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: '1.5rem',
-                  color: '#094067',
-                  letterSpacing: '-1px',
+                  fontSize: '2.2rem',
+                  color: 'var(--text-color)',
+                  textAlign: 'center',
+                  mt: 1.5,
+                  letterSpacing: '3px',
                 }}
               >
-                {t('Game')} — {t('Round')} {gameState.round} {t('of')} 3
+                {t('Case')}#{roomState.roomId}
               </Typography>
-              <Typography
-                sx={{
-                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: '0.9rem',
-                  color: '#5f6c7b',
-                  letterSpacing: '-1px',
-                }}
-              >
-                {t('Suspects of the crime:')}
-              </Typography>
+              <Box sx={{ display: 'flex', gap: 1.5, mt: -0.5, justifyContent: 'center' }}>
+                {[1, 2, 3].map((r) => (
+                  <Box
+                    key={r}
+                    sx={{
+                      position: 'relative',
+                      width: 48,
+                      height: 48,
+                      border: '3px solid',
+                      borderColor: 'var(--weapon-color)',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transform: `rotate(${[-8, 3, -5][r - 1]}deg)`,
+                      clipPath: stampClipPaths[r - 1],
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                        fontSize: '1.4rem',
+                        fontWeight: 'bold',
+                        color: 'var(--weapon-color)',
+                        lineHeight: 1,
+                      }}
+                    >
+                      {r}
+                    </Typography>
+                    {r <= gameState.round && (
+                      <>
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '-4px',
+                            right: '-4px',
+                            height: '3px',
+                            bgcolor: 'var(--evidence-color)',
+                            transform: 'rotate(-25deg)',
+                            transformOrigin: 'center',
+                            clipPath: crossClipPaths[r - 1][0],
+                          }}
+                        />
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '-4px',
+                            right: '-4px',
+                            height: '3px',
+                            bgcolor: 'var(--evidence-color)',
+                            transform: 'rotate(25deg)',
+                            transformOrigin: 'center',
+                            clipPath: crossClipPaths[r - 1][1],
+                          }}
+                        />
+                      </>
+                    )}
+                  </Box>
+                ))}
+              </Box>
             </Box>
           </Box>
+          )}
 
-          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <ForensicSheet
+            detectiveName={detectiveName}
+            analysis={gameState.analysis}
+            forensicAnalysis={gameState.forensicAnalysis}
+            round={gameState.round}
+            forensicScientistLabel={t('Forensic Scientist')}
+          />
+        </Box>
+
+        <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
+
+          <Box ref={containerRef} sx={{ flex: 1, overflow: 'hidden', minHeight: 0 }}>
+          <motion.div
+            ref={contentRef}
+            animate={{ y: centerOffset }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          >
           <Box ref={masonryRef} sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}>
             {suspects.map((player, i) => {
               const rotation = cardRotations[player.id]?.card || 0;
@@ -179,9 +340,22 @@ export default function Board() {
             })}
           </Box>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 4, justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignContent: 'flex-start', pt: 3, pl: `${masonry.offsetX}px` }}>
+            <AnimatePresence>
             {guessData.map((guess, i) => (
-              <Box key={guess.playerIndex} sx={{ ml: i > 0 ? -2 : 0, mt: `${guessNoteRotations[i] * 3}px` }}>
+              <motion.div
+                key={guess.playerIndex}
+                layout
+                initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
+                animate={{ opacity: 1, scale: 1, y: 0, rotate: guessNoteRotations[i] }}
+                transition={{
+                  layout: { type: 'spring', stiffness: 300, damping: 25 },
+                  opacity: { duration: 0.3 },
+                  scale: { type: 'spring', stiffness: 400, damping: 20 },
+                  y: { type: 'spring', stiffness: 400, damping: 20 },
+                }}
+                style={{ marginLeft: i > 0 ? -16 : 0, marginTop: guessNoteRotations[i] * 3 }}
+              >
               <GuessNote
                 ref={(el: HTMLDivElement | null) => setElementRef(`guess-${guess.playerIndex}`, el)}
                 accuserName={guess.accuserName}
@@ -189,27 +363,20 @@ export default function Board() {
                 mean={guess.mean}
                 evidenceKey={guess.evidenceKey}
                 isWrong={guess.isWrong}
-                rotation={guessNoteRotations[i]}
+                rotation={0}
                 moLabel={t('the M.O. was')}
                 keyEvidenceLabel={t('and the key evidence was')}
                 saidThatLabel={t('said that')}
                 didItLabel={t('did it')}
               />
-              </Box>
+              </motion.div>
             ))}
+            </AnimatePresence>
           </Box>
+          </motion.div>
           </Box>
         </Box>
 
-        <Box sx={{ ml: 'auto' }}>
-        <ForensicSheet
-          detectiveName={detectiveName}
-          analysis={gameState.analysis}
-          forensicAnalysis={gameState.forensicAnalysis}
-          round={gameState.round}
-          forensicScientistLabel={t('Forensic Scientist')}
-        />
-        </Box>
       </Box>
     </CorkBoard>
   );

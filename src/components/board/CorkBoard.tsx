@@ -16,7 +16,11 @@ export default function CorkBoard({ children, corkRef }: CorkBoardProps) {
         height: '100vh',
         position: 'relative',
         overflow: 'hidden',
-        bgcolor: '#2a2d32',
+        '--text-color': '#1C1B1B',
+        '--weapon-color': '#3A7085',
+        '--evidence-color': '#9E1B1B',
+        '--bg-color': '#0A0A0B',
+        bgcolor: 'var(--bg-color)',
       }}
     >
       <CoffeeStains />

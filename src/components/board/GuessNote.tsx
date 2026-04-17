@@ -59,9 +59,9 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
             fontFamily: '"Shadows Into Light", cursive',
             fontSize: '0.9rem',
             fontWeight: 'bold',
-            color: '#333',
+            color: 'var(--text-color)',
             textDecoration: isWrong ? 'line-through' : 'none',
-            textDecorationColor: '#cc3333',
+            textDecorationColor: 'var(--evidence-color)',
             textDecorationThickness: '2px',
             textAlign: 'center',
             '& span': {
@@ -90,7 +90,7 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
             {accusedName}
           </Box>{' '}
           {didItLabel}, {moLabel}{' '}
-          <span style={{ color: '#1565c0' }}>{mean}</span> {keyEvidenceLabel} <span style={{ color: '#c62828' }}>{evidenceKey}</span>
+          <span style={{ color: 'var(--weapon-color)' }}>{mean}</span> {keyEvidenceLabel} <span style={{ color: 'var(--evidence-color)' }}>{evidenceKey}</span>
         </Typography>
       </Box>
     </Box>

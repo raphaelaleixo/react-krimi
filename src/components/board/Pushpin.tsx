@@ -4,7 +4,7 @@ interface PushpinProps {
   color?: string;
 }
 
-export default function Pushpin({ color = '#cc3333' }: PushpinProps) {
+export default function Pushpin({ color = 'var(--evidence-color)' }: PushpinProps) {
   return (
     <Box
       sx={{

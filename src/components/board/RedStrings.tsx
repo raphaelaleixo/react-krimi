@@ -33,7 +33,7 @@ export default function RedStrings({ connections, width, height }: RedStringsPro
           <path
             key={i}
             d={d}
-            stroke="#cc3333"
+            stroke="var(--evidence-color)"
             strokeWidth={2.5}
             fill="none"
             strokeLinecap="round"

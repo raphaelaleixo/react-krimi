@@ -14,6 +14,7 @@ export function useMasonryLayout(
 ) {
   const [styles, setStyles] = useState<MasonryStyle[]>([]);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [offsetX, setOffsetX] = useState(0);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
 
   const setItemRef = useCallback((index: number, el: HTMLElement | null) => {
@@ -48,6 +49,7 @@ export function useMasonryLayout(
 
     setStyles(newStyles);
     setContainerHeight(Math.max(...columnHeights));
+    setOffsetX(offsetX);
   }, [containerRef, itemCount, columnWidth, gap]);
 
   useEffect(() => {
@@ -62,5 +64,5 @@ export function useMasonryLayout(
     return () => observer.disconnect();
   }, [recalculate]);
 
-  return { styles, containerHeight, setItemRef };
+  return { styles, containerHeight, setItemRef, offsetX };
 }

@@ -53,6 +53,7 @@ export const translations: Record<string, string> = {
   'of': 'de',
   'Analysis': 'Análise',
   'Forensic Scientist': 'Cientista Forense',
+  'Case': 'Caso',
 
   // MurdererChoice
   'Select your means of murder:': 'Selecione sua causa de morte:',

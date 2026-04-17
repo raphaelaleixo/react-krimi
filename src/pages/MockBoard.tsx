@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Board from '../components/Board';
 import { GameContext } from '../contexts/GameContext';
 import type { KrimiGameState } from '../types';
@@ -81,31 +82,57 @@ const MOCK_GAME_STATE: KrimiGameState = {
   availableClues: 7,
   finished: false,
   lang: 'en',
-  // Some guesses: player 2 (Miss Marple) guessed player 4, player 5 (Sam Spade) guessed player 3
   guesses: [
     false,  // player 1 — detective, no guess
-    { player: 3, mean: 'Sulfuric Acid', key: 'Button' },   // Miss Marple accuses Philip Marlowe
-    { player: 3, mean: 'Razor', key: 'Lipstick' },         // Sherlock Holmes accuses Philip Marlowe
-    false,  // Philip Marlowe — murderer, no guess
-    { player: 2, mean: 'Sniper Rifle', key: 'Map' },       // Sam Spade accuses Sherlock Holmes
-    { player: 7, mean: 'Knife', key: 'Perfume' },          // Nancy Drew accuses Jessica Fletcher
-    { player: 3, mean: 'Hammer', key: 'Glasses' },         // Jessica Fletcher accuses Philip Marlowe
-    { player: 5, mean: 'Ice Pick', key: 'Glove' },         // Columbo accuses Sam Spade
-    { player: 11, mean: 'Syringe', key: 'Tape' },          // Inspector Clouseau accuses Jake Peralta
-    { player: 3, mean: 'Sulfuric Acid', key: 'Wine glass' }, // Veronica Mars accuses Philip Marlowe
-    { player: 8, mean: 'Dynamite', key: 'Umbrella' },      // Jake Peralta accuses Columbo
-    { player: 3, mean: 'Sulfuric Acid', key: 'Glasses' },  // Benoit Blanc accuses Philip Marlowe — correct!
+    false,  // Miss Marple — no guess yet
+    false,  // Sherlock Holmes
+    false,  // Philip Marlowe — murderer
+    false,  // Sam Spade
+    false,  // Nancy Drew
+    false,  // Jessica Fletcher
+    false,  // Columbo
+    false,  // Inspector Clouseau
+    false,  // Veronica Mars
+    false,  // Jake Peralta
+    false,  // Benoit Blanc
   ],
   passedTurns: [false, false, false, false, false, true, false, false, false, true, false, false],
 };
 
+const ALL_GUESSES: Array<{ index: number; guess: { player: number; mean: string; key: string } }> = [
+  { index: 1,  guess: { player: 3, mean: 'Sulfuric Acid', key: 'Button' } },       // Miss Marple
+  { index: 2,  guess: { player: 3, mean: 'Razor', key: 'Lipstick' } },             // Sherlock Holmes
+  { index: 4,  guess: { player: 2, mean: 'Sniper Rifle', key: 'Map' } },           // Sam Spade
+  { index: 5,  guess: { player: 7, mean: 'Knife', key: 'Perfume' } },              // Nancy Drew
+  { index: 6,  guess: { player: 3, mean: 'Hammer', key: 'Glasses' } },             // Jessica Fletcher
+  { index: 7,  guess: { player: 5, mean: 'Ice Pick', key: 'Glove' } },             // Columbo
+  { index: 8,  guess: { player: 11, mean: 'Syringe', key: 'Tape' } },              // Inspector Clouseau
+  { index: 9,  guess: { player: 3, mean: 'Sulfuric Acid', key: 'Wine glass' } },   // Veronica Mars
+  { index: 10, guess: { player: 8, mean: 'Dynamite', key: 'Umbrella' } },          // Jake Peralta
+  { index: 11, guess: { player: 3, mean: 'Sulfuric Acid', key: 'Glasses' } },      // Benoit Blanc — correct!
+];
+
 const NOOP = async () => {};
 
 export default function MockBoard() {
+  const [guessStep, setGuessStep] = useState(0);
+
+  const guesses = [...MOCK_GAME_STATE.guesses] as KrimiGameState['guesses'];
+  for (let i = 0; i < guessStep && i < ALL_GUESSES.length; i++) {
+    const { index, guess } = ALL_GUESSES[i];
+    guesses[index] = guess;
+  }
+
+  const gameState: KrimiGameState = { ...MOCK_GAME_STATE, guesses };
+
+  const nextGuessName = guessStep < ALL_GUESSES.length
+    ? MOCK_GAME_STATE.playerNames[MOCK_GAME_STATE.playerOrder[ALL_GUESSES[guessStep].index]]
+    : null;
+
   return (
     <GameContext.Provider
       value={{
-        gameState: MOCK_GAME_STATE,
+        gameState,
         roomState: null,
         loading: false,
         createRoom: async () => '',
@@ -120,6 +147,51 @@ export default function MockBoard() {
       }}
     >
       <Board />
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          zIndex: 9999,
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+        }}
+      >
+        <button
+          onClick={() => setGuessStep((s) => Math.min(s + 1, ALL_GUESSES.length))}
+          disabled={guessStep >= ALL_GUESSES.length}
+          style={{
+            padding: '8px 16px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            cursor: guessStep >= ALL_GUESSES.length ? 'default' : 'pointer',
+            background: '#094067',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 4,
+            opacity: guessStep >= ALL_GUESSES.length ? 0.4 : 1,
+          }}
+        >
+          + Guess {nextGuessName ? `(${nextGuessName})` : ''} [{guessStep}/{ALL_GUESSES.length}]
+        </button>
+        <button
+          onClick={() => setGuessStep(0)}
+          disabled={guessStep === 0}
+          style={{
+            padding: '8px 12px',
+            fontSize: '14px',
+            cursor: guessStep === 0 ? 'default' : 'pointer',
+            background: '#c62828',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 4,
+            opacity: guessStep === 0 ? 0.4 : 1,
+          }}
+        >
+          Reset
+        </button>
+      </div>
     </GameContext.Provider>
   );
 }

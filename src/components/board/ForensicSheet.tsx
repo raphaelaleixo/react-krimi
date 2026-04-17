@@ -59,7 +59,7 @@ export default function ForensicSheet({
             fontSize: '1.4rem',
             letterSpacing: '2px',
             textTransform: 'uppercase',
-            color: '#094067',
+            color: 'var(--text-color)',
             textAlign: 'center',
             mb: 0.5,
           }}
@@ -75,14 +75,14 @@ export default function ForensicSheet({
               fontFamily: '"Shadows Into Light", cursive',
               fontSize: '1.3rem',
               fontWeight: 'bold',
-              color: '#3da9fc',
+              color: 'var(--weapon-color)',
             }}
           >
             {detectiveName}
           </Typography>
           <Box
             sx={{
-              borderTop: '1px dashed #094067',
+              borderTop: '1px dashed var(--text-color)',
               mt: 0.5,
               mx: 'auto',
               width: '60%',
@@ -108,7 +108,7 @@ export default function ForensicSheet({
               sx={{
                 fontFamily: '"kingthings_trypewriter_2Rg", serif',
                 fontSize: '1rem',
-                color: '#094067',
+                color: 'var(--text-color)',
               }}
             >
               {index + 1}. {analysis[index]?.title}:{' '}
@@ -119,7 +119,7 @@ export default function ForensicSheet({
                 fontFamily: '"Shadows Into Light", cursive',
                 fontWeight: 'bold',
                 fontSize: '1.2rem',
-                color: '#cc3333',
+                color: 'var(--evidence-color)',
               }}
             >
               {item}
@@ -170,7 +170,7 @@ export default function ForensicSheet({
                 sx={{
                   fontFamily: '"kingthings_trypewriter_2Rg", serif',
                   fontSize: '1rem',
-                  color: '#094067',
+                  color: 'var(--text-color)',
                 }}
               >
                 {index + 1}. {analysis[index]?.title}:{' '}
@@ -181,7 +181,7 @@ export default function ForensicSheet({
                   fontFamily: '"Shadows Into Light", cursive',
                   fontWeight: 'bold',
                   fontSize: '1.2rem',
-                  color: '#cc3333',
+                  color: 'var(--evidence-color)',
                 }}
               >
                 {item}

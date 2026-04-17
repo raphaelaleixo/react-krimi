@@ -76,7 +76,7 @@ export default function PolaroidCard({
               right: 10,
               fontFamily: '"Permanent Marker", cursive',
               fontSize: '1.3rem',
-              color: '#cc3333',
+              color: 'var(--evidence-color)',
             }}
           >
             {guessCount}x
@@ -89,7 +89,7 @@ export default function PolaroidCard({
             fontFamily: '"Permanent Marker", cursive',
             fontSize: '1.1rem',
             fontWeight: 'bold',
-            color: '#333',
+            color: 'var(--text-color)',
             mb: 1.5,
             borderBottom: '1px solid #e8e4da',
             pb: 0.5,
@@ -103,7 +103,7 @@ export default function PolaroidCard({
             fontFamily: '"Shadows Into Light", cursive',
             fontSize: '1.15rem',
             fontWeight: 'bold',
-            color: '#1565c0',
+            color: 'var(--weapon-color)',
             lineHeight: 1.6,
           }}
         >
@@ -114,7 +114,7 @@ export default function PolaroidCard({
             fontFamily: '"Shadows Into Light", cursive',
             fontSize: '1.15rem',
             fontWeight: 'bold',
-            color: '#c62828',
+            color: 'var(--evidence-color)',
             lineHeight: 1.6,
           }}
         >
