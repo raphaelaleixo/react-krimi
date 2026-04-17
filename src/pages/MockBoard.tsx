@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import type { RoomState } from 'react-gameroom';
 import Board from '../components/Board';
 import { GameContext } from '../contexts/GameContext';
-import type { KrimiGameState } from '../types';
+import type { KrimiGameState, KrimiPlayerData } from '../types';
 
 /**
  * Mock game state for layout iteration.
@@ -112,6 +113,24 @@ const ALL_GUESSES: Array<{ index: number; guess: { player: number; mean: string;
   { index: 11, guess: { player: 3, mean: 'Sulfuric Acid', key: 'Glasses' } },      // Benoit Blanc — correct!
 ];
 
+const MOCK_ROOM_STATE: RoomState<KrimiPlayerData> = {
+  roomId: 'X7K2M',
+  status: 'started',
+  config: { minPlayers: 6, maxPlayers: 12, requireFull: false },
+  players: MOCK_GAME_STATE.playerOrder.map((id) => ({
+    id,
+    status: 'ready' as const,
+    name: MOCK_GAME_STATE.playerNames[id],
+    data: {
+      role: id === MOCK_GAME_STATE.playerOrder[MOCK_GAME_STATE.detective]
+        ? 'detective' as const
+        : id === MOCK_GAME_STATE.murderer
+          ? 'murderer' as const
+          : 'investigator' as const,
+    },
+  })),
+};
+
 const NOOP = async () => {};
 
 export default function MockBoard() {
@@ -133,7 +152,7 @@ export default function MockBoard() {
     <GameContext.Provider
       value={{
         gameState,
-        roomState: null,
+        roomState: MOCK_ROOM_STATE,
         loading: false,
         createRoom: async () => '',
         loadRoom: () => {},

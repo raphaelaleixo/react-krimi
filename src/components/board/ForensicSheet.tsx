@@ -72,7 +72,7 @@ export default function ForensicSheet({
           <Typography
             component="span"
             sx={{
-              fontFamily: '"Shadows Into Light", cursive',
+              fontFamily: '"Pangolin", cursive',
               fontSize: '1.3rem',
               fontWeight: 'bold',
               color: 'var(--weapon-color)',
@@ -116,7 +116,7 @@ export default function ForensicSheet({
             <Typography
               component="span"
               sx={{
-                fontFamily: '"Shadows Into Light", cursive',
+                fontFamily: '"Pangolin", cursive',
                 fontWeight: 'bold',
                 fontSize: '1.2rem',
                 color: 'var(--evidence-color)',
@@ -178,7 +178,7 @@ export default function ForensicSheet({
               <Typography
                 component="span"
                 sx={{
-                  fontFamily: '"Shadows Into Light", cursive',
+                  fontFamily: '"Pangolin", cursive',
                   fontWeight: 'bold',
                   fontSize: '1.2rem',
                   color: 'var(--evidence-color)',

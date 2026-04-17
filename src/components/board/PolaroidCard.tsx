@@ -52,14 +52,10 @@ export default function PolaroidCard({
       {/* Notebook page */}
       <Box
         sx={{
-          bgcolor: '#f8f6f0',
+          background: `#f8f6f0 repeating-linear-gradient(transparent, transparent 23px, #e8e4da 23px, #e8e4da 24px) 0 36px`,
           p: 2,
           boxShadow: '0 3px 8px rgba(0,0,0,0.2)',
           position: 'relative',
-          // Ruled lines
-          backgroundImage:
-            'repeating-linear-gradient(transparent, transparent 23px, #e8e4da 23px, #e8e4da 24px)',
-          backgroundPosition: '0 36px',
           // Red margin line
           borderLeft: '2px solid rgba(220, 80, 80, 0.3)',
           // Torn bottom edge
@@ -74,8 +70,9 @@ export default function PolaroidCard({
               position: 'absolute',
               top: 8,
               right: 10,
-              fontFamily: '"Permanent Marker", cursive',
-              fontSize: '1.3rem',
+              fontFamily: '"Caveat Brush", cursive',
+              fontSize: '1.6rem',
+              textTransform: 'uppercase',
               color: 'var(--evidence-color)',
             }}
           >
@@ -86,13 +83,13 @@ export default function PolaroidCard({
         {/* Player name at the top */}
         <Typography
           sx={{
-            fontFamily: '"Permanent Marker", cursive',
-            fontSize: '1.1rem',
+            fontFamily: '"Caveat Brush", cursive',
+            fontSize: '1.7rem',
+            textTransform: 'uppercase',
             fontWeight: 'bold',
             color: 'var(--text-color)',
+            lineHeight: 1,
             mb: 1.5,
-            borderBottom: '1px solid #e8e4da',
-            pb: 0.5,
           }}
         >
           {name}
@@ -100,8 +97,8 @@ export default function PolaroidCard({
 
         <Typography
           sx={{
-            fontFamily: '"Shadows Into Light", cursive',
-            fontSize: '1.15rem',
+            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontSize: '0.95rem',
             fontWeight: 'bold',
             color: 'var(--weapon-color)',
             lineHeight: 1.6,
@@ -111,8 +108,8 @@ export default function PolaroidCard({
         </Typography>
         <Typography
           sx={{
-            fontFamily: '"Shadows Into Light", cursive',
-            fontSize: '1.15rem',
+            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontSize: '0.95rem',
             fontWeight: 'bold',
             color: 'var(--evidence-color)',
             lineHeight: 1.6,

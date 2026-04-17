@@ -56,16 +56,16 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
       >
         <Typography
           sx={{
-            fontFamily: '"Shadows Into Light", cursive',
-            fontSize: '0.9rem',
-            fontWeight: 'bold',
+            fontFamily: '"Caveat Brush", cursive',
+            fontSize: '1.2rem',
             color: 'var(--text-color)',
             textDecoration: isWrong ? 'line-through' : 'none',
             textDecorationColor: 'var(--evidence-color)',
             textDecorationThickness: '2px',
             textAlign: 'center',
             '& span': {
-              fontFamily: '"Permanent Marker", cursive',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
             },
           }}
         >

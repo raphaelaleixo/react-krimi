@@ -15,7 +15,7 @@ export default function CorkBoard({ children, corkRef }: CorkBoardProps) {
         width: '100vw',
         height: '100vh',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'auto',
         '--text-color': '#1C1B1B',
         '--weapon-color': '#3A7085',
         '--evidence-color': '#9E1B1B',

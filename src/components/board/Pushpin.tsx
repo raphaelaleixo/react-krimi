@@ -16,7 +16,7 @@ export default function Pushpin({ color = 'var(--evidence-color)' }: PushpinProp
         width: 16,
         height: 16,
         borderRadius: '50%',
-        background: `radial-gradient(circle at 35% 35%, ${color} 0%, ${color}cc 60%, ${color}88 100%)`,
+        background: `radial-gradient(circle at 35% 35%, ${color} 0%, color-mix(in srgb, ${color} 80%, transparent) 60%, color-mix(in srgb, ${color} 53%, transparent) 100%)`,
         boxShadow: `0 2px 4px rgba(0,0,0,0.4), inset 0 -1px 2px rgba(0,0,0,0.3)`,
         '&::after': {
           content: '""',

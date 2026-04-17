@@ -303,7 +303,7 @@ export default function Board() {
 
         <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
 
-          <Box ref={containerRef} sx={{ flex: 1, overflow: 'hidden', minHeight: 0 }}>
+          <Box ref={containerRef} sx={{ flex: 1, overflow: 'auto', minHeight: 0 }}>
           <motion.div
             ref={contentRef}
             animate={{ y: centerOffset }}
