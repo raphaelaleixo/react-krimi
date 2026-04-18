@@ -89,6 +89,7 @@ export default function PolaroidCard({
             fontWeight: 'bold',
             color: 'var(--text-color)',
             lineHeight: 1,
+            pr: 3,
             mb: 1.5,
           }}
         >

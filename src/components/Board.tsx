@@ -221,7 +221,8 @@ export default function Board() {
                   color: 'var(--text-color)',
                   textAlign: 'center',
                   mt: 1.5,
-                  letterSpacing: '3px',
+                  fontWeight: 'bold',
+                  letterSpacing: '-1px',
                 }}
               >
                 {t('Case')}#{roomState.roomId}

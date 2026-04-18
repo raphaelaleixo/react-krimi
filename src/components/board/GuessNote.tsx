@@ -57,7 +57,7 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
         <Typography
           sx={{
             fontFamily: '"Caveat Brush", cursive',
-            fontSize: '1.2rem',
+            fontSize: '1.1rem',
             color: 'var(--text-color)',
             textDecoration: isWrong ? 'line-through' : 'none',
             textDecorationColor: 'var(--evidence-color)',
@@ -69,28 +69,23 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
             },
           }}
         >
-          <span>{accuserName}</span> {saidThatLabel}{' '}
-          <Box
-            component="span"
-            sx={{
-              position: 'relative',
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                left: -2,
-                right: -2,
-                bottom: -1,
-                height: 3,
-                bgcolor: 'rgba(51,51,51,0.5)',
-                transform: 'rotate(-1deg)',
-                borderRadius: '2px',
-              },
-            }}
-          >
-            {accusedName}
-          </Box>{' '}
-          {didItLabel}, {moLabel}{' '}
-          <span style={{ color: 'var(--weapon-color)' }}>{mean}</span> {keyEvidenceLabel} <span style={{ color: 'var(--evidence-color)' }}>{evidenceKey}</span>
+          <span>{accusedName}</span>
+          <br />
+          <span style={{ color: 'var(--weapon-color)' }}>{mean}</span>
+          {' + '}
+          <span style={{ color: 'var(--evidence-color)' }}>{evidenceKey}</span>
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontSize: '0.75rem',
+            color: 'var(--text-color)',
+            position: 'absolute',
+            bottom: 8,
+            right: 16,
+          }}
+        >
+          By {accuserName}
         </Typography>
       </Box>
     </Box>

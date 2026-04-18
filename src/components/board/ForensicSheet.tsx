@@ -72,9 +72,10 @@ export default function ForensicSheet({
           <Typography
             component="span"
             sx={{
-              fontFamily: '"Pangolin", cursive',
-              fontSize: '1.3rem',
+              fontFamily: '"Caveat Brush", cursive',
+              fontSize: '1.5rem',
               fontWeight: 'bold',
+              textTransform: 'uppercase',
               color: 'var(--weapon-color)',
             }}
           >
@@ -116,9 +117,10 @@ export default function ForensicSheet({
             <Typography
               component="span"
               sx={{
-                fontFamily: '"Pangolin", cursive',
+                fontFamily: '"Caveat Brush", cursive',
                 fontWeight: 'bold',
-                fontSize: '1.2rem',
+                fontSize: '1.4rem',
+                textTransform: 'uppercase',
                 color: 'var(--evidence-color)',
               }}
             >
@@ -178,9 +180,10 @@ export default function ForensicSheet({
               <Typography
                 component="span"
                 sx={{
-                  fontFamily: '"Pangolin", cursive',
+                  fontFamily: '"Caveat Brush", cursive',
                   fontWeight: 'bold',
-                  fontSize: '1.2rem',
+                  fontSize: '1.4rem',
+                  textTransform: 'uppercase',
                   color: 'var(--evidence-color)',
                 }}
               >
