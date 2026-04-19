@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { PlayerScreen } from 'react-gameroom';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
 import Detective from '../components/Detective';
@@ -34,45 +35,48 @@ export default function Player() {
     );
   }
 
-  // Before game starts — waiting screen
-  if (!gameState?.started) {
-    return (
-      <Container sx={{ height: '100vh' }}>
-        <Grid container sx={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-          <Grid size={{ xs: 12, md: 6 }} sx={{ textAlign: 'center' }}>
-            <Typography variant="h3" sx={{ mb: 2 }}>
-              {t('You are in room')}{' '}
-              <Box
-                component="code"
-                sx={{ color: 'error.main', textTransform: 'uppercase' }}
-              >
-                {roomState.roomId}
-              </Box>
-            </Typography>
-            <Typography variant="subtitle1">
-              {t('Waiting for the game start')}
-            </Typography>
+  const notFound = (
+    <Container sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Typography>Player not found in this game.</Typography>
+    </Container>
+  );
+
+  return (
+    <PlayerScreen
+      roomState={roomState}
+      playerId={playerId}
+      labels={{ invalidSlot: 'Player not found in this game.' }}
+      renderHeader={() => null}
+      renderEmpty={() => notFound}
+      renderReady={() => (
+        <Container sx={{ height: '100vh' }}>
+          <Grid container sx={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <Grid size={{ xs: 12, md: 6 }} sx={{ textAlign: 'center' }}>
+              <Typography variant="h3" sx={{ mb: 2 }}>
+                {t('You are in room')}{' '}
+                <Box
+                  component="code"
+                  sx={{ color: 'error.main', textTransform: 'uppercase' }}
+                >
+                  {roomState.roomId}
+                </Box>
+              </Typography>
+              <Typography variant="subtitle1">
+                {t('Waiting for the game start')}
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    );
-  }
-
-  // After game starts — determine role
-  const playerOrderIndex = gameState.playerOrder.indexOf(playerId);
-  if (playerOrderIndex === -1) {
-    return (
-      <Container sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography>Player not found in this game.</Typography>
-      </Container>
-    );
-  }
-
-  // Detective (forensic scientist) sees forensic analysis view
-  if (playerOrderIndex === gameState.detective) {
-    return <ForensicAnalysis gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
-  }
-
-  // Everyone else sees investigator/murderer view
-  return <Detective gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+        </Container>
+      )}
+      renderStarted={() => {
+        if (!gameState) return null;
+        const playerOrderIndex = gameState.playerOrder.indexOf(playerId);
+        if (playerOrderIndex === -1) return notFound;
+        if (playerOrderIndex === gameState.detective) {
+          return <ForensicAnalysis gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+        }
+        return <Detective gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+      }}
+    />
+  );
 }
