@@ -23,7 +23,7 @@ export default function GlobalStyles() {
 
         :root {
           --font-typewriter: 'kingthings_trypewriter_2Rg', serif;
-          --font-script: 'Caveat', cursive;
+          --font-script: 'Caveat Brush', cursive;
         }
 
         body {
