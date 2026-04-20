@@ -23,12 +23,6 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           transform: `rotate(${rotation}deg)`,
           transition: "transform 300ms ease",
           overflow: "visible",
-          "& .pn-curl": {
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            transition: "all 300ms ease",
-          },
           "& .pn-paper": {
             position: "relative",
             zIndex: 1,
@@ -40,7 +34,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             color: "#3A7085",
             px: 2,
             py: 1.5,
-            fontFamily: 'var(--font-script)',
+            fontFamily: "var(--font-script)",
             textTransform: "uppercase",
             fontSize: "1.5rem",
             fontWeight: 400,
@@ -48,7 +42,8 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             textAlign: "center",
             whiteSpace: "nowrap",
             boxShadow: "0 8px 22px rgba(0,0,0,0.3)",
-            transition: "border-radius 300ms ease",
+            transition:
+              "border-radius 300ms ease, box-shadow 300ms ease",
           },
           "& .pn-tape": {
             position: "absolute",
@@ -66,10 +61,8 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             transform: `rotate(${rotation}deg) translateY(-2px)`,
             "& .pn-paper": {
               borderRadius: "0 0 22% 0 / 0 0 90% 0",
-            },
-            "& .pn-curl": {
-              boxShadow: "16px 8px 18px rgba(31, 31, 31, 0.85)",
-              transform: "skew(14deg) rotate(6deg)",
+              boxShadow:
+                "14px 14px 24px rgba(0,0,0,0.55), 0 8px 22px rgba(0,0,0,0.3)",
             },
           },
           "@media (prefers-reduced-motion: reduce)": {
@@ -78,13 +71,11 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               transform: `rotate(${rotation}deg)`,
               "& .pn-paper": { borderRadius: 0 },
             },
-            "& .pn-curl": { transition: "none" },
           },
           ...sx,
         }}
         {...rest}
       >
-        <Box className="pn-curl" />
         <Box className="pn-paper">
           <Box className="pn-tape" />
           {children}
