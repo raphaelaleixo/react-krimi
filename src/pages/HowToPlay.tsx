@@ -147,7 +147,7 @@ export default function HowToPlay() {
           <Box sx={{ height: { xs: 40, sm: 56 } }} />
         </CaseFile>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: -7, position: 'relative', zIndex: 2 }}>
           <PinnedNote rotation={-2} component={RouterLink} to="/">
             {t('Back')}
           </PinnedNote>
