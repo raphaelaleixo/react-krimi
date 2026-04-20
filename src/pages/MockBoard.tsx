@@ -136,7 +136,7 @@ const NOOP = async () => {};
 export default function MockBoard() {
   const [guessStep, setGuessStep] = useState(0);
 
-  const guesses = [...MOCK_GAME_STATE.guesses] as KrimiGameState['guesses'];
+  const guesses: KrimiGameState['guesses'] = [...(MOCK_GAME_STATE.guesses ?? [])];
   for (let i = 0; i < guessStep && i < ALL_GUESSES.length; i++) {
     const { index, guess } = ALL_GUESSES[i];
     guesses[index] = guess;

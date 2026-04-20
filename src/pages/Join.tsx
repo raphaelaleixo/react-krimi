@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams, Link as RouterLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
 import { JoinGame } from 'react-gameroom';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
+import BoardSurface from '../components/board/BoardSurface';
+import CaseFile from '../components/board/CaseFile';
+import PinnedNote from '../components/board/PinnedNote';
+import StampButton from '../components/board/StampButton';
 
 export default function Join() {
   const navigate = useNavigate();
@@ -41,12 +43,11 @@ export default function Join() {
     }
   }, [joinRoom, nickname, navigate, t]);
 
-  // If we have a prefilled room code, use a simple form instead of JoinGame
   if (prefilledRoom) {
     return (
-      <Container sx={{ height: '100vh' }}>
-        <Grid container sx={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-          <Grid size={{ xs: 12, md: 6 }}>
+      <BoardSurface>
+        <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+          <CaseFile>
             <Box component="form" onSubmit={(e: React.FormEvent) => { e.preventDefault(); handleJoin(prefilledRoom); }}>
               {error && (
                 <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
@@ -71,37 +72,28 @@ export default function Join() {
                 required
                 autoFocus
               />
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Button
-                  component={RouterLink}
-                  to="/"
-                  variant="contained"
-                  sx={{ bgcolor: 'grey.100', color: 'text.primary', '&:hover': { bgcolor: 'grey.200' } }}
-                  size="large"
-                >
-                  {t('Back')}
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="error"
-                  size="large"
-                  disabled={!nickname.trim()}
-                >
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <StampButton variant="primary" type="submit" disabled={!nickname.trim()}>
                   {t('Enter')}
-                </Button>
+                </StampButton>
               </Box>
             </Box>
-          </Grid>
-        </Grid>
-      </Container>
+          </CaseFile>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <PinnedNote rotation={-2} component={RouterLink} to="/">
+              {t('Back')}
+            </PinnedNote>
+          </Box>
+        </Container>
+      </BoardSurface>
     );
   }
 
   return (
-    <Container sx={{ height: '100vh' }}>
-      <Grid container sx={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-        <Grid size={{ xs: 12, md: 6 }}>
+    <BoardSurface>
+      <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+        <CaseFile>
           {error && (
             <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
               {error}
@@ -125,19 +117,14 @@ export default function Join() {
               submit: t('Enter'),
             }}
           />
-          <Box sx={{ mt: 2 }}>
-            <Button
-              component={RouterLink}
-              to="/"
-              variant="contained"
-              sx={{ bgcolor: 'grey.100', color: 'text.primary', '&:hover': { bgcolor: 'grey.200' } }}
-              size="large"
-            >
-              {t('Back')}
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </Container>
+        </CaseFile>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <PinnedNote rotation={-2} component={RouterLink} to="/">
+            {t('Back')}
+          </PinnedNote>
+        </Box>
+      </Container>
+    </BoardSurface>
   );
 }

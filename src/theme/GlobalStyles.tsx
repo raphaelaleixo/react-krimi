@@ -1,7 +1,5 @@
 import { Global, css } from '@emotion/react';
 import bgImage from '../assets/bg.png';
-import woff2Font from '../assets/kingthings_trypewriter_2-webfont.woff2';
-import woffFont from '../assets/kingthings_trypewriter_2-webfont.woff';
 
 const clipPathPoints = Array.from({ length: 21 }, (_, i) => {
   const x = i * 5;
@@ -13,25 +11,22 @@ export default function GlobalStyles() {
   return (
     <Global
       styles={css`
-        @font-face {
-          font-family: 'kingthings_trypewriter_2Rg';
-          src: url('${woff2Font}') format('woff2'),
-               url('${woffFont}') format('woff');
-          font-weight: normal;
-          font-style: normal;
+        :root {
+          --font-typewriter: 'Special Elite', monospace;
+          --font-script: 'Story Script', cursive;
         }
 
         body {
           margin: 0;
           background: url('${bgImage}') no-repeat fixed top center !important;
           background-size: cover;
-          font-family: 'IBM Plex Mono', monospace;
+          font-family: var(--font-typewriter);
           color: #5f6c7b;
         }
 
         code {
           letter-spacing: 1px;
-          font-family: 'kingthings_trypewriter_2Rg', serif;
+          font-family: var(--font-typewriter);
         }
 
         .MuiCardContent-root {

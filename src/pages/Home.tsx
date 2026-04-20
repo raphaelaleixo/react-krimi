@@ -1,128 +1,198 @@
-import { useCallback } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { ReactTyped } from 'react-typed';
-import { useGame } from '../contexts/GameContext';
-import { useI18n } from '../hooks/useI18n';
-import logo from '../assets/logo.svg';
-import ludoratory from '../assets/ludoratory.svg';
+import { useCallback, useState } from "react";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import { HostDeviceWarningModal, isLikelyMobileHost } from "react-gameroom";
+import { useGame } from "../contexts/GameContext";
+import { useI18n } from "../hooks/useI18n";
+import BoardSurface from "../components/board/BoardSurface";
+import CaseFile from "../components/board/CaseFile";
+import PinnedNote from "../components/board/PinnedNote";
+import StampButton from "../components/board/StampButton";
+import logo from "../assets/logo.svg";
+import ludoratory from "../assets/ludoratory.svg";
 
 export default function Home() {
   const navigate = useNavigate();
   const { createRoom } = useGame();
   const { t, lang, setLang } = useI18n();
+  const [hostWarningOpen, setHostWarningOpen] = useState(false);
 
-  const handleCreate = useCallback(async () => {
+  const createAndGo = useCallback(async () => {
     const roomId = await createRoom(lang);
     navigate(`/room/${roomId}`);
   }, [createRoom, lang, navigate]);
 
-  const toggleLocale = useCallback(() => {
-    setLang(lang === 'pt_br' ? 'en' : 'pt_br');
-  }, [lang, setLang]);
+  const startCreate = useCallback(() => {
+    if (isLikelyMobileHost()) {
+      setHostWarningOpen(true);
+      return;
+    }
+    void createAndGo();
+  }, [createAndGo]);
+
+  const toggleLocale = useCallback(
+    () => setLang(lang === "pt_br" ? "en" : "pt_br"),
+    [lang, setLang],
+  );
 
   return (
-    <Container sx={{ height: '100vh' }}>
-      <Grid container sx={{ height: '100%', alignItems: 'center' }}>
-        <Grid
-          size={{ xs: 12, lg: 6, xl: 4 }}
-          offset={{ xl: 4 }}
+    <BoardSurface>
+      <Container
+        maxWidth="sm"
+        sx={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}
+      >
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            py: 6,
+          }}
         >
-          <Box component="img" src={logo} sx={{ maxWidth: 136, mb: 4 }} />
-          <Typography variant="h2" component="h2">
-            {t('A game of')}
-            <Box
-              component="span"
-              sx={{
-                display: 'block',
-                '& .typed-cursor': { color: '#094067' },
-              }}
-            >
-              <ReactTyped
-                strings={[t('deception'), t('deduction')]}
-                typeSpeed={120}
-                backSpeed={50}
-                backDelay={2000}
-                loop
-                style={{ color: '#3da9fc' }}
+          <CaseFile maxWidth="none">
+            <Box sx={{ textAlign: "center" }}>
+              <Box
+                component="img"
+                src={logo}
+                sx={{ width: 96, mx: "auto", mb: 2, display: "block" }}
+                alt="Krimi"
               />
+              <Typography
+                component="h1"
+                sx={{
+                  fontFamily: 'var(--font-typewriter)',
+                  fontSize: { xs: "1rem", sm: "1.1rem" },
+                  fontWeight: "normal",
+                  color: "#1C1B1B",
+                  lineHeight: 1.7,
+                  mb: 3,
+                }}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    textTransform: "uppercase",
+                    letterSpacing: "2px",
+                    fontWeight: 700,
+                  }}
+                >
+                  {t("A game of deception")}.
+                </Box>{" "}
+                {t("A web-version of Tobey Ho's")}{" "}
+                <strong>Deception: Murder in Hong Kong</strong>.
+              </Typography>
+              <StampButton variant="primary" onClick={startCreate}>
+                {t("New game")}
+              </StampButton>
             </Box>
-          </Typography>
-          <Typography
-            sx={{ my: 1, fontSize: '1.5em' }}
+          </CaseFile>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 3,
+              justifyContent: "center",
+              flexWrap: "wrap",
+              mt: -7,
+              position: "relative",
+              zIndex: 2,
+            }}
           >
-            {t("A web-version of Tobey Ho's")}{' '}
-            <strong>Deception: Murder in Hong Kong</strong>.
-          </Typography>
-          <Typography variant="subtitle1" sx={{ mt: 4, mb: 10 }}>
-            {t(
-              "In the game, players take on the roles of investigators attempting to solve a murder case – but there's a twist. The killer is one of the investigators! Find out who among you can cut through deception to find the truth and who is capable of getting away with murder!"
-            )}
-          </Typography>
-          <Box sx={{ display: { lg: 'flex' } }}>
-            <Button
-              component={RouterLink}
-              to="/join"
-              variant="contained"
-              size="large"
-              sx={{
-                mr: { lg: 2 },
-                mb: { xs: 2, lg: 0 },
-                bgcolor: 'grey.100',
-                color: 'text.primary',
-                '&:hover': { bgcolor: 'grey.200' },
-                px: 4,
-                py: 1.5,
-              }}
-            >
-              {t('Join game')}
-            </Button>
-            <Button
-              onClick={handleCreate}
-              variant="contained"
-              size="large"
-              color="error"
-              sx={{ mb: { xs: 2, lg: 0 }, px: 4, py: 1.5 }}
-            >
-              {t('Create new game')}
-            </Button>
+            <PinnedNote rotation={-3} component={RouterLink} to="/join">
+              {t("Join game")}
+            </PinnedNote>
+            <PinnedNote rotation={2.5} component={RouterLink} to="/how-to-play">
+              {t("How to play")}
+            </PinnedNote>
           </Box>
-          <Box sx={{ display: { lg: 'flex' }, mt: 4 }}>
-            <Button
-              href="https://medium.com/@raphaelaleixo/krimi-how-to-play-87839028f5ef"
-              target="_blank"
-              color="error"
-              sx={{ mr: { lg: 2 }, mb: { xs: 2, lg: 0 } }}
-            >
-              {t('How to play')}
-            </Button>
-            <Button
-              href="https://github.com/raphaelaleixo/krimi"
-              target="_blank"
-              color="error"
-              sx={{ mr: { lg: 2 }, mb: { xs: 2, lg: 0 } }}
-            >
-              {t('About this project')}
-            </Button>
-            <Button
-              onClick={toggleLocale}
-              color="error"
-              sx={{ mb: { xs: 2, lg: 0 } }}
-            >
-              {t('Versão em português')}
-            </Button>
-          </Box>
+        </Box>
+
+        <Box
+          component="footer"
+          sx={{
+            py: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            color: "#fff",
+            fontSize: "0.75em",
+            flexWrap: "wrap",
+          }}
+        >
           <Box
             component="img"
             src={ludoratory}
-            sx={{ maxWidth: 136, mt: 10 }}
+            sx={{ width: 32, filter: "brightness(0) invert(1)" }}
+            alt="Ludoratory"
           />
-        </Grid>
-      </Grid>
-    </Container>
+          <Box sx={{ flex: 1, minWidth: 180 }}>
+            <Typography
+              variant="body2"
+              sx={{ fontSize: "0.75rem", lineHeight: 1.4 }}
+            >
+              {t("Made by")}{" "}
+              <Link
+                href="https://aleixo.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ color: "inherit", textDecorationColor: "inherit" }}
+              >
+                Raphael Aleixo / Ludoratory
+              </Link>
+              .
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ fontSize: "0.75rem", lineHeight: 1.4 }}
+            >
+              {t("Licensed under")}{" "}
+              <Link
+                href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ color: "inherit", textDecorationColor: "inherit" }}
+              >
+                CC BY-NC-SA 4.0
+              </Link>
+              .
+            </Typography>
+          </Box>
+          <StampButton
+            variant="text"
+            onClick={toggleLocale}
+            sx={{
+              fontSize: "0.7rem",
+              letterSpacing: "0px",
+              color: "#fff",
+              textTransform: "none",
+            }}
+          >
+            {t("Versão em português")}
+          </StampButton>
+        </Box>
+      </Container>
+
+      <HostDeviceWarningModal
+        open={hostWarningOpen}
+        onConfirm={() => {
+          setHostWarningOpen(false);
+          void createAndGo();
+        }}
+        onCancel={() => setHostWarningOpen(false)}
+        labels={{
+          title: t("Heads up"),
+          body: t(
+            "You're about to host on what looks like a phone. The host screen works best on a larger display — a laptop or tablet.",
+          ),
+          confirmLabel: t("Host anyway"),
+          cancelLabel: t("Cancel"),
+        }}
+      />
+    </BoardSurface>
   );
 }

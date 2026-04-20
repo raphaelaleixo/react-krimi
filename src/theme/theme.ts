@@ -15,21 +15,21 @@ const krimiTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"IBM Plex Mono", monospace',
+    fontFamily: 'var(--font-typewriter)',
     h2: {
-      fontFamily: '"kingthings_trypewriter_2Rg", serif',
+      fontFamily: 'var(--font-typewriter)',
       color: '#094067',
       letterSpacing: '-2px',
       wordSpacing: '-10px',
     },
     h3: {
-      fontFamily: '"kingthings_trypewriter_2Rg", serif',
+      fontFamily: 'var(--font-typewriter)',
       color: '#094067',
       letterSpacing: '-2px',
       wordSpacing: '-10px',
     },
     h4: {
-      fontFamily: '"kingthings_trypewriter_2Rg", serif',
+      fontFamily: 'var(--font-typewriter)',
       letterSpacing: '-2px',
       wordSpacing: '-10px',
     },
