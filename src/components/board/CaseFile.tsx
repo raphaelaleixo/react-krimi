@@ -1,0 +1,45 @@
+import Box from '@mui/material/Box';
+import type { ReactNode, CSSProperties } from 'react';
+import Pushpin from './Pushpin';
+
+interface CaseFileProps {
+  children: ReactNode;
+  rotation?: number;
+  maxWidth?: number;
+  sx?: CSSProperties;
+}
+
+export default function CaseFile({
+  children,
+  rotation = -1.5,
+  maxWidth = 480,
+}: CaseFileProps) {
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        width: '100%',
+        maxWidth,
+        mx: 'auto',
+        my: 4,
+        transform: `rotate(${rotation}deg)`,
+        '@media (prefers-reduced-motion: reduce)': { transform: 'none' },
+      }}
+    >
+      <Pushpin color="#9E1B1B" />
+      <Box
+        sx={{
+          bgcolor: '#f8f6f0',
+          color: '#1C1B1B',
+          p: { xs: 3, sm: 5 },
+          boxShadow: '0 8px 24px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.35)',
+          backgroundImage:
+            'repeating-linear-gradient(transparent, transparent 27px, #e8e4da 27px, #e8e4da 28px)',
+          backgroundPosition: '0 48px',
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
+}
