@@ -31,20 +31,14 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           '& .pn-curl': {
             position: 'absolute',
             right: '10px',
+            bottom: '12px',
             width: '50%',
             height: '55%',
             maxWidth: 200,
             maxHeight: 100,
+            boxShadow: '1px 4px 12px rgba(31, 31, 31, 0.6)',
             pointerEvents: 'none',
             transition: 'all 300ms ease',
-          },
-          '& .pn-curl-top': {
-            top: '12px',
-            boxShadow: '1px -4px 12px rgba(31, 31, 31, 0.6)',
-          },
-          '& .pn-curl-bottom': {
-            bottom: '12px',
-            boxShadow: '1px 4px 12px rgba(31, 31, 31, 0.6)',
           },
           '& .pn-paper': {
             position: 'relative',
@@ -65,14 +59,9 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           '&:hover': {
             transform: `rotate(${rotation}deg) translateY(-2px)`,
             '& .pn-paper': {
-              borderRadius: '0 3% 3% 0 / 0% 50% 50% 0',
+              borderRadius: '0 0 3% 0 / 0 0 50% 0',
             },
-            '& .pn-curl-top': {
-              right: 0,
-              boxShadow: '10px -4px 12px rgba(31, 31, 31, 0.8)',
-              transform: 'skew(-8deg) rotate(-3deg)',
-            },
-            '& .pn-curl-bottom': {
+            '& .pn-curl': {
               right: 0,
               boxShadow: '10px 4px 12px rgba(31, 31, 31, 0.8)',
               transform: 'skew(8deg) rotate(3deg)',
@@ -90,8 +79,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
         }}
         {...rest}
       >
-        <Box className="pn-curl pn-curl-top" />
-        <Box className="pn-curl pn-curl-bottom" />
+        <Box className="pn-curl" />
         <Box className="pn-paper">
           <Pushpin color={pinColor} />
           {children}
