@@ -5,6 +5,8 @@ export type PaperButtonVariant = 'primary' | 'secondary' | 'text';
 
 export type PaperButtonProps = Omit<ButtonProps, 'variant' | 'color'> & {
   variant?: PaperButtonVariant;
+  to?: string;
+  href?: string;
 };
 
 const INK = '#094067';
