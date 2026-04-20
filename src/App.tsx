@@ -11,6 +11,8 @@ import Room from './pages/Room';
 import Player from './pages/Player';
 import MockBoard from './pages/MockBoard';
 import HowToPlay from './pages/HowToPlay';
+import PlayerJoin from './pages/PlayerJoin';
+import RejoinPlayers from './pages/RejoinPlayers';
 
 export default function App() {
   return (
@@ -24,8 +26,9 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/join" element={<Join />} />
               <Route path="/room/:id" element={<Room />} />
-              <Route path="/room/:id/player" element={<Join />} />
+              <Route path="/room/:id/player" element={<PlayerJoin />} />
               <Route path="/room/:id/player/:playerId" element={<Player />} />
+              <Route path="/room/:id/players" element={<RejoinPlayers />} />
               <Route path="/how-to-play" element={<HowToPlay />} />
               <Route path="/mock" element={<MockBoard />} />
             </Routes>
