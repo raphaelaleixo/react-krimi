@@ -84,7 +84,7 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
             WebkitMaskRepeat: "no-repeat",
             transform: "rotate(-1.5deg) scale(1)",
             transition:
-              "transform 140ms cubic-bezier(0.2, 0.8, 0.3, 1.2), background-color 140ms ease-out",
+              "transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 140ms ease-out",
             "&:hover": {
               borderColor: STAMP_RED,
               borderWidth: 4,

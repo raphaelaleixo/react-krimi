@@ -21,7 +21,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           minHeight: 60,
           color: "#1C1B1B",
           transform: `rotate(${rotation}deg)`,
-          transition: "transform 300ms ease",
+          transition: "transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1)",
           overflow: "visible",
           "& .pn-paper": {
             position: "relative",
@@ -52,7 +52,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               backgroundImage:
                 "linear-gradient(160deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 100%)",
               transform: "translate(100%, 100%)",
-              transition: "transform 300ms ease",
+              transition: "transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1)",
               pointerEvents: "none",
             },
           },
