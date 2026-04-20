@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
 import { HostDeviceWarningModal, isLikelyMobileHost } from 'react-gameroom';
 import { useI18n } from '../hooks/useI18n';
@@ -115,6 +116,23 @@ export default function Join() {
               required
               autoFocus
               slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Box
+                        sx={{
+                          fontFamily: 'var(--font-script)',
+                          fontSize: '1.75rem',
+                          color: '#1C1B1B',
+                          opacity: 0.6,
+                          lineHeight: 1,
+                        }}
+                      >
+                        x
+                      </Box>
+                    </InputAdornment>
+                  ),
+                },
                 inputLabel: { shrink: true },
                 htmlInput: { autoCapitalize: 'characters', autoComplete: 'off' },
               }}
