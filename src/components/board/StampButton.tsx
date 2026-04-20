@@ -13,15 +13,50 @@ const STAMP_RED = '#9E1B1B';
 
 function generateDistressedStamp() {
   const points: string[] = [];
-  const steps = 80;
-  for (let i = 0; i < steps; i++) {
-    const angle = (i / steps) * Math.PI * 2;
-    const bite = Math.random() < 0.3 ? Math.random() * 8 : 0;
-    const r = 50 - bite;
-    const x = 50 + r * Math.cos(angle);
-    const y = 50 + r * Math.sin(angle);
-    points.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
+  const r = 8;
+  const cornerPts = 8;
+  const sidePts = 18;
+  const biteProb = 0.15;
+  const maxBite = 2;
+  const bite = () =>
+    Math.random() < biteProb ? Math.random() * maxBite : 0;
+
+  const addCorner = (cx: number, cy: number, startAngle: number) => {
+    for (let i = 0; i <= cornerPts; i++) {
+      const angle = startAngle + (i / cornerPts) * (Math.PI / 2);
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      const b = bite();
+      const dx = cx - x;
+      const dy = cy - y;
+      const len = Math.hypot(dx, dy) || 1;
+      points.push(
+        `${(x + (dx / len) * b).toFixed(2)}% ${(y + (dy / len) * b).toFixed(2)}%`,
+      );
+    }
+  };
+
+  addCorner(r, r, Math.PI);
+  for (let i = 1; i < sidePts; i++) {
+    const x = r + (i / sidePts) * (100 - 2 * r);
+    points.push(`${x.toFixed(2)}% ${bite().toFixed(2)}%`);
   }
+  addCorner(100 - r, r, 1.5 * Math.PI);
+  for (let i = 1; i < sidePts; i++) {
+    const y = r + (i / sidePts) * (100 - 2 * r);
+    points.push(`${(100 - bite()).toFixed(2)}% ${y.toFixed(2)}%`);
+  }
+  addCorner(100 - r, 100 - r, 0);
+  for (let i = 1; i < sidePts; i++) {
+    const x = (100 - r) - (i / sidePts) * (100 - 2 * r);
+    points.push(`${x.toFixed(2)}% ${(100 - bite()).toFixed(2)}%`);
+  }
+  addCorner(r, 100 - r, 0.5 * Math.PI);
+  for (let i = 1; i < sidePts; i++) {
+    const y = (100 - r) - (i / sidePts) * (100 - 2 * r);
+    points.push(`${bite().toFixed(2)}% ${y.toFixed(2)}%`);
+  }
+
   return `polygon(${points.join(', ')})`;
 }
 
@@ -36,7 +71,7 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
             color: STAMP_RED,
             borderColor: STAMP_RED,
             borderWidth: 4,
-            borderRadius: 999,
+            borderRadius: 2,
             bgcolor: 'transparent',
             clipPath: distressed,
             transform: 'rotate(-1.5deg)',
@@ -67,8 +102,8 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
           fontWeight: 700,
           letterSpacing: '3px',
           textTransform: 'uppercase',
-          px: variant === 'text' ? 1 : 6,
-          py: variant === 'text' ? 0.5 : 2,
+          px: variant === 'text' ? 1 : 4,
+          py: variant === 'text' ? 0.5 : 1.5,
           ...variantSx,
           ...sx,
         }}
