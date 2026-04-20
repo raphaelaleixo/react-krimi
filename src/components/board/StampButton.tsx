@@ -115,11 +115,10 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
           letterSpacing: "0px",
           fontWeight: 700,
           fontSize: variant === "primary" ? "1.75rem" : undefined,
-          textBoxTrim: "trim-both",
-          textBoxEdge: "ex alphabetic",
           textTransform: "uppercase",
           px: variant === "text" ? 1 : 2,
-          py: variant === "text" ? 0.5 : 0.5,
+          pt: 0.5,
+          pb: variant === "text" ? 0.5 : 0,
           ...variantSx,
           ...sx,
         }}
