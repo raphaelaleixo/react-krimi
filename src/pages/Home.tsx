@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <BoardSurface>
       <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', py: 6 }}>
           <CaseFile>
             <Box sx={{ textAlign: 'center' }}>
               <Box component="img" src={logo} sx={{ width: 96, mx: 'auto', mb: 2, display: 'block' }} alt="Krimi" />
@@ -75,7 +75,7 @@ export default function Home() {
             </Box>
           </CaseFile>
 
-          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'space-between', flexWrap: 'wrap', mt: 1 }}>
+          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'space-between', flexWrap: 'wrap', mt: -3, position: 'relative', zIndex: 2 }}>
             <PinnedNote rotation={-3} component={RouterLink} to="/join">
               {t('Join game')}
             </PinnedNote>
