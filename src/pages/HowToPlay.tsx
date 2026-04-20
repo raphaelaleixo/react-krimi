@@ -143,6 +143,8 @@ export default function HowToPlay() {
               )}
             </p>
           </Section>
+
+          <Box sx={{ height: { xs: 40, sm: 56 } }} />
         </CaseFile>
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
