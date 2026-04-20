@@ -52,7 +52,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             WebkitTextStroke: "0.3px currentColor",
             textAlign: "center",
             whiteSpace: "nowrap",
-            boxShadow: "0 3px 8px rgba(0,0,0,0.5)",
+            boxShadow: "0 8px 22px rgba(0,0,0,0.3)",
             transition: "border-radius 300ms ease",
           },
           "& .pn-tape": {
