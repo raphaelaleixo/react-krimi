@@ -165,7 +165,12 @@ export default function Home() {
           <StampButton
             variant="text"
             onClick={toggleLocale}
-            sx={{ fontSize: "0.7rem", letterSpacing: "2px", color: "#fff" }}
+            sx={{
+              fontSize: "0.7rem",
+              letterSpacing: "0px",
+              color: "#fff",
+              textTransform: "none",
+            }}
           >
             {t("Versão em português")}
           </StampButton>
