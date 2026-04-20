@@ -82,7 +82,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           },
           "&:active": {
             "& .pn-paper": {
-              transform: "translateY(10px) rotate(4deg)",
+              transform: `translateY(10px) rotate(${-rotation}deg)`,
               transition: "transform 120ms ease-out",
             },
           },
