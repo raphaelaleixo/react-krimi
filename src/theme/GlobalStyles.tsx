@@ -12,7 +12,7 @@ export default function GlobalStyles() {
     <Global
       styles={css`
         :root {
-          --font-typewriter: 'Courier Prime', monospace;
+          --font-typewriter: 'Special Elite', monospace;
           --font-script: 'Story Script', cursive;
         }
 
