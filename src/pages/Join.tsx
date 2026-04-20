@@ -102,6 +102,10 @@ export default function Join() {
               variant="standard"
               sx={{
                 mb: 3,
+                '& .MuiInputLabel-root': {
+                  fontSize: '1.1rem',
+                  fontWeight: 700,
+                },
                 '& .MuiInput-input': {
                   fontFamily: 'var(--font-script)',
                   fontSize: '1.75rem',
