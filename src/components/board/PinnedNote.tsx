@@ -57,7 +57,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           },
           '& .pn-tape': {
             position: 'absolute',
-            top: -10,
+            top: -14,
             left: '50%',
             transform: 'translateX(-50%)',
             width: '4em',
