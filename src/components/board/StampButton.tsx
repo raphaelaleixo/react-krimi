@@ -12,7 +12,7 @@ export type StampButtonProps = Omit<ButtonProps, "variant" | "color"> & {
 const STAMP_RED = "#9E1B1B";
 
 const DISTRESS_MASK =
-  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='3' stitchTiles='stitch' seed='3'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -30 23'/></filter><rect width='100%' height='100%' filter='url(%23d)'/></svg>\")";
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='3' stitchTiles='stitch' seed='3'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -30 23'/></filter><rect width='100%' height='100%' filter='url(%23d)'/></svg>\")";
 
 function generateDistressedStamp() {
   const points: string[] = [];
