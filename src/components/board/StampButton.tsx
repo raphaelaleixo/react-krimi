@@ -11,6 +11,9 @@ export type StampButtonProps = Omit<ButtonProps, 'variant' | 'color'> & {
 
 const STAMP_RED = '#9E1B1B';
 
+const DISTRESS_MASK =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='2' stitchTiles='stitch' seed='3'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2 1.3'/></filter><rect width='100%' height='100%' filter='url(%23d)'/></svg>\")";
+
 function generateDistressedStamp() {
   const points: string[] = [];
   const r = 8;
@@ -74,6 +77,12 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
             borderRadius: 2,
             bgcolor: 'transparent',
             clipPath: distressed,
+            maskImage: DISTRESS_MASK,
+            maskSize: '100% 100%',
+            maskRepeat: 'no-repeat',
+            WebkitMaskImage: DISTRESS_MASK,
+            WebkitMaskSize: '100% 100%',
+            WebkitMaskRepeat: 'no-repeat',
             transform: 'rotate(-1.5deg)',
             '&:hover': {
               borderColor: STAMP_RED,
@@ -97,9 +106,11 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
         ref={ref}
         variant={muiVariant}
         disableElevation
+        disableRipple
         sx={{
           fontFamily: '"kingthings_trypewriter_2Rg", "IBM Plex Mono", monospace',
           fontWeight: 700,
+          fontSize: variant === 'primary' ? '1.25rem' : undefined,
           letterSpacing: '3px',
           textTransform: 'uppercase',
           px: variant === 'text' ? 1 : 4,

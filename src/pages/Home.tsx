@@ -70,7 +70,7 @@ export default function Home() {
                 <strong>Deception: Murder in Hong Kong</strong>.
               </Typography>
               <StampButton variant="primary" onClick={startCreate}>
-                {t('Create new game')}
+                {t('New game')}
               </StampButton>
             </Box>
           </CaseFile>

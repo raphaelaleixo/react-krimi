@@ -3,7 +3,7 @@ export const translations: Record<string, string> = {
   // Home
   'A game of deception': 'Um jogo de intrigas',
   'A web-version of Tobey Ho\'s': 'Uma versão web do jogo de Tobey Ho',
-  'Create new game': 'Criar novo jogo',
+  'New game': 'Novo jogo',
   'Join game': 'Entrar em um jogo',
   'How to play': 'Como jogar',
   'Versão em português': 'English version',
