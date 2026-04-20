@@ -62,7 +62,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             "& .pn-paper": {
               borderRadius: "0 0 22% 0 / 0 0 90% 0",
               boxShadow:
-                "14px 14px 24px rgba(0,0,0,0.55), 0 8px 22px rgba(0,0,0,0.3)",
+                "14px 14px 24px rgba(0,0,0,0.35), 0 8px 22px rgba(0,0,0,0.25)",
             },
           },
           "@media (prefers-reduced-motion: reduce)": {
