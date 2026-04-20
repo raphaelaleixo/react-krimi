@@ -99,6 +99,7 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
               color: STAMP_RED,
               opacity: 0.4,
               borderColor: STAMP_RED,
+              borderWidth: 4,
             },
             "@media (prefers-reduced-motion: reduce)": {
               transform: "none",

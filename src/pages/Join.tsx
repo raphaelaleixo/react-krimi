@@ -67,6 +67,7 @@ export default function Join() {
             sx={{
               fontFamily: 'var(--font-typewriter)',
               fontSize: '2rem',
+              fontWeight: 700,
               letterSpacing: '3px',
               textTransform: 'uppercase',
               color: '#1C1B1B',
@@ -98,11 +99,21 @@ export default function Join() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               fullWidth
-              variant="filled"
-              sx={{ mb: 3 }}
+              variant="standard"
+              sx={{
+                mb: 3,
+                '& .MuiInput-input': {
+                  fontFamily: 'var(--font-script)',
+                  fontSize: '1.75rem',
+                  color: '#1C1B1B',
+                },
+              }}
               required
               autoFocus
-              slotProps={{ htmlInput: { autoCapitalize: 'characters', autoComplete: 'off' } }}
+              slotProps={{
+                inputLabel: { shrink: true },
+                htmlInput: { autoCapitalize: 'characters', autoComplete: 'off' },
+              }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
               <StampButton variant="primary" type="submit" disabled={disabled}>
