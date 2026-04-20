@@ -13,7 +13,7 @@ export default function GlobalStyles() {
       styles={css`
         :root {
           --font-typewriter: 'Courier Prime', monospace;
-          --font-script: 'Caveat Brush', cursive;
+          --font-script: 'Story Script', cursive;
         }
 
         body {
