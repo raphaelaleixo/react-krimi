@@ -59,12 +59,12 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           '&:hover': {
             transform: `rotate(${rotation}deg) translateY(-2px)`,
             '& .pn-paper': {
-              borderRadius: '0 0 3% 0 / 0 0 50% 0',
+              borderRadius: '0 0 22% 0 / 0 0 90% 0',
             },
             '& .pn-curl': {
               right: 0,
-              boxShadow: '10px 4px 12px rgba(31, 31, 31, 0.8)',
-              transform: 'skew(8deg) rotate(3deg)',
+              boxShadow: '16px 8px 18px rgba(31, 31, 31, 0.85)',
+              transform: 'skew(14deg) rotate(6deg)',
             },
           },
           '@media (prefers-reduced-motion: reduce)': {
