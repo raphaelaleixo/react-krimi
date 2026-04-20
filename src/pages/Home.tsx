@@ -7,8 +7,10 @@ import Link from '@mui/material/Link';
 import { HostDeviceWarningModal, isLikelyMobileHost } from 'react-gameroom';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
-import PaperSurface from '../components/paper/PaperSurface';
-import PaperButton from '../components/paper/PaperButton';
+import BoardSurface from '../components/board/BoardSurface';
+import CaseFile from '../components/board/CaseFile';
+import PinnedNote from '../components/board/PinnedNote';
+import StampButton from '../components/board/StampButton';
 import logo from '../assets/logo.svg';
 import ludoratory from '../assets/ludoratory.svg';
 
@@ -37,81 +39,89 @@ export default function Home() {
   );
 
   return (
-    <PaperSurface>
+    <BoardSurface>
       <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-        <Box
-          component="main"
-          sx={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            textAlign: 'center',
-            gap: 3,
-            py: 6,
-          }}
-        >
-          <Box component="img" src={logo} sx={{ width: 136, mx: 'auto' }} alt="Krimi" />
-          <Typography variant="h2" component="h1">
-            {t('A game of deception & deduction')}
-          </Typography>
-          <Typography variant="subtitle1">
-            {t("A web-version of Tobey Ho's")}{' '}
-            <strong>Deception: Murder in Hong Kong</strong>.
-          </Typography>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-            <PaperButton variant="primary" size="large" onClick={startCreate}>
-              {t('Create new game')}
-            </PaperButton>
-            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <PaperButton variant="secondary" component={RouterLink} to="/join">
-                {t('Join game')}
-              </PaperButton>
-              <PaperButton variant="secondary" component={RouterLink} to="/how-to-play">
-                {t('How to play')}
-              </PaperButton>
+        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+          <CaseFile>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box component="img" src={logo} sx={{ width: 96, mx: 'auto', mb: 2, display: 'block' }} alt="Krimi" />
+              <Typography
+                component="h1"
+                sx={{
+                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                  fontSize: { xs: '1.6rem', sm: '2rem' },
+                  letterSpacing: '3px',
+                  textTransform: 'uppercase',
+                  color: '#1C1B1B',
+                  mb: 1,
+                }}
+              >
+                {t('A game of deception')}
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                  fontSize: '1rem',
+                  color: '#1C1B1B',
+                  mb: 3,
+                }}
+              >
+                {t("A web-version of Tobey Ho's")}{' '}
+                <strong>Deception: Murder in Hong Kong</strong>.
+              </Typography>
+              <StampButton variant="primary" onClick={startCreate}>
+                {t('Create new game')}
+              </StampButton>
             </Box>
+          </CaseFile>
+
+          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap', mt: 1 }}>
+            <PinnedNote rotation={-3} pinColor="#3A7085" component={RouterLink} to="/join">
+              {t('Join game')}
+            </PinnedNote>
+            <PinnedNote rotation={2.5} pinColor="#9E1B1B" component={RouterLink} to="/how-to-play">
+              {t('How to play')}
+            </PinnedNote>
           </Box>
         </Box>
 
         <Box
           component="footer"
           sx={{
-            py: 3,
+            py: 2,
             display: 'flex',
             alignItems: 'center',
             gap: 2,
-            borderTop: '1px dashed',
-            borderColor: 'text.disabled',
+            color: 'rgba(245, 239, 227, 0.55)',
+            fontSize: '0.75em',
             flexWrap: 'wrap',
           }}
         >
-          <Box component="img" src={ludoratory} sx={{ width: 48 }} alt="Ludoratory" />
-          <Box sx={{ flex: 1, fontSize: '0.85em', minWidth: 200 }}>
-            <Typography variant="body2">
+          <Box component="img" src={ludoratory} sx={{ width: 32, opacity: 0.6 }} alt="Ludoratory" />
+          <Box sx={{ flex: 1, minWidth: 180 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', lineHeight: 1.4 }}>
               {t('Made by')}{' '}
-              <Link href="https://aleixo.me" target="_blank" rel="noopener noreferrer" sx={{ color: 'text.secondary' }}>
+              <Link href="https://aleixo.me" target="_blank" rel="noopener noreferrer" sx={{ color: 'inherit', textDecorationColor: 'inherit' }}>
                 Raphael Aleixo / Ludoratory
               </Link>
               .
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', lineHeight: 1.4 }}>
               {t('Licensed under')}{' '}
               <Link
                 href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
                 target="_blank"
                 rel="noopener noreferrer"
-                sx={{ color: 'text.secondary' }}
+                sx={{ color: 'inherit', textDecorationColor: 'inherit' }}
               >
                 CC BY-NC-SA 4.0
               </Link>
               .
             </Typography>
           </Box>
-          <PaperButton variant="text" onClick={toggleLocale}>
+          <StampButton variant="text" onClick={toggleLocale} sx={{ fontSize: '0.7rem', letterSpacing: '2px' }}>
             {t('Versão em português')}
-          </PaperButton>
+          </StampButton>
         </Box>
       </Container>
 
@@ -131,6 +141,6 @@ export default function Home() {
           cancelLabel: t('Cancel'),
         }}
       />
-    </PaperSurface>
+    </BoardSurface>
   );
 }
