@@ -61,6 +61,8 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             transform: `rotate(${rotation}deg) translateY(-2px)`,
             "& .pn-paper": {
               borderRadius: "0 0 22% 0 / 0 0 90% 0",
+              backgroundImage:
+                "linear-gradient(135deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.12) 100%)",
               boxShadow:
                 "14px 14px 24px rgba(0,0,0,0.35), 0 8px 22px rgba(0,0,0,0.25)",
             },
