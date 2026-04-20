@@ -216,7 +216,7 @@ export default function Board() {
               </Box>
               <Typography
                 sx={{
-                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                  fontFamily: 'var(--font-typewriter)',
                   fontSize: '2.2rem',
                   color: 'var(--text-color)',
                   textAlign: 'center',
@@ -247,7 +247,7 @@ export default function Board() {
                   >
                     <Typography
                       sx={{
-                        fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                        fontFamily: 'var(--font-typewriter)',
                         fontSize: '1.4rem',
                         fontWeight: 'bold',
                         color: 'var(--weapon-color)',

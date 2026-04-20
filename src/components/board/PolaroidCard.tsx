@@ -70,7 +70,7 @@ export default function PolaroidCard({
               position: 'absolute',
               top: 8,
               right: 10,
-              fontFamily: '"Caveat Brush", cursive',
+              fontFamily: 'var(--font-script)',
               fontSize: '1.6rem',
               textTransform: 'uppercase',
               color: 'var(--evidence-color)',
@@ -83,7 +83,7 @@ export default function PolaroidCard({
         {/* Player name at the top */}
         <Typography
           sx={{
-            fontFamily: '"Caveat Brush", cursive',
+            fontFamily: 'var(--font-script)',
             fontSize: '1.7rem',
             textTransform: 'uppercase',
             fontWeight: 'bold',
@@ -98,7 +98,7 @@ export default function PolaroidCard({
 
         <Typography
           sx={{
-            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontFamily: 'var(--font-typewriter)',
             fontSize: '0.95rem',
             fontWeight: 'bold',
             color: 'var(--weapon-color)',
@@ -109,7 +109,7 @@ export default function PolaroidCard({
         </Typography>
         <Typography
           sx={{
-            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontFamily: 'var(--font-typewriter)',
             fontSize: '0.95rem',
             fontWeight: 'bold',
             color: 'var(--evidence-color)',
@@ -137,7 +137,7 @@ export default function PolaroidCard({
           >
             <Typography
               sx={{
-                fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                fontFamily: 'var(--font-typewriter)',
                 fontSize: '1.4rem',
                 fontWeight: 'bold',
                 textTransform: 'uppercase',

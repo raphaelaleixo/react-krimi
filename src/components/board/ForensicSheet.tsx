@@ -55,7 +55,7 @@ export default function ForensicSheet({
         {/* Header */}
         <Typography
           sx={{
-            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontFamily: 'var(--font-typewriter)',
             fontSize: '1.4rem',
             letterSpacing: '2px',
             textTransform: 'uppercase',
@@ -72,7 +72,7 @@ export default function ForensicSheet({
           <Typography
             component="span"
             sx={{
-              fontFamily: '"Caveat Brush", cursive',
+              fontFamily: 'var(--font-script)',
               fontSize: '1.5rem',
               fontWeight: 'bold',
               textTransform: 'uppercase',
@@ -91,7 +91,7 @@ export default function ForensicSheet({
           />
           <Typography
             sx={{
-              fontFamily: '"kingthings_trypewriter_2Rg", serif',
+              fontFamily: 'var(--font-typewriter)',
               fontSize: '0.8rem',
               letterSpacing: '1px',
               color: '#5f6c7b',
@@ -107,7 +107,7 @@ export default function ForensicSheet({
             <Typography
               component="span"
               sx={{
-                fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                fontFamily: 'var(--font-typewriter)',
                 fontSize: '1rem',
                 color: 'var(--text-color)',
               }}
@@ -117,7 +117,7 @@ export default function ForensicSheet({
             <Typography
               component="span"
               sx={{
-                fontFamily: '"Caveat Brush", cursive',
+                fontFamily: 'var(--font-script)',
                 fontWeight: 'bold',
                 fontSize: '1.4rem',
                 textTransform: 'uppercase',
@@ -170,7 +170,7 @@ export default function ForensicSheet({
               <Typography
                 component="span"
                 sx={{
-                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
+                  fontFamily: 'var(--font-typewriter)',
                   fontSize: '1rem',
                   color: 'var(--text-color)',
                 }}
@@ -180,7 +180,7 @@ export default function ForensicSheet({
               <Typography
                 component="span"
                 sx={{
-                  fontFamily: '"Caveat Brush", cursive',
+                  fontFamily: 'var(--font-script)',
                   fontWeight: 'bold',
                   fontSize: '1.4rem',
                   textTransform: 'uppercase',

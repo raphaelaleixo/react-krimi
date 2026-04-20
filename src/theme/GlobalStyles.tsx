@@ -21,17 +21,22 @@ export default function GlobalStyles() {
           font-style: normal;
         }
 
+        :root {
+          --font-typewriter: 'kingthings_trypewriter_2Rg', serif;
+          --font-script: 'Caveat', cursive;
+        }
+
         body {
           margin: 0;
           background: url('${bgImage}') no-repeat fixed top center !important;
           background-size: cover;
-          font-family: 'IBM Plex Mono', monospace;
+          font-family: var(--font-typewriter);
           color: #5f6c7b;
         }
 
         code {
           letter-spacing: 1px;
-          font-family: 'kingthings_trypewriter_2Rg', serif;
+          font-family: var(--font-typewriter);
         }
 
         .MuiCardContent-root {

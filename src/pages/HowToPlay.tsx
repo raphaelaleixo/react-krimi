@@ -17,7 +17,7 @@ export default function HowToPlay() {
           <Typography
             component="h1"
             sx={{
-              fontFamily: '"kingthings_trypewriter_2Rg", serif',
+              fontFamily: 'var(--font-typewriter)',
               fontSize: '2rem',
               letterSpacing: '3px',
               textTransform: 'uppercase',
@@ -30,7 +30,7 @@ export default function HowToPlay() {
           </Typography>
           <Typography
             sx={{
-              fontFamily: '"kingthings_trypewriter_2Rg", serif',
+              fontFamily: 'var(--font-typewriter)',
               color: '#1C1B1B',
               textAlign: 'center',
             }}

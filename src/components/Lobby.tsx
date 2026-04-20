@@ -91,7 +91,7 @@ export default function Lobby() {
                     '& a': {
                       color: 'text.primary',
                       textDecoration: 'none',
-                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontFamily: 'var(--font-typewriter)',
                     },
                   }}
                 >
