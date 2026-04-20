@@ -1,17 +1,20 @@
 // Portuguese (BR) translations — merged from all Vue component locales
 export const translations: Record<string, string> = {
   // Home
-  'A game of': 'Um jogo de',
-  'deduction': 'investigações',
-  'deception': 'intrigas',
-  'In the game, players take on the roles of investigators attempting to solve a murder case – but there\'s a twist. The killer is one of the investigators! Find out who among you can cut through deception to find the truth and who is capable of getting away with murder!':
-    'Neste jogo, os jogadores terão o papel de investigadores tentando resolver um caso de assassinato - mas existe um porém. O assassino é um dos investigadores! Descubra quem de vocês pode se livrar das intrigas e achar a verdade e quem é capaz de se safar desta acusação!',
-  'About this project': 'Sobre este projeto',
-  'How to play': 'Como jogar',
-  'Join game': 'Entrar em um jogo',
-  'Create new game': 'Criar novo jogo',
-  'Versão em português': 'English version',
+  'A game of deception & deduction': 'Um jogo de intrigas e investigação',
   'A web-version of Tobey Ho\'s': 'Uma versão web do jogo de Tobey Ho',
+  'Create new game': 'Criar novo jogo',
+  'Join game': 'Entrar em um jogo',
+  'How to play': 'Como jogar',
+  'Versão em português': 'English version',
+  'Made by': 'Feito por',
+  'Licensed under': 'Licenciado sob',
+  'Heads up': 'Atenção',
+  'You\'re about to host on what looks like a phone. The host screen works best on a larger display — a laptop or tablet.':
+    'Você vai apresentar o jogo no que parece ser um celular. A tela do apresentador funciona melhor em uma tela maior — um laptop ou tablet.',
+  'Host anyway': 'Apresentar mesmo assim',
+  'Cancel': 'Cancelar',
+  'Content coming soon.': 'Em breve.',
 
   // Lobby
   'Lobby for room': 'Lobby para a sala',
