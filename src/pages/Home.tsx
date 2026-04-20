@@ -119,7 +119,7 @@ export default function Home() {
             display: "flex",
             alignItems: "center",
             gap: 2,
-            color: "rgba(245, 239, 227, 0.55)",
+            color: "#fff",
             fontSize: "0.75em",
             flexWrap: "wrap",
           }}
@@ -127,7 +127,7 @@ export default function Home() {
           <Box
             component="img"
             src={ludoratory}
-            sx={{ width: 32, opacity: 0.6 }}
+            sx={{ width: 32, filter: "brightness(0) invert(1)" }}
             alt="Ludoratory"
           />
           <Box sx={{ flex: 1, minWidth: 180 }}>
