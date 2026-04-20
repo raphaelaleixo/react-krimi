@@ -33,14 +33,49 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           alignItems: 'center',
           boxShadow: '0 3px 8px rgba(0,0,0,0.5)',
           transform: `rotate(${rotation}deg)`,
-          transition: 'transform 180ms ease, box-shadow 180ms ease',
+          transition:
+            'transform 300ms ease, box-shadow 300ms ease, border-radius 300ms ease',
+          '&::before, &::after': {
+            content: '""',
+            position: 'absolute',
+            right: '10px',
+            width: '50%',
+            height: '55%',
+            maxWidth: 200,
+            maxHeight: 100,
+            transition: 'all 300ms ease',
+            pointerEvents: 'none',
+            zIndex: -1,
+          },
+          '&::before': {
+            top: '12px',
+            boxShadow: '1px -4px 12px rgba(31, 31, 31, 0.6)',
+          },
+          '&::after': {
+            bottom: '12px',
+            boxShadow: '1px 4px 12px rgba(31, 31, 31, 0.6)',
+          },
           '&:hover': {
             transform: `rotate(${rotation}deg) translateY(-2px)`,
-            boxShadow: '0 6px 14px rgba(0,0,0,0.55)',
+            borderRadius: '0 3% 3% 0 / 0% 50% 50% 0',
+            '&::before': {
+              right: 0,
+              boxShadow: '10px -4px 12px rgba(31, 31, 31, 0.8)',
+              transform: 'skew(-8deg) rotate(-3deg)',
+            },
+            '&::after': {
+              right: 0,
+              boxShadow: '10px 4px 12px rgba(31, 31, 31, 0.8)',
+              transform: 'skew(8deg) rotate(3deg)',
+            },
           },
           '@media (prefers-reduced-motion: reduce)': {
             transition: 'none',
-            '&:hover': { transform: `rotate(${rotation}deg)` },
+            '&:hover': {
+              transform: `rotate(${rotation}deg)`,
+              borderRadius: 0,
+            },
+            '&::before, &::after': { transition: 'none' },
           },
           ...sx,
         }}
