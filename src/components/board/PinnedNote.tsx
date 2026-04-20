@@ -44,6 +44,17 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             boxShadow: "0 8px 22px rgba(0,0,0,0.3)",
             transition:
               "border-radius 300ms ease, box-shadow 300ms ease",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "linear-gradient(135deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.12) 100%)",
+              transform: "translate(100%, 100%)",
+              transition: "transform 300ms ease",
+              pointerEvents: "none",
+              zIndex: -1,
+            },
           },
           "& .pn-tape": {
             position: "absolute",
@@ -61,10 +72,11 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             transform: `rotate(${rotation}deg) translateY(-2px)`,
             "& .pn-paper": {
               borderRadius: "0 0 22% 0 / 0 0 90% 0",
-              backgroundImage:
-                "linear-gradient(135deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.12) 100%)",
               boxShadow:
                 "14px 14px 24px rgba(0,0,0,0.35), 0 8px 22px rgba(0,0,0,0.25)",
+              "&::before": {
+                transform: "translate(0, 0)",
+              },
             },
           },
           "@media (prefers-reduced-motion: reduce)": {
