@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams, Link as RouterLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import { JoinGame } from 'react-gameroom';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
-import PaperSurface from '../components/paper/PaperSurface';
-import PaperButton from '../components/paper/PaperButton';
+import BoardSurface from '../components/board/BoardSurface';
+import CaseFile from '../components/board/CaseFile';
+import PinnedNote from '../components/board/PinnedNote';
+import StampButton from '../components/board/StampButton';
 
 export default function Join() {
   const navigate = useNavigate();
@@ -42,94 +43,88 @@ export default function Join() {
     }
   }, [joinRoom, nickname, navigate, t]);
 
-  // If we have a prefilled room code, use a simple form instead of JoinGame
   if (prefilledRoom) {
     return (
-      <PaperSurface>
-        <Container sx={{ minHeight: '100dvh' }}>
-          <Grid container sx={{ minHeight: '100dvh', alignItems: 'center', justifyContent: 'center' }}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Box component="form" onSubmit={(e: React.FormEvent) => { e.preventDefault(); handleJoin(prefilledRoom); }}>
-                {error && (
-                  <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
-                    {error}
-                  </Alert>
-                )}
-                <TextField
-                  label={t('Game code')}
-                  value={prefilledRoom}
-                  fullWidth
-                  variant="filled"
-                  sx={{ mb: 2 }}
-                  disabled
-                />
-                <TextField
-                  label={t('Nickname')}
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  fullWidth
-                  variant="filled"
-                  sx={{ mb: 3 }}
-                  required
-                  autoFocus
-                />
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <PaperButton variant="secondary" component={RouterLink} to="/" size="large">
-                    {t('Back')}
-                  </PaperButton>
-                  <PaperButton
-                    variant="primary"
-                    type="submit"
-                    size="large"
-                    disabled={!nickname.trim()}
-                  >
-                    {t('Enter')}
-                  </PaperButton>
-                </Box>
+      <BoardSurface>
+        <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+          <CaseFile>
+            <Box component="form" onSubmit={(e: React.FormEvent) => { e.preventDefault(); handleJoin(prefilledRoom); }}>
+              {error && (
+                <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
+                  {error}
+                </Alert>
+              )}
+              <TextField
+                label={t('Game code')}
+                value={prefilledRoom}
+                fullWidth
+                variant="filled"
+                sx={{ mb: 2 }}
+                disabled
+              />
+              <TextField
+                label={t('Nickname')}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                fullWidth
+                variant="filled"
+                sx={{ mb: 3 }}
+                required
+                autoFocus
+              />
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <StampButton variant="primary" type="submit" disabled={!nickname.trim()}>
+                  {t('Enter')}
+                </StampButton>
               </Box>
-            </Grid>
-          </Grid>
+            </Box>
+          </CaseFile>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <PinnedNote rotation={-2} pinColor="#3A7085" component={RouterLink} to="/">
+              {t('Back')}
+            </PinnedNote>
+          </Box>
         </Container>
-      </PaperSurface>
+      </BoardSurface>
     );
   }
 
   return (
-    <PaperSurface>
-      <Container sx={{ minHeight: '100dvh' }}>
-        <Grid container sx={{ minHeight: '100dvh', alignItems: 'center', justifyContent: 'center' }}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            {error && (
-              <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
-                {error}
-              </Alert>
-            )}
-            <TextField
-              label={t('Nickname')}
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              fullWidth
-              variant="filled"
-              sx={{ mb: 3 }}
-              required
-            />
-            <JoinGame
-              onJoin={handleJoin}
-              className="krimi-join-game"
-              labels={{
-                label: t('Game code'),
-                placeholder: t('Game code'),
-                submit: t('Enter'),
-              }}
-            />
-            <Box sx={{ mt: 2 }}>
-              <PaperButton variant="secondary" component={RouterLink} to="/" size="large">
-                {t('Back')}
-              </PaperButton>
-            </Box>
-          </Grid>
-        </Grid>
+    <BoardSurface>
+      <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+        <CaseFile>
+          {error && (
+            <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          <TextField
+            label={t('Nickname')}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            fullWidth
+            variant="filled"
+            sx={{ mb: 3 }}
+            required
+          />
+          <JoinGame
+            onJoin={handleJoin}
+            className="krimi-join-game"
+            labels={{
+              label: t('Game code'),
+              placeholder: t('Game code'),
+              submit: t('Enter'),
+            }}
+          />
+        </CaseFile>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <PinnedNote rotation={-2} pinColor="#3A7085" component={RouterLink} to="/">
+            {t('Back')}
+          </PinnedNote>
+        </Box>
       </Container>
-    </PaperSurface>
+    </BoardSurface>
   );
 }
