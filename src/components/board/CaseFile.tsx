@@ -18,6 +18,7 @@ function generateTornEdge() {
 interface CaseFileProps {
   children: ReactNode;
   rotation?: number;
+  disableRotation?: boolean;
   maxWidth?: number | "none";
   sx?: CSSProperties;
 }
@@ -25,12 +26,13 @@ interface CaseFileProps {
 export default function CaseFile({
   children,
   rotation,
+  disableRotation = false,
   maxWidth = 480,
 }: CaseFileProps) {
   const tornEdge = useMemo(() => generateTornEdge(), []);
   const appliedRotation = useMemo(
-    () => rotation ?? Math.random() * 5 - 2.5,
-    [rotation],
+    () => (disableRotation ? 0 : rotation ?? Math.random() * 5 - 2.5),
+    [disableRotation, rotation],
   );
 
   return (

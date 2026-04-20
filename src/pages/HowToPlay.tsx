@@ -19,11 +19,10 @@ function Section({ title, children }: SectionProps) {
       <Typography
         component="h2"
         sx={{
-          fontFamily: 'var(--font-typewriter)',
-          fontSize: '1.1rem',
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: '#1C1B1B',
+          fontFamily: 'var(--font-script)',
+          fontSize: '1.75rem',
+          color: '#1E3A8A',
+          lineHeight: 1.1,
           mb: 1,
         }}
       >
@@ -50,7 +49,7 @@ function renderWithBold(text: string) {
   return parts.map((part, i) => {
     const match = part.match(/^\{bold\}(.*?)\{\/bold\}$/);
     if (match) return <strong key={i}>{match[1]}</strong>;
-    return <span key={i}>{part}</span>;
+    return <span key={i}>{part.replace(/\{\/?bold\}/g, '')}</span>;
   });
 }
 
@@ -70,16 +69,17 @@ export default function HowToPlay() {
           py: 6,
         }}
       >
-        <CaseFile>
+        <CaseFile disableRotation>
           <Typography
             component="h1"
             sx={{
               fontFamily: 'var(--font-typewriter)',
               fontSize: '2rem',
+              fontWeight: 700,
               letterSpacing: '3px',
               textTransform: 'uppercase',
               color: '#1C1B1B',
-              mb: 2,
+              mb: 1,
               textAlign: 'center',
             }}
           >
@@ -121,7 +121,7 @@ export default function HowToPlay() {
           <Section title={t('Setup')}>
             <p>
               {t(
-                "One device hosts the shared board on a larger screen (laptop or tablet) — it's a display, no one plays from it. Every player, including the Forensic Scientist, joins from their own phone using the room code. Roles and cards are dealt automatically; each player's hand appears privately on their own device.",
+                "One device hosts the shared board on a larger screen (a TV or a large monitor) — it's a display, no one plays from it. Every player, including the Forensic Scientist, joins from their own phone using the room code. Roles and cards are dealt automatically; each player's hand appears privately on their own device.",
               )}
             </p>
           </Section>
