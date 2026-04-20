@@ -1,13 +1,14 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ReactTyped } from 'react-typed';
+import Link from '@mui/material/Link';
+import { HostDeviceWarningModal, isLikelyMobileHost } from 'react-gameroom';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
+import PaperSurface from '../components/paper/PaperSurface';
+import PaperButton from '../components/paper/PaperButton';
 import logo from '../assets/logo.svg';
 import ludoratory from '../assets/ludoratory.svg';
 
@@ -15,114 +16,121 @@ export default function Home() {
   const navigate = useNavigate();
   const { createRoom } = useGame();
   const { t, lang, setLang } = useI18n();
+  const [hostWarningOpen, setHostWarningOpen] = useState(false);
 
-  const handleCreate = useCallback(async () => {
+  const createAndGo = useCallback(async () => {
     const roomId = await createRoom(lang);
     navigate(`/room/${roomId}`);
   }, [createRoom, lang, navigate]);
 
-  const toggleLocale = useCallback(() => {
-    setLang(lang === 'pt_br' ? 'en' : 'pt_br');
-  }, [lang, setLang]);
+  const startCreate = useCallback(() => {
+    if (isLikelyMobileHost()) {
+      setHostWarningOpen(true);
+      return;
+    }
+    void createAndGo();
+  }, [createAndGo]);
+
+  const toggleLocale = useCallback(
+    () => setLang(lang === 'pt_br' ? 'en' : 'pt_br'),
+    [lang, setLang],
+  );
 
   return (
-    <Container sx={{ height: '100vh' }}>
-      <Grid container sx={{ height: '100%', alignItems: 'center' }}>
-        <Grid
-          size={{ xs: 12, lg: 6, xl: 4 }}
-          offset={{ xl: 4 }}
+    <PaperSurface>
+      <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            textAlign: 'center',
+            gap: 3,
+            py: 6,
+          }}
         >
-          <Box component="img" src={logo} sx={{ maxWidth: 136, mb: 4 }} />
-          <Typography variant="h2" component="h2">
-            {t('A game of')}
-            <Box
-              component="span"
-              sx={{
-                display: 'block',
-                '& .typed-cursor': { color: '#094067' },
-              }}
-            >
-              <ReactTyped
-                strings={[t('deception'), t('deduction')]}
-                typeSpeed={120}
-                backSpeed={50}
-                backDelay={2000}
-                loop
-                style={{ color: '#3da9fc' }}
-              />
-            </Box>
+          <Box component="img" src={logo} sx={{ width: 136, mx: 'auto' }} alt="Krimi" />
+          <Typography variant="h2" component="h1">
+            {t('A game of deception & deduction')}
           </Typography>
-          <Typography
-            sx={{ my: 1, fontSize: '1.5em' }}
-          >
+          <Typography variant="subtitle1">
             {t("A web-version of Tobey Ho's")}{' '}
             <strong>Deception: Murder in Hong Kong</strong>.
           </Typography>
-          <Typography variant="subtitle1" sx={{ mt: 4, mb: 10 }}>
-            {t(
-              "In the game, players take on the roles of investigators attempting to solve a murder case – but there's a twist. The killer is one of the investigators! Find out who among you can cut through deception to find the truth and who is capable of getting away with murder!"
-            )}
-          </Typography>
-          <Box sx={{ display: { lg: 'flex' } }}>
-            <Button
-              component={RouterLink}
-              to="/join"
-              variant="contained"
-              size="large"
-              sx={{
-                mr: { lg: 2 },
-                mb: { xs: 2, lg: 0 },
-                bgcolor: 'grey.100',
-                color: 'text.primary',
-                '&:hover': { bgcolor: 'grey.200' },
-                px: 4,
-                py: 1.5,
-              }}
-            >
-              {t('Join game')}
-            </Button>
-            <Button
-              onClick={handleCreate}
-              variant="contained"
-              size="large"
-              color="error"
-              sx={{ mb: { xs: 2, lg: 0 }, px: 4, py: 1.5 }}
-            >
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <PaperButton variant="primary" size="large" onClick={startCreate}>
               {t('Create new game')}
-            </Button>
+            </PaperButton>
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <PaperButton variant="secondary" component={RouterLink} to="/join">
+                {t('Join game')}
+              </PaperButton>
+              <PaperButton variant="secondary" component={RouterLink} to="/how-to-play">
+                {t('How to play')}
+              </PaperButton>
+            </Box>
           </Box>
-          <Box sx={{ display: { lg: 'flex' }, mt: 4 }}>
-            <Button
-              href="https://medium.com/@raphaelaleixo/krimi-how-to-play-87839028f5ef"
-              target="_blank"
-              color="error"
-              sx={{ mr: { lg: 2 }, mb: { xs: 2, lg: 0 } }}
-            >
-              {t('How to play')}
-            </Button>
-            <Button
-              href="https://github.com/raphaelaleixo/krimi"
-              target="_blank"
-              color="error"
-              sx={{ mr: { lg: 2 }, mb: { xs: 2, lg: 0 } }}
-            >
-              {t('About this project')}
-            </Button>
-            <Button
-              onClick={toggleLocale}
-              color="error"
-              sx={{ mb: { xs: 2, lg: 0 } }}
-            >
-              {t('Versão em português')}
-            </Button>
+        </Box>
+
+        <Box
+          component="footer"
+          sx={{
+            py: 3,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            borderTop: '1px dashed',
+            borderColor: 'text.disabled',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Box component="img" src={ludoratory} sx={{ width: 48 }} alt="Ludoratory" />
+          <Box sx={{ flex: 1, fontSize: '0.85em', minWidth: 200 }}>
+            <Typography variant="body2">
+              {t('Made by')}{' '}
+              <Link href="https://aleixo.me" target="_blank" rel="noopener noreferrer" sx={{ color: 'text.secondary' }}>
+                Raphael Aleixo / Ludoratory
+              </Link>
+              .
+            </Typography>
+            <Typography variant="body2">
+              {t('Licensed under')}{' '}
+              <Link
+                href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ color: 'text.secondary' }}
+              >
+                CC BY-NC-SA 4.0
+              </Link>
+              .
+            </Typography>
           </Box>
-          <Box
-            component="img"
-            src={ludoratory}
-            sx={{ maxWidth: 136, mt: 10 }}
-          />
-        </Grid>
-      </Grid>
-    </Container>
+          <PaperButton variant="text" onClick={toggleLocale}>
+            {t('Versão em português')}
+          </PaperButton>
+        </Box>
+      </Container>
+
+      <HostDeviceWarningModal
+        open={hostWarningOpen}
+        onConfirm={() => {
+          setHostWarningOpen(false);
+          void createAndGo();
+        }}
+        onCancel={() => setHostWarningOpen(false)}
+        labels={{
+          title: t('Heads up'),
+          body: t(
+            "You're about to host on what looks like a phone. The host screen works best on a larger display — a laptop or tablet.",
+          ),
+          confirmLabel: t('Host anyway'),
+          cancelLabel: t('Cancel'),
+        }}
+      />
+    </PaperSurface>
   );
 }
