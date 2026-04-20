@@ -102,7 +102,7 @@ export default function Join() {
               sx={{ mb: 3 }}
               required
               autoFocus
-              slotProps={{ input: { autoCapitalize: 'characters', autoComplete: 'off' } }}
+              slotProps={{ htmlInput: { autoCapitalize: 'characters', autoComplete: 'off' } }}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
               <StampButton variant="primary" type="submit" disabled={disabled}>
