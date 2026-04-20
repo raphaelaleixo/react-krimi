@@ -104,7 +104,7 @@ export default function Home() {
             }}
           >
             <PinnedNote rotation={-3} component={RouterLink} to="/join">
-              {t("Join game")}
+              {t("Resume game")}
             </PinnedNote>
             <PinnedNote rotation={2.5} component={RouterLink} to="/how-to-play">
               {t("How to play")}
