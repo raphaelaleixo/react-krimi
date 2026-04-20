@@ -24,10 +24,14 @@ interface CaseFileProps {
 
 export default function CaseFile({
   children,
-  rotation = -1.5,
+  rotation,
   maxWidth = 480,
 }: CaseFileProps) {
   const tornEdge = useMemo(() => generateTornEdge(), []);
+  const appliedRotation = useMemo(
+    () => rotation ?? Math.random() * 5 - 2.5,
+    [rotation],
+  );
 
   return (
     <Box
@@ -37,7 +41,7 @@ export default function CaseFile({
         maxWidth,
         mx: 'auto',
         my: 4,
-        transform: `rotate(${rotation}deg)`,
+        transform: `rotate(${appliedRotation}deg)`,
         '@media (prefers-reduced-motion: reduce)': { transform: 'none' },
       }}
     >
