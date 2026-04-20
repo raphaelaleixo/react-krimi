@@ -31,7 +31,6 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             height: "55%",
             maxWidth: 200,
             maxHeight: 100,
-            boxShadow: "1px 4px 12px rgba(31, 31, 31, 0.6)",
             pointerEvents: "none",
             transition: "all 300ms ease",
           },
