@@ -5,6 +5,7 @@ export const translations: Record<string, string> = {
   'A web-version of Tobey Ho\'s': 'Uma versão web do jogo de Tobey Ho',
   'New game': 'Novo jogo',
   'Join game': 'Entrar em um jogo',
+  'Resume game': 'Retomar jogo',
   'How to play': 'Como jogar',
   'Versão em português': 'English version',
   'Made by': 'Feito por',
