@@ -81,7 +81,7 @@ export default function Join() {
           </CaseFile>
 
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <PinnedNote rotation={-2} pinColor="#3A7085" component={RouterLink} to="/">
+            <PinnedNote rotation={-2} component={RouterLink} to="/">
               {t('Back')}
             </PinnedNote>
           </Box>
@@ -120,7 +120,7 @@ export default function Join() {
         </CaseFile>
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <PinnedNote rotation={-2} pinColor="#3A7085" component={RouterLink} to="/">
+          <PinnedNote rotation={-2} component={RouterLink} to="/">
             {t('Back')}
           </PinnedNote>
         </Box>

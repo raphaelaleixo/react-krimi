@@ -1,20 +1,15 @@
 import Box from '@mui/material/Box';
 import ButtonBase, { type ButtonBaseProps } from '@mui/material/ButtonBase';
 import { forwardRef } from 'react';
-import Pushpin from './Pushpin';
 
 export type PinnedNoteProps = ButtonBaseProps & {
   rotation?: number;
-  pinColor?: string;
   to?: string;
   href?: string;
 };
 
 const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
-  function PinnedNote(
-    { rotation = 0, pinColor = '#3A7085', children, sx, ...rest },
-    ref,
-  ) {
+  function PinnedNote({ rotation = 0, children, sx, ...rest }, ref) {
     return (
       <ButtonBase
         ref={ref}
@@ -60,6 +55,18 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             boxShadow: '0 3px 8px rgba(0,0,0,0.5)',
             transition: 'border-radius 300ms ease',
           },
+          '& .pn-tape': {
+            position: 'absolute',
+            top: -4,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '4em',
+            height: '1.2em',
+            background: 'rgba(255, 245, 180, 0.5)',
+            boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.15)',
+            zIndex: 2,
+            pointerEvents: 'none',
+          },
           '&:hover': {
             transform: `rotate(${rotation}deg) translateY(-2px)`,
             '& .pn-paper': {
@@ -85,7 +92,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
       >
         <Box className="pn-curl" />
         <Box className="pn-paper">
-          <Pushpin color={pinColor} />
+          <Box className="pn-tape" />
           {children}
         </Box>
       </ButtonBase>

@@ -76,10 +76,10 @@ export default function Home() {
           </CaseFile>
 
           <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap', mt: 1 }}>
-            <PinnedNote rotation={-3} pinColor="#3A7085" component={RouterLink} to="/join">
+            <PinnedNote rotation={-3} component={RouterLink} to="/join">
               {t('Join game')}
             </PinnedNote>
-            <PinnedNote rotation={2.5} pinColor="#9E1B1B" component={RouterLink} to="/how-to-play">
+            <PinnedNote rotation={2.5} component={RouterLink} to="/how-to-play">
               {t('How to play')}
             </PinnedNote>
           </Box>
