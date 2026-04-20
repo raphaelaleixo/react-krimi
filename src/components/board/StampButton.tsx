@@ -92,7 +92,7 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
               transform: "rotate(-3deg) scale(0.95)",
             },
             "&:active": {
-              transform: "rotate(-3deg) scale(0.92)",
+              transform: "rotate(2deg) scale(0.92)",
               transition: "transform 60ms ease-out",
             },
             "&.Mui-disabled": {
