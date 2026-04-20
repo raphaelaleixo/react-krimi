@@ -43,8 +43,9 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             textAlign: "center",
             whiteSpace: "nowrap",
             boxShadow: "0 8px 22px rgba(0,0,0,0.3)",
+            transformOrigin: "50% 0%",
             transition:
-              "border-radius 300ms ease, box-shadow 300ms ease",
+              "border-radius 300ms ease, box-shadow 300ms ease, transform 220ms ease-out",
             "&::before": {
               content: '""',
               position: "absolute",
@@ -77,6 +78,12 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               "&::before": {
                 transform: "translate(0, 0)",
               },
+            },
+          },
+          "&:active": {
+            "& .pn-paper": {
+              transform: "translateY(10px) rotate(4deg)",
+              transition: "transform 120ms ease-out",
             },
           },
           "@media (prefers-reduced-motion: reduce)": {
