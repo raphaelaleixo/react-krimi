@@ -25,12 +25,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           overflow: "visible",
           "& .pn-curl": {
             position: "absolute",
-            right: "10px",
-            bottom: "12px",
-            width: "50%",
-            height: "55%",
-            maxWidth: 200,
-            maxHeight: 100,
+            inset: 0,
             pointerEvents: "none",
             transition: "all 300ms ease",
           },
@@ -73,7 +68,6 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               borderRadius: "0 0 22% 0 / 0 0 90% 0",
             },
             "& .pn-curl": {
-              right: 0,
               boxShadow: "16px 8px 18px rgba(31, 31, 31, 0.85)",
               transform: "skew(14deg) rotate(6deg)",
             },
