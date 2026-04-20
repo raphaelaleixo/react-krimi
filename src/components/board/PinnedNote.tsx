@@ -32,6 +32,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             flex: 1,
             bgcolor: "#fff",
             color: "#3A7085",
+            overflow: "hidden",
             px: 2,
             py: 1.5,
             fontFamily: "var(--font-script)",
@@ -53,7 +54,6 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               transform: "translate(100%, 100%)",
               transition: "transform 300ms ease",
               pointerEvents: "none",
-              zIndex: -1,
             },
           },
           "& .pn-tape": {
@@ -90,10 +90,8 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
         }}
         {...rest}
       >
-        <Box className="pn-paper">
-          <Box className="pn-tape" />
-          {children}
-        </Box>
+        <Box className="pn-paper">{children}</Box>
+        <Box className="pn-tape" />
       </ButtonBase>
     );
   },
