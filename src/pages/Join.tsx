@@ -123,8 +123,8 @@ export default function Join() {
                         sx={{
                           fontFamily: 'var(--font-script)',
                           fontSize: '1.75rem',
-                          color: '#1C1B1B',
-                          opacity: 0.6,
+                          color: '#1E3A8A',
+                          opacity: 0.7,
                           lineHeight: 1,
                         }}
                       >
