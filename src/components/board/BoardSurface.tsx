@@ -8,6 +8,9 @@ const CORK_TEXTURE =
 const VIGNETTE =
   'radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%)';
 
+const FOOTER_FADE =
+  'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 22%)';
+
 export default function BoardSurface({ children }: { children: ReactNode }) {
   return (
     <Box
@@ -15,9 +18,9 @@ export default function BoardSurface({ children }: { children: ReactNode }) {
         position: 'relative',
         minHeight: '100dvh',
         bgcolor: '#0A0A0B',
-        backgroundImage: `${VIGNETTE}, ${CORK_TEXTURE}`,
-        backgroundRepeat: 'no-repeat, repeat',
-        backgroundSize: 'auto, 240px 240px',
+        backgroundImage: `${FOOTER_FADE}, ${VIGNETTE}, ${CORK_TEXTURE}`,
+        backgroundRepeat: 'no-repeat, no-repeat, repeat',
+        backgroundSize: 'auto, auto, 240px 240px',
         color: '#f5efe3',
         overflow: 'hidden',
       }}
