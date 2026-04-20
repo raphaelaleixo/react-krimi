@@ -53,7 +53,7 @@ export const translations: Record<string, string> = {
   'Guessed that the murderer was': 'Achou que o assassino fosse',
   'the M.O. was': 'a causa foi',
   'and the key evidence was': 'e a evidência principal foi',
-  'Round': 'Turno',
+  'Round': 'Rodada',
   'of': 'de',
   'Analysis': 'Análise',
   'Forensic Scientist': 'Cientista Forense',
@@ -107,7 +107,7 @@ export const translations: Record<string, string> = {
     'Tarde da noite, um assassinato aconteceu. Uma equipe de Investigadores precisa juntar as peças para descobrir como foi feito, guiada apenas pelas leituras forenses enigmáticas de um Cientista Forense que não pode falar abertamente. Entre os Investigadores, um Assassino se esconde à vista de todos.',
 
   'The {bold}Forensic Scientist{/bold} knows who the Murderer is and which means and key clue point to them. They communicate only by placing forensic analysis tiles on the host board.':
-    'O {bold}Cientista Forense{/bold} sabe quem é o Assassino e quais a causa e a evidência principal que apontam para ele. Ele se comunica apenas colocando peças de análise forense no quadro principal.',
+    'O {bold}Cientista Forense{/bold} sabe quem é o Assassino e qual a causa e qual a evidência principal que apontam para ele. Ele se comunica apenas colocando peças de análise forense no quadro principal.',
 
   'The {bold}Murderer{/bold} secretly picks their weapon (means) and a key piece of evidence from their hand on their phone.':
     'O {bold}Assassino{/bold} escolhe secretamente sua arma (causa) e uma evidência principal da sua mão, no próprio celular.',
