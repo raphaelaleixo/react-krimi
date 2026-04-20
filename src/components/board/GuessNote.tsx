@@ -10,10 +10,6 @@ interface GuessNoteProps {
   evidenceKey: string;
   isWrong: boolean;
   rotation: number;
-  moLabel: string;
-  keyEvidenceLabel: string;
-  saidThatLabel: string;
-  didItLabel: string;
 }
 
 const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
@@ -24,10 +20,6 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
     evidenceKey,
     isWrong,
     rotation,
-    moLabel,
-    keyEvidenceLabel,
-    saidThatLabel,
-    didItLabel,
   },
   ref,
 ) {

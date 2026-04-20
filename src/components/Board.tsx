@@ -365,10 +365,6 @@ export default function Board() {
                 evidenceKey={guess.evidenceKey}
                 isWrong={guess.isWrong}
                 rotation={0}
-                moLabel={t('the M.O. was')}
-                keyEvidenceLabel={t('and the key evidence was')}
-                saidThatLabel={t('said that')}
-                didItLabel={t('did it')}
               />
               </motion.div>
             ))}
