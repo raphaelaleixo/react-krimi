@@ -50,7 +50,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               position: "absolute",
               inset: 0,
               backgroundImage:
-                "linear-gradient(135deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.12) 100%)",
+                "linear-gradient(135deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 100%)",
               transform: "translate(100%, 100%)",
               transition: "transform 300ms ease",
               pointerEvents: "none",
