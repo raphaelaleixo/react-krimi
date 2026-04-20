@@ -79,4 +79,19 @@ export const translations: Record<string, string> = {
   'Back': 'Voltar',
   'Game has already started': 'O jogo já começou',
   'Game not found': 'Jogo não encontrado',
+
+  // Join (resume page) — added 2026-04-20
+  'Resume': 'Retomar',
+  'Enter the room code your friends shared to jump back in.':
+    'Digite o código da sala que seus amigos compartilharam para voltar ao jogo.',
+  'Room code': 'Código da sala',
+  'Resume as host': 'Retomar como anfitrião',
+  'Resume as player': 'Retomar como jogador',
+  'Resuming…': 'Retomando…',
+  'Room not found. Check the code and try again.':
+    'Sala não encontrada. Verifique o código e tente novamente.',
+
+  // Rejoin (placeholder /room/:id/players) — added 2026-04-20
+  'Rejoin the game': 'Voltar ao jogo',
+  'Tap your name to rejoin': 'Toque no seu nome para voltar',
 };
