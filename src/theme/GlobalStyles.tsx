@@ -12,7 +12,7 @@ export default function GlobalStyles() {
     <Global
       styles={css`
         :root {
-          --font-typewriter: 'IBM Plex Mono', monospace;
+          --font-typewriter: 'Courier Prime', monospace;
           --font-script: 'Caveat Brush', cursive;
         }
 
