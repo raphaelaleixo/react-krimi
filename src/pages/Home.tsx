@@ -42,7 +42,7 @@ export default function Home() {
     <BoardSurface>
       <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
         <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
-          <CaseFile>
+          <CaseFile maxWidth={560}>
             <Box sx={{ textAlign: 'center' }}>
               <Box component="img" src={logo} sx={{ width: 96, mx: 'auto', mb: 2, display: 'block' }} alt="Krimi" />
               <Typography
@@ -61,9 +61,10 @@ export default function Home() {
               <Typography
                 sx={{
                   fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: '1rem',
+                  fontSize: { xs: '0.8rem', sm: '0.95rem' },
                   color: '#1C1B1B',
                   mb: 3,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {t("A web-version of Tobey Ho's")}{' '}
