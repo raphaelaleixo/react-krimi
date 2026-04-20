@@ -1,7 +1,7 @@
 // Portuguese (BR) translations — merged from all Vue component locales
 export const translations: Record<string, string> = {
   // Home
-  'A game of deception & deduction': 'Um jogo de intrigas e investigação',
+  'A game of deception': 'Um jogo de intrigas',
   'A web-version of Tobey Ho\'s': 'Uma versão web do jogo de Tobey Ho',
   'Create new game': 'Criar novo jogo',
   'Join game': 'Entrar em um jogo',
