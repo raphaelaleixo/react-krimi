@@ -42,31 +42,30 @@ export default function Home() {
     <BoardSurface>
       <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
         <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
-          <CaseFile maxWidth={560}>
+          <CaseFile>
             <Box sx={{ textAlign: 'center' }}>
               <Box component="img" src={logo} sx={{ width: 96, mx: 'auto', mb: 2, display: 'block' }} alt="Krimi" />
               <Typography
                 component="h1"
                 sx={{
                   fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: { xs: '1.6rem', sm: '2rem' },
-                  letterSpacing: '3px',
-                  textTransform: 'uppercase',
+                  fontSize: { xs: '1rem', sm: '1.1rem' },
+                  fontWeight: 'normal',
                   color: '#1C1B1B',
-                  mb: 1,
-                }}
-              >
-                {t('A game of deception')}
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: '"kingthings_trypewriter_2Rg", serif',
-                  fontSize: { xs: '0.8rem', sm: '0.95rem' },
-                  color: '#1C1B1B',
+                  lineHeight: 1.7,
                   mb: 3,
-                  whiteSpace: 'nowrap',
                 }}
               >
+                <Box
+                  component="span"
+                  sx={{
+                    textTransform: 'uppercase',
+                    letterSpacing: '2px',
+                    fontWeight: 700,
+                  }}
+                >
+                  {t('A game of deception')}.
+                </Box>{' '}
                 {t("A web-version of Tobey Ho's")}{' '}
                 <strong>Deception: Murder in Hong Kong</strong>.
               </Typography>
