@@ -75,7 +75,7 @@ export default function Home() {
             </Box>
           </CaseFile>
 
-          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap', mt: 1 }}>
+          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'space-between', flexWrap: 'wrap', mt: 1 }}>
             <PinnedNote rotation={-3} component={RouterLink} to="/join">
               {t('Join game')}
             </PinnedNote>
