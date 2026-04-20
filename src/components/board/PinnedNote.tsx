@@ -22,7 +22,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
         sx={{
           position: 'relative',
           display: 'inline-flex',
-          width: 150,
+          width: 190,
           minHeight: 60,
           color: '#1C1B1B',
           transform: `rotate(${rotation}deg)`,
@@ -56,6 +56,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             fontWeight: 700,
             WebkitTextStroke: '0.3px currentColor',
             textAlign: 'center',
+            whiteSpace: 'nowrap',
             boxShadow: '0 3px 8px rgba(0,0,0,0.5)',
             transition: 'border-radius 300ms ease',
           },
