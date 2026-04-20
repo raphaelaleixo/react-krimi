@@ -88,11 +88,11 @@ const StampButton = forwardRef<HTMLButtonElement, StampButtonProps>(
             "&:hover": {
               borderColor: STAMP_RED,
               borderWidth: 4,
-              bgcolor: "rgba(158, 27, 27, 0.12)",
-              transform: "rotate(-1.5deg) scale(0.95)",
+              bgcolor: "transparent",
+              transform: "rotate(-3deg) scale(0.95)",
             },
             "&:active": {
-              transform: "rotate(-1.5deg) scale(0.92)",
+              transform: "rotate(-3deg) scale(0.92)",
               transition: "transform 60ms ease-out",
             },
             "&.Mui-disabled": {
