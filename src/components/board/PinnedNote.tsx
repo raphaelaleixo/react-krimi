@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import ButtonBase, { type ButtonBaseProps } from '@mui/material/ButtonBase';
 import { forwardRef } from 'react';
 import Pushpin from './Pushpin';
@@ -17,53 +18,61 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
     return (
       <ButtonBase
         ref={ref}
+        disableRipple
         sx={{
           position: 'relative',
           display: 'inline-flex',
           width: 150,
           minHeight: 60,
-          px: 2,
-          py: 1.5,
-          bgcolor: '#f8f6f0',
           color: '#1C1B1B',
-          fontFamily: '"kingthings_trypewriter_2Rg", serif',
-          fontSize: '0.95rem',
-          textAlign: 'center',
-          justifyContent: 'center',
-          alignItems: 'center',
-          boxShadow: '0 3px 8px rgba(0,0,0,0.5)',
           transform: `rotate(${rotation}deg)`,
-          transition:
-            'transform 300ms ease, box-shadow 300ms ease, border-radius 300ms ease',
-          '&::before, &::after': {
-            content: '""',
+          transition: 'transform 300ms ease',
+          overflow: 'visible',
+          '& .pn-curl': {
             position: 'absolute',
             right: '10px',
             width: '50%',
             height: '55%',
             maxWidth: 200,
             maxHeight: 100,
-            transition: 'all 300ms ease',
             pointerEvents: 'none',
-            zIndex: -1,
+            transition: 'all 300ms ease',
           },
-          '&::before': {
+          '& .pn-curl-top': {
             top: '12px',
             boxShadow: '1px -4px 12px rgba(31, 31, 31, 0.6)',
           },
-          '&::after': {
+          '& .pn-curl-bottom': {
             bottom: '12px',
             boxShadow: '1px 4px 12px rgba(31, 31, 31, 0.6)',
           },
+          '& .pn-paper': {
+            position: 'relative',
+            zIndex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            bgcolor: '#f8f6f0',
+            px: 2,
+            py: 1.5,
+            fontFamily: '"kingthings_trypewriter_2Rg", serif',
+            fontSize: '0.95rem',
+            textAlign: 'center',
+            boxShadow: '0 3px 8px rgba(0,0,0,0.5)',
+            transition: 'border-radius 300ms ease',
+          },
           '&:hover': {
             transform: `rotate(${rotation}deg) translateY(-2px)`,
-            borderRadius: '0 3% 3% 0 / 0% 50% 50% 0',
-            '&::before': {
+            '& .pn-paper': {
+              borderRadius: '0 3% 3% 0 / 0% 50% 50% 0',
+            },
+            '& .pn-curl-top': {
               right: 0,
               boxShadow: '10px -4px 12px rgba(31, 31, 31, 0.8)',
               transform: 'skew(-8deg) rotate(-3deg)',
             },
-            '&::after': {
+            '& .pn-curl-bottom': {
               right: 0,
               boxShadow: '10px 4px 12px rgba(31, 31, 31, 0.8)',
               transform: 'skew(8deg) rotate(3deg)',
@@ -73,16 +82,20 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             transition: 'none',
             '&:hover': {
               transform: `rotate(${rotation}deg)`,
-              borderRadius: 0,
+              '& .pn-paper': { borderRadius: 0 },
             },
-            '&::before, &::after': { transition: 'none' },
+            '& .pn-curl': { transition: 'none' },
           },
           ...sx,
         }}
         {...rest}
       >
-        <Pushpin color={pinColor} />
-        {children}
+        <Box className="pn-curl pn-curl-top" />
+        <Box className="pn-curl pn-curl-bottom" />
+        <Box className="pn-paper">
+          <Pushpin color={pinColor} />
+          {children}
+        </Box>
       </ButtonBase>
     );
   },
