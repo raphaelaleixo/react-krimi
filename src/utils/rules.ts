@@ -2,6 +2,7 @@ import means from '../data/means';
 import clues from '../data/clues';
 import analysis from '../data/analysis';
 import type { AnalysisItem } from '../data/analysis';
+import type { KrimiGameState } from '../types';
 
 export function createRandomId(): string {
   return Math.random().toString(36).substring(2, 7);
@@ -67,4 +68,11 @@ export function checkGuess(
   murdererChoice: { mean: string; key: string }
 ): boolean {
   return guess.mean === murdererChoice.mean && guess.key === murdererChoice.key;
+}
+
+export function isRolesRevealed(gameState: KrimiGameState): boolean {
+  if (!gameState.playerPicks) return false;
+  const pickCount = Object.keys(gameState.playerPicks).length;
+  const expectedPicks = gameState.playerOrder.length - 1; // forensic doesn't pick
+  return pickCount >= expectedPicks;
 }
