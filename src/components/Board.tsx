@@ -5,7 +5,7 @@ import { useGame } from '../contexts/GameContext';
 import { buildJoinUrl } from 'react-gameroom';
 import CasePolaroid from './board/CasePolaroid';
 import CorkBoard from './board/CorkBoard';
-import PolaroidCard from './board/PolaroidCard';
+import PlayerFile from './board/PlayerFile';
 import ForensicSheet from './board/ForensicSheet';
 import GuessNote from './board/GuessNote';
 
@@ -135,7 +135,7 @@ export default function Board() {
 
   return (
     <CorkBoard corkRef={corkRef}>
-      <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
+      <Box sx={{ display: 'flex', p: 3, gap: 3 }}>
         <Box>
           {/* Join QR polaroid */}
           {roomState && (
@@ -155,9 +155,9 @@ export default function Board() {
           />
         </Box>
 
-        <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Box sx={{ flex: 3 }}>
 
-          <Box ref={containerRef} sx={{ flex: 1, overflow: 'auto', minHeight: 0 }}>
+          <Box ref={containerRef}>
           <motion.div
             ref={contentRef}
             animate={{ y: centerOffset }}
@@ -180,7 +180,7 @@ export default function Board() {
                   }}
                   sx={{ width: 220, ...(masonryStyle || {}) }}
                 >
-                  <PolaroidCard
+                  <PlayerFile
                     name={player.name}
                     means={playerMeans}
                     clues={playerClues}

@@ -10,7 +10,7 @@ import { useGame } from "../contexts/GameContext";
 import { useI18n } from "../hooks/useI18n";
 import BoardSurface from "../components/board/BoardSurface";
 import CaseFile from "../components/board/CaseFile";
-import PinnedNote from "../components/board/PinnedNote";
+import TapedNoteButton from "../components/board/TapedNoteButton";
 import StampButton from "../components/board/StampButton";
 import logo from "../assets/logo.svg";
 import ludoratory from "../assets/ludoratory.svg";
@@ -104,12 +104,12 @@ export default function Home() {
               zIndex: 2,
             }}
           >
-            <PinnedNote rotation={-3} component={RouterLink} to="/join">
+            <TapedNoteButton rotation={-3} component={RouterLink} to="/join">
               {t("Resume game")}
-            </PinnedNote>
-            <PinnedNote rotation={2.5} component={RouterLink} to="/how-to-play">
+            </TapedNoteButton>
+            <TapedNoteButton rotation={2.5} component={RouterLink} to="/how-to-play">
               {t("How to play")}
-            </PinnedNote>
+            </TapedNoteButton>
           </Box>
         </Box>
 

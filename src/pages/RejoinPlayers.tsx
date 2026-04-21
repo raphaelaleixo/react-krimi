@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import BoardSurface from '../components/board/BoardSurface';
 import CaseFile from '../components/board/CaseFile';
-import PinnedNote from '../components/board/PinnedNote';
+import TapedNoteButton from '../components/board/TapedNoteButton';
 import { useI18n } from '../hooks/useI18n';
 
 export default function RejoinPlayers() {
@@ -51,9 +51,9 @@ export default function RejoinPlayers() {
         </CaseFile>
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <PinnedNote rotation={-2} component={RouterLink} to="/">
+          <TapedNoteButton rotation={-2} component={RouterLink} to="/">
             {t('Back')}
-          </PinnedNote>
+          </TapedNoteButton>
         </Box>
       </Container>
     </BoardSurface>

@@ -21,9 +21,9 @@ function generateTornEdge() {
   return `polygon(${points.join(', ')})`;
 }
 
-export type PolaroidRole = 'detective' | 'investigator';
+export type PlayerRole = 'detective' | 'investigator';
 
-interface PolaroidCardProps {
+interface PlayerFileProps {
   name: string;
   rotation: number;
   offsetY: number;
@@ -34,14 +34,14 @@ interface PolaroidCardProps {
   guessCount?: number;
   // lobby-only
   slotLabel?: string;
-  role?: PolaroidRole;
+  role?: PlayerRole;
   onToggleRole?: () => void;
 }
 
 const WEAPON_COLOR = 'var(--weapon-color)';
 const EVIDENCE_COLOR = 'var(--evidence-color)';
 
-export default function PolaroidCard({
+export default function PlayerFile({
   name,
   means,
   clues,
@@ -52,7 +52,7 @@ export default function PolaroidCard({
   slotLabel,
   role,
   onToggleRole,
-}: PolaroidCardProps) {
+}: PlayerFileProps) {
   const { t } = useI18n();
   const tornEdge = useMemo(() => generateTornEdge(), []);
   const nameplateRotation = useMemo(() => generateNameplateRotation(), []);

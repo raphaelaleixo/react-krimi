@@ -8,7 +8,7 @@ import { useMasonryLayout } from '../hooks/useMasonryLayout';
 import CorkBoard from './board/CorkBoard';
 import CasePolaroid from './board/CasePolaroid';
 import AssigningCaseSheet from './board/AssigningCaseSheet';
-import PolaroidCard from './board/PolaroidCard';
+import PlayerFile from './board/PlayerFile';
 
 const CARD_COLUMN_WIDTH = 220;
 const CARD_GAP = 24;
@@ -66,7 +66,7 @@ export default function Lobby() {
 
   return (
     <CorkBoard>
-      <Box sx={{ display: 'flex', height: '100%', p: 3, gap: 3 }}>
+      <Box sx={{ display: 'flex', p: 3, gap: 3 }}>
         <Box>
           <CasePolaroid
             roomId={roomState.roomId}
@@ -82,43 +82,41 @@ export default function Lobby() {
           />
         </Box>
 
-        <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <Box sx={{ flex: 1, overflow: 'auto', minHeight: 0 }}>
-            <Box
-              ref={masonryRef}
-              sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}
-            >
-              <AnimatePresence>
-                {readyPlayers.map((slot, i) => {
-                  const style = masonry.styles[i];
-                  return (
-                    <motion.div
-                      key={slot.id}
-                      initial={{ opacity: 0, scale: 0.7, y: -40 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.6, y: 20 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      ref={(el: HTMLDivElement | null) => masonry.setItemRef(i, el)}
-                      style={{
-                        width: CARD_COLUMN_WIDTH,
-                        position: 'absolute',
-                        left: style?.left ?? 0,
-                        top: style?.top ?? 0,
-                      }}
-                    >
-                      <PolaroidCard
-                        name={slot.name ?? ''}
-                        slotLabel={`${t('Player')} ${i + 1}`}
-                        role={i === activeDetective ? 'detective' : 'investigator'}
-                        onToggleRole={() => setActiveDetective(i)}
-                        rotation={cardRotations[slot.id] ?? 0}
-                        offsetY={cardOffsets[slot.id] ?? 0}
-                      />
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </Box>
+        <Box sx={{ flex: 3 }}>
+          <Box
+            ref={masonryRef}
+            sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}
+          >
+            <AnimatePresence>
+              {readyPlayers.map((slot, i) => {
+                const style = masonry.styles[i];
+                return (
+                  <motion.div
+                    key={slot.id}
+                    initial={{ opacity: 0, scale: 0.7, y: -40 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.6, y: 20 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    ref={(el: HTMLDivElement | null) => masonry.setItemRef(i, el)}
+                    style={{
+                      width: CARD_COLUMN_WIDTH,
+                      position: 'absolute',
+                      left: style?.left ?? 0,
+                      top: style?.top ?? 0,
+                    }}
+                  >
+                    <PlayerFile
+                      name={slot.name ?? ''}
+                      slotLabel={`${t('Player')} ${i + 1}`}
+                      role={i === activeDetective ? 'detective' : 'investigator'}
+                      onToggleRole={() => setActiveDetective(i)}
+                      rotation={cardRotations[slot.id] ?? 0}
+                      offsetY={cardOffsets[slot.id] ?? 0}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </Box>
         </Box>
       </Box>

@@ -2,14 +2,14 @@ import Box from "@mui/material/Box";
 import ButtonBase, { type ButtonBaseProps } from "@mui/material/ButtonBase";
 import { forwardRef } from "react";
 
-export type PinnedNoteProps = ButtonBaseProps & {
+export type TapedNoteButtonProps = ButtonBaseProps & {
   rotation?: number;
   to?: string;
   href?: string;
 };
 
-const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
-  function PinnedNote({ rotation = 0, children, sx, ...rest }, ref) {
+const TapedNoteButton = forwardRef<HTMLButtonElement, TapedNoteButtonProps>(
+  function TapedNoteButton({ rotation = 0, children, sx, ...rest }, ref) {
     return (
       <ButtonBase
         ref={ref}
@@ -23,7 +23,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           transform: `rotate(${rotation}deg)`,
           transition: "transform 300ms ease",
           overflow: "visible",
-          "& .pn-paper": {
+          "& .tnb-paper": {
             position: "relative",
             zIndex: 1,
             display: "flex",
@@ -57,7 +57,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
               pointerEvents: "none",
             },
           },
-          "& .pn-tape": {
+          "& .tnb-tape": {
             position: "absolute",
             top: -14,
             left: "50%",
@@ -71,7 +71,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
           },
           "&:hover": {
             transform: `rotate(${rotation}deg) translateY(-2px)`,
-            "& .pn-paper": {
+            "& .tnb-paper": {
               borderRadius: "0 0 22% 0 / 0 0 90% 0",
               boxShadow:
                 "14px 14px 24px rgba(0,0,0,0.35), 0 8px 22px rgba(0,0,0,0.25)",
@@ -81,7 +81,7 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             },
           },
           "&:active": {
-            "& .pn-paper": {
+            "& .tnb-paper": {
               transform: `translateY(10px) rotate(${-rotation * 2}deg)`,
               transition: "transform 120ms ease-out",
               borderRadius: 0,
@@ -95,18 +95,18 @@ const PinnedNote = forwardRef<HTMLButtonElement, PinnedNoteProps>(
             transition: "none",
             "&:hover": {
               transform: `rotate(${rotation}deg)`,
-              "& .pn-paper": { borderRadius: 0 },
+              "& .tnb-paper": { borderRadius: 0 },
             },
           },
           ...sx,
         }}
         {...rest}
       >
-        <Box className="pn-paper">{children}</Box>
-        <Box className="pn-tape" />
+        <Box className="tnb-paper">{children}</Box>
+        <Box className="tnb-tape" />
       </ButtonBase>
     );
   },
 );
 
-export default PinnedNote;
+export default TapedNoteButton;

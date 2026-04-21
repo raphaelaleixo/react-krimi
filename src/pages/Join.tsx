@@ -12,7 +12,7 @@ import { useI18n } from '../hooks/useI18n';
 import { getRoomStatus } from '../utils/roomStatus';
 import BoardSurface from '../components/board/BoardSurface';
 import CaseFile from '../components/board/CaseFile';
-import PinnedNote from '../components/board/PinnedNote';
+import TapedNoteButton from '../components/board/TapedNoteButton';
 import StampButton from '../components/board/StampButton';
 
 type SubmittingRole = 'host' | 'player' | null;
@@ -150,9 +150,9 @@ export default function Join() {
         </CaseFile>
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <PinnedNote rotation={-2} component={RouterLink} to="/">
+          <TapedNoteButton rotation={-2} component={RouterLink} to="/">
             {t('Back')}
-          </PinnedNote>
+          </TapedNoteButton>
         </Box>
       </Container>
 
