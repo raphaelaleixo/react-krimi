@@ -96,6 +96,13 @@ export const translations: Record<string, string> = {
   'Rejoin the game': 'Voltar ao jogo',
   'Tap your name to rejoin': 'Toque no seu nome para voltar',
 
+  // Lobby redesign — added 2026-04-20
+  'Assigning case': 'Atribuindo o caso',
+  'on scene': 'na cena',
+  'Start investigation': 'Começar investigação',
+  'Investigator': 'Investigador',
+  'Player': 'Jogador',
+
   // How to play — added 2026-04-20
   'Premise': 'Premissa',
   'Roles': 'Papéis',

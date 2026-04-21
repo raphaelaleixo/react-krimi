@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
+import { useI18n } from '../../hooks/useI18n';
 
 function generateNameplateRotation() {
   return Math.random() * 3 - 1.5;
@@ -52,6 +53,7 @@ export default function PolaroidCard({
   role,
   onToggleRole,
 }: PolaroidCardProps) {
+  const { t } = useI18n();
   const tornEdge = useMemo(() => generateTornEdge(), []);
   const nameplateRotation = useMemo(() => generateNameplateRotation(), []);
 
@@ -231,7 +233,7 @@ export default function PolaroidCard({
               lineHeight: 1.2,
             }}
           >
-            {role === 'detective' ? 'Forensic Scientist' : 'Investigator'}
+            {role === 'detective' ? t('Forensic Scientist') : t('Investigator')}
           </Typography>
         </ButtonBase>
       )}
