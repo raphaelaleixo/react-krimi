@@ -16,7 +16,7 @@ We want every non-forensic player to perform the same action at game start: pick
 2. **Pick phase.** Every non-forensic player sees a new `PickPhase` screen asking them to choose one mean + one clue from their own 4+4 hand. The copy frames it as *"if you were the murderer, which cards would you want found at the scene?"* No role has been revealed. The forensic scientist sees a "waiting for all players to submit their picks" screen in place of today's "waiting for the murderer to choose."
 3. **Submit.** When a player hits submit, their pick is written to `playerPicks[playerOrderIndex]` in Firebase. The pick is **locked** — the UI for that player switches to a "waiting for others" state with no re-pick affordance.
 4. **Reveal trigger.** When the last non-forensic pick lands, the reveal is derived client-side (no explicit `rolesRevealed` flag is written). Every client computes: *have all non-forensic players picked?* If yes, role-reveal UI is shown.
-5. **`murdererChoice` finalization.** On every pick submission, after writing `playerPicks[i]`, the submitting client checks whether all picks are now in and `murdererChoice` is still unset. If so, it writes `murdererChoice = playerPicks[murderer]` in the same Firebase update batch. Idempotent — if two clients race, both write identical data.
+5. **`murdererChoice` finalization.** `submitPick` reads the current game state first, projects what `playerPicks` will look like after the submission, and issues one atomic `update()` that writes the pick and — if this projected submission completes the set — `murdererChoice` at the same time. A post-write safeguard handles the rare race where two clients submit the last two picks simultaneously (see "Reveal trigger and race handling" below).
 6. **Role reveal.**
    - The drawn player sees "You are the murderer. Your locked pick: [mean] + [clue]."
    - Every other non-forensic player sees "You are an investigator."
@@ -99,14 +99,13 @@ Add `playerPicks?: Record<number, { mean: string; key: string }>` to `KrimiGameS
 
 ## Reveal trigger and race handling
 
-Two non-forensic players could submit near-simultaneously. The race matters only for writing `murdererChoice`:
+`submitPick` reads the current game state once, projects what `playerPicks` will look like after the submission, then issues **one atomic `update()`** that writes the pick and — if the projection says this is the last submission — `murdererChoice` at the same time. In the common case (one last submitter) subscribers see both fields set in a single `onValue` event; no intermediate window where `isRolesRevealed` is true but `murdererChoice` is missing.
 
-- Client A submits pick → writes `playerPicks[a]` → reads state → sees all picks in → writes `murdererChoice`.
-- Client B submits pick at the same time → writes `playerPicks[b]` → reads state → sees all picks in → writes `murdererChoice`.
+Two non-forensic players can still race the last two submissions. In that case, each reads state with the other's pick still missing, projects "not last," and issues an update that writes only `playerPicks/{i}`. Neither one's atomic write finalizes `murdererChoice`.
 
-Both writes target the same path with the same value (`playerPicks[murderer]` is the same on both reads, because the murderer's pick was already persisted). The second write is a no-op overwrite of identical data. No harm.
+To cover that race, `submitPick` does a post-write re-check **only** when projection said "not last." It re-reads, and if the picks are now complete and `murdererChoice` is still unset, writes it. Under concurrent re-checks both clients compute the same `playerPicks[murderer]` from the now-merged state and write identical data — idempotent, safe to race, second write is a no-op overwrite.
 
-`rolesRevealed` being derived client-side means no race around the flag at all — every client sees the reveal the instant it observes the last pick landing in its `onValue` subscription.
+`rolesRevealed` is derived client-side from `playerPicks` count, so no race exists around the flag itself — every client flips the moment its `onValue` subscription observes the last pick landing.
 
 ## Edge cases
 
