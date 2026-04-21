@@ -104,20 +104,23 @@ export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNo
         component="span"
         aria-label={headline}
         sx={{
-          '--w': '1ch',
+          '--w': '10ch',
           display: 'inline-block',
           fontFamily: 'var(--font-typewriter)',
           fontSize: '2rem',
           lineHeight: 1.2,
           fontWeight: 'bold',
           letterSpacing: 'var(--w)',
-          width: 'calc(var(--w) * 10)',
+          width: 'var(--w)',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           color: 'transparent',
           animation: `${loadingDrop} 2s infinite`,
           '@media (prefers-reduced-motion: reduce)': {
             animation: 'none',
+            color: 'var(--text-color)',
+            letterSpacing: 'normal',
+            width: 'auto',
           },
           '&::before': {
             content: 'attr(data-text)',
