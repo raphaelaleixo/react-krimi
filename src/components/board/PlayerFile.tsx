@@ -1,13 +1,7 @@
 import { useMemo } from 'react';
 import Box from '@mui/material/Box';
-import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
-import { useI18n } from '../../hooks/useI18n';
-
-function generateNameplateRotation() {
-  return Math.random() * 3 - 1.5;
-}
 
 function generateTornEdge() {
   const points: string[] = ['0% 0%', '100% 0%'];
@@ -21,8 +15,6 @@ function generateTornEdge() {
   return `polygon(${points.join(', ')})`;
 }
 
-export type PlayerRole = 'detective' | 'investigator';
-
 interface PlayerFileProps {
   name: string;
   rotation: number;
@@ -34,8 +26,6 @@ interface PlayerFileProps {
   guessCount?: number;
   // lobby-only
   slotLabel?: string;
-  role?: PlayerRole;
-  onToggleRole?: () => void;
 }
 
 const WEAPON_COLOR = 'var(--weapon-color)';
@@ -50,12 +40,8 @@ export default function PlayerFile({
   stamp,
   guessCount = 0,
   slotLabel,
-  role,
-  onToggleRole,
 }: PlayerFileProps) {
-  const { t } = useI18n();
   const tornEdge = useMemo(() => generateTornEdge(), []);
-  const nameplateRotation = useMemo(() => generateNameplateRotation(), []);
 
   const hasGameBody = means !== undefined && clues !== undefined;
   const hasLobbyBody = slotLabel !== undefined;
@@ -191,52 +177,6 @@ export default function PlayerFile({
           </Box>
         )}
       </Box>
-
-      {/* Glued-on role nameplate (sibling — outside the torn-edge clip) */}
-      {role && (
-        <ButtonBase
-          disableRipple
-          onClick={onToggleRole}
-          disabled={!onToggleRole}
-          sx={{
-            display: 'block',
-            width: '90%',
-            mx: 'auto',
-            mt: -1,
-            px: 2,
-            py: 0.75,
-            bgcolor: '#fff',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
-            transform: `rotate(${nameplateRotation}deg)`,
-            transition: 'transform 200ms ease, box-shadow 200ms ease',
-            '&:hover': onToggleRole
-              ? {
-                  transform: `rotate(${nameplateRotation}deg) translateY(-2px)`,
-                  boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
-                }
-              : undefined,
-            '@media (prefers-reduced-motion: reduce)': {
-              transition: 'none',
-              '&:hover': { transform: `rotate(${nameplateRotation}deg)` },
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              fontFamily: 'var(--font-typewriter)',
-              fontSize: '1rem',
-              fontWeight: 700,
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              color: role === 'detective' ? EVIDENCE_COLOR : WEAPON_COLOR,
-              lineHeight: 1.2,
-            }}
-          >
-            {role === 'detective' ? t('Forensic Scientist') : t('Investigator')}
-          </Typography>
-        </ButtonBase>
-      )}
     </Box>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import { motion, AnimatePresence } from 'motion/react';
 import { buildJoinUrl, useRoomState } from 'react-gameroom';
@@ -57,8 +57,27 @@ export default function Lobby() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slotIdsKey]);
 
+  // Investigators: everyone except the active detective, preserving original index for slot labels.
+  const investigators = useMemo(
+    () =>
+      readyPlayers
+        .map((slot, originalIndex) => ({ slot, originalIndex }))
+        .filter(({ originalIndex }) => originalIndex !== activeDetective),
+    [readyPlayers, activeDetective],
+  );
+
   const masonryRef = useRef<HTMLDivElement>(null);
-  const masonry = useMasonryLayout(masonryRef, readyPlayers.length, CARD_COLUMN_WIDTH, CARD_GAP);
+  const masonry = useMasonryLayout(masonryRef, investigators.length, CARD_COLUMN_WIDTH, CARD_GAP);
+
+  const cyclePrev = useCallback(() => {
+    if (readyPlayers.length <= 1) return;
+    setActiveDetective((i) => (i - 1 + readyPlayers.length) % readyPlayers.length);
+  }, [readyPlayers.length]);
+
+  const cycleNext = useCallback(() => {
+    if (readyPlayers.length <= 1) return;
+    setActiveDetective((i) => (i + 1) % readyPlayers.length);
+  }, [readyPlayers.length]);
 
   if (!roomState) return null;
 
@@ -78,7 +97,10 @@ export default function Lobby() {
             count={readyPlayers.length}
             maxCount={roomState.config.maxPlayers}
             canStart={canStart}
+            canCycle={readyPlayers.length > 1}
             onStart={() => startTheGame(activeDetective)}
+            onPrev={cyclePrev}
+            onNext={cycleNext}
           />
         </Box>
 
@@ -88,8 +110,8 @@ export default function Lobby() {
             sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}
           >
             <AnimatePresence>
-              {readyPlayers.map((slot, i) => {
-                const style = masonry.styles[i];
+              {investigators.map(({ slot, originalIndex }, j) => {
+                const style = masonry.styles[j];
                 return (
                   <motion.div
                     key={slot.id}
@@ -97,7 +119,7 @@ export default function Lobby() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.6, y: 20 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    ref={(el: HTMLDivElement | null) => masonry.setItemRef(i, el)}
+                    ref={(el: HTMLDivElement | null) => masonry.setItemRef(j, el)}
                     style={{
                       width: CARD_COLUMN_WIDTH,
                       position: 'absolute',
@@ -107,9 +129,7 @@ export default function Lobby() {
                   >
                     <PlayerFile
                       name={slot.name ?? ''}
-                      slotLabel={`${t('Player')} ${i + 1}`}
-                      role={i === activeDetective ? 'detective' : 'investigator'}
-                      onToggleRole={() => setActiveDetective(i)}
+                      slotLabel={`${t('Player')} ${originalIndex + 1}`}
                       rotation={cardRotations[slot.id] ?? 0}
                       offsetY={cardOffsets[slot.id] ?? 0}
                     />

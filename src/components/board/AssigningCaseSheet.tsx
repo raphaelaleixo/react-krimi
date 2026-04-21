@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
 import StampButton from './StampButton';
+import TapedNoteButton from './TapedNoteButton';
 import { useI18n } from '../../hooks/useI18n';
 
 interface AssigningCaseSheetProps {
@@ -9,7 +10,10 @@ interface AssigningCaseSheetProps {
   count: number;
   maxCount: number;
   canStart: boolean;
+  canCycle: boolean;
   onStart: () => void;
+  onPrev: () => void;
+  onNext: () => void;
 }
 
 export default function AssigningCaseSheet({
@@ -17,7 +21,10 @@ export default function AssigningCaseSheet({
   count,
   maxCount,
   canStart,
+  canCycle,
   onStart,
+  onPrev,
+  onNext,
 }: AssigningCaseSheetProps) {
   const { t } = useI18n();
 
@@ -50,30 +57,62 @@ export default function AssigningCaseSheet({
           {t('Assigning case')}
         </Typography>
 
-        {/* Detective signature — mirrors ForensicSheet */}
+        {/* Detective signature — arrows cycle the assignment */}
         <Box sx={{ textAlign: 'center', mb: 2 }}>
-          <Typography
-            component="span"
-            sx={{
-              fontFamily: 'var(--font-script)',
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              color: 'var(--evidence-color)',
-              minHeight: '1.5rem',
-              display: 'inline-block',
-            }}
-          >
-            {detectiveName ?? '\u00A0'}
-          </Typography>
           <Box
             sx={{
-              borderTop: '1px dashed var(--text-color)',
-              mt: 0.5,
-              mx: 'auto',
-              width: '60%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1.5,
+              mb: 0.5,
             }}
-          />
+          >
+            <TapedNoteButton
+              variant="icon-button"
+              rotation={-4}
+              disabled={!canCycle}
+              onClick={onPrev}
+              aria-label={t('Previous')}
+            >
+              ‹
+            </TapedNoteButton>
+
+            <Box sx={{ minWidth: 140 }}>
+              <Typography
+                component="span"
+                sx={{
+                  fontFamily: 'var(--font-script)',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  color: 'var(--evidence-color)',
+                  minHeight: '1.5rem',
+                  display: 'inline-block',
+                }}
+              >
+                {detectiveName ?? '\u00A0'}
+              </Typography>
+              <Box
+                sx={{
+                  borderTop: '1px dashed var(--text-color)',
+                  mt: 0.5,
+                  mx: 'auto',
+                  width: '100%',
+                }}
+              />
+            </Box>
+
+            <TapedNoteButton
+              variant="icon-button"
+              rotation={4}
+              disabled={!canCycle}
+              onClick={onNext}
+              aria-label={t('Next')}
+            >
+              ›
+            </TapedNoteButton>
+          </Box>
           <Typography
             sx={{
               fontFamily: 'var(--font-typewriter)',

@@ -102,6 +102,8 @@ export const translations: Record<string, string> = {
   'Start investigation': 'Começar investigação',
   'Investigator': 'Investigador',
   'Player': 'Jogador',
+  'Previous': 'Anterior',
+  'Next': 'Próximo',
 
   // How to play — added 2026-04-20
   'Premise': 'Premissa',
