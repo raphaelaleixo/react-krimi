@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
+import { formatDisplayName } from '../../utils/formatDisplayName';
 
 function generateTornEdge() {
   const points: string[] = ['0% 0%', '100% 0%'];
@@ -88,6 +89,7 @@ export default function PlayerFile({
 
         {/* Name */}
         <Typography
+          title={name}
           sx={{
             fontFamily: 'var(--font-script)',
             fontSize: '1.75em',
@@ -96,9 +98,12 @@ export default function PlayerFile({
             lineHeight: 1,
             pr: 3,
             mb: 1.5,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
-          {name}
+          {formatDisplayName(name)}
         </Typography>
 
         {hasGameBody && (
