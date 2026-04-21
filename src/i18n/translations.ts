@@ -143,4 +143,9 @@ export const translations: Record<string, string> = {
   'Waiting...': 'Aguarde...',
   'Waiting for {n} more…': 'Aguardando mais {n}…',
   'We can start the game now': 'Podemos começar o jogo',
+
+  // Player screens redesign — added 2026-04-21
+  'SUBMITTED': 'ENVIADO',
+  'Private Detective': 'Detetive Particular',
+  'The Murderer': 'O Assassino',
 };
