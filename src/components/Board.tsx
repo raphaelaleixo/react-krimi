@@ -8,6 +8,7 @@ import CorkBoard from './board/CorkBoard';
 import PlayerFile from './board/PlayerFile';
 import ForensicSheet from './board/ForensicSheet';
 import GuessNote from './board/GuessNote';
+import WaitingNote from './board/WaitingNote';
 
 import { useI18n } from '../hooks/useI18n';
 import { useMasonryLayout } from '../hooks/useMasonryLayout';
@@ -80,6 +81,10 @@ export default function Board() {
 
   if (!gameState) return null;
 
+  const stillChoosing =
+    !gameState.finished &&
+    (!gameState.murdererChoice || !gameState.forensicAnalysis || gameState.forensicAnalysis.length < 6);
+
   const suspects = gameState.playerOrder
     .map((pid, idx) => ({ id: pid, index: idx, name: gameState.playerNames[pid] }))
     .filter((p) => p.index !== gameState.detective);
@@ -146,6 +151,13 @@ export default function Board() {
             />
           )}
 
+          {stillChoosing && (
+            <WaitingNote
+              subtitle={t('Waiting for all players to submit their picks...')}
+              width={340}
+            />
+          )}
+
           <ForensicSheet
             detectiveName={detectiveName}
             analysis={gameState.analysis}
@@ -188,6 +200,7 @@ export default function Board() {
                     offsetY={offsetY}
                     stamp={gameState.passedTurns?.[player.index] ? t('Passed') : undefined}
                     guessCount={guessCountByPlayer[player.id] || 0}
+                    hasPicked={stillChoosing && !!gameState.playerPicks?.[player.index]}
                   />
                 </Box>
               );

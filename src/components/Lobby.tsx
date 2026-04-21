@@ -9,7 +9,7 @@ import CorkBoard from './board/CorkBoard';
 import CasePolaroid from './board/CasePolaroid';
 import AssigningCaseSheet from './board/AssigningCaseSheet';
 import PlayerFile from './board/PlayerFile';
-import LobbyWaitingNote from './board/LobbyWaitingNote';
+import WaitingNote from './board/WaitingNote';
 
 const CARD_COLUMN_WIDTH = 220;
 const CARD_GAP = 24;
@@ -140,9 +140,15 @@ export default function Lobby() {
             </AnimatePresence>
           </Box>
 
-          <LobbyWaitingNote
-            remaining={Math.max(0, roomState.config.minPlayers - readyPlayers.length)}
-            canStart={canStart}
+          <WaitingNote
+            subtitle={
+              canStart
+                ? t('We can start the game now')
+                : t('Waiting for {n} more…').replace(
+                    '{n}',
+                    String(Math.max(0, roomState.config.minPlayers - readyPlayers.length)),
+                  )
+            }
           />
         </Box>
       </Box>

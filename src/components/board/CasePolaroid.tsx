@@ -85,7 +85,7 @@ export default function CasePolaroid({ roomId, joinUrl, currentRound }: CasePola
             p: 2,
             display: 'flex',
             justifyContent: 'center',
-            '& svg': { width: '100%', maxWidth: 150, height: 'auto', display: 'block' },
+            '& svg': { width: 150, height: 150, display: 'block' },
           }}
         >
           <RoomQRCode roomId={roomId} url={joinUrl} size={150} />

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { motion } from 'motion/react';
 import Pushpin from './Pushpin';
 import { formatDisplayName } from '../../utils/formatDisplayName';
 
@@ -25,6 +26,7 @@ interface PlayerFileProps {
   clues?: string[];
   stamp?: string;
   guessCount?: number;
+  hasPicked?: boolean;
   // lobby-only
   slotLabel?: string;
 }
@@ -40,6 +42,7 @@ export default function PlayerFile({
   offsetY,
   stamp,
   guessCount = 0,
+  hasPicked = false,
   slotLabel,
 }: PlayerFileProps) {
   const tornEdge = useMemo(() => generateTornEdge(), []);
@@ -70,8 +73,8 @@ export default function PlayerFile({
           pb: 4,
         }}
       >
-        {/* Guess count */}
-        {guessCount > 0 && (
+        {/* Guess count (or pick checkmark before guessing) */}
+        {guessCount > 0 ? (
           <Typography
             sx={{
               position: 'absolute',
@@ -85,7 +88,39 @@ export default function PlayerFile({
           >
             {guessCount}x
           </Typography>
-        )}
+        ) : hasPicked ? (
+          <Box
+            component={motion.div}
+            aria-label="submitted"
+            initial={{ scale: 2, rotate: -30, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 14 }}
+            sx={{
+              position: 'absolute',
+              top: 6,
+              right: 8,
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              border: '2px solid var(--evidence-color)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transformOrigin: 'center',
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-script)',
+                fontSize: '1.5rem',
+                lineHeight: 1,
+                color: 'var(--evidence-color)',
+              }}
+            >
+              ✓
+            </Typography>
+          </Box>
+        ) : null}
 
         {/* Name */}
         <Typography

@@ -4,9 +4,9 @@ import { keyframes } from '@emotion/react';
 import Pushpin from './Pushpin';
 import { useI18n } from '../../hooks/useI18n';
 
-interface LobbyWaitingNoteProps {
-  remaining: number;    // minPlayers - readyPlayers.length, clamped to >= 0
-  canStart: boolean;
+interface WaitingNoteProps {
+  subtitle: string;
+  width?: number;
 }
 
 const loadingDrop = keyframes`
@@ -75,19 +75,16 @@ const loadingDrop = keyframes`
     calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
 `;
 
-export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNoteProps) {
+export default function WaitingNote({ subtitle, width = 260 }: WaitingNoteProps) {
   const { t } = useI18n();
 
   const headline = t('Waiting...');
-  const subtitle = canStart
-    ? t('We can start the game now')
-    : t('Waiting for {n} more…').replace('{n}', String(remaining));
 
   return (
     <Box
       sx={{
         position: 'relative',
-        width: 260,
+        width,
         mx: 'auto',
         mt: 4,
         bgcolor: '#f8f6f0',
@@ -115,7 +112,7 @@ export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNo
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           color: 'transparent',
-          animation: `${loadingDrop} 2s infinite`,
+          animation: `${loadingDrop} 3.5s infinite`,
           '@media (prefers-reduced-motion: reduce)': {
             animation: 'none',
             color: 'var(--text-color)',
