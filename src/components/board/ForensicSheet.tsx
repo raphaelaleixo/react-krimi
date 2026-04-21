@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
 import type { AnalysisItem } from '../../data/analysis';
+import { formatDisplayName } from '../../utils/formatDisplayName';
 
 function randomRotation() {
   return Math.floor(3 - Math.random() * 6);
@@ -71,14 +72,20 @@ export default function ForensicSheet({
         <Box sx={{ textAlign: 'center', mb: 2 }}>
           <Typography
             component="span"
+            title={detectiveName}
             sx={{
               fontFamily: 'var(--font-script)',
               fontSize: '1.75em',
               fontWeight: 'bold',
               color: 'var(--weapon-color)',
+              display: 'inline-block',
+              maxWidth: '100%',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
-            {detectiveName}
+            {formatDisplayName(detectiveName)}
           </Typography>
           <Box
             sx={{
