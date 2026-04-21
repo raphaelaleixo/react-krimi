@@ -96,7 +96,7 @@ export function isRolesRevealed(gameState: KrimiGameState): boolean {
   if (!gameState.playerPicks) return false;
   const pickCount = Object.keys(gameState.playerPicks).length;
   const expectedPicks = gameState.playerOrder.length - 1; // forensic doesn't pick
-  return pickCount >= expectedPicks;
+  return pickCount === expectedPicks;
 }
 ```
 
@@ -172,7 +172,7 @@ Find the existing `setMurdererChoice` implementation (around line 194). Add the 
 
     const picks = latest.playerPicks || {};
     const expectedPicks = latest.playerOrder.length - 1;
-    const allPicked = Object.keys(picks).length >= expectedPicks;
+    const allPicked = Object.keys(picks).length === expectedPicks;
     if (allPicked && !latest.murdererChoice) {
       const murdererPick = picks[latest.murderer];
       if (murdererPick) {
