@@ -1,20 +1,8 @@
-import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
+import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
-
-function generateTornEdge() {
-  const points: string[] = ['0% 0%', '100% 0%'];
-  const steps = 30;
-  points.push('100% 97%');
-  for (let i = steps; i >= 0; i--) {
-    const x = (i / steps) * 100;
-    const y = 97 + Math.random() * 2;
-    points.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
-  }
-  return `polygon(${points.join(', ')})`;
-}
 
 export interface PlayerFolderProps {
   playerName: string;
@@ -28,8 +16,9 @@ export interface PlayerFolderProps {
   stamp?: string | null;
 }
 
-const WEAPON_COLOR = 'var(--weapon-color)';
-const EVIDENCE_COLOR = 'var(--evidence-color)';
+const MANILA_BODY = '#d4b87d';
+const MANILA_EDGE = '#a88e5a';
+const MANILA_INNER_FOLD = 'rgba(0, 0, 0, 0.08)';
 
 export default function PlayerFolder({
   playerName,
@@ -42,7 +31,7 @@ export default function PlayerFolder({
   onSelectKey,
   stamp,
 }: PlayerFolderProps) {
-  const tornEdge = useMemo(() => generateTornEdge(), []);
+  const { t } = useI18n();
   const isSelect = mode === 'select';
 
   const renderLine = (
@@ -50,7 +39,6 @@ export default function PlayerFolder({
     kind: 'mean' | 'clue',
     isSelected: boolean,
   ) => {
-    const color = kind === 'mean' ? WEAPON_COLOR : EVIDENCE_COLOR;
     const handleClick = () => {
       if (kind === 'mean') onSelectMean?.(text);
       else onSelectKey?.(text);
@@ -60,11 +48,9 @@ export default function PlayerFolder({
           component: 'button' as const,
           type: 'button' as const,
           onClick: handleClick,
-          disabled: false,
         }
-      : {
-          component: 'div' as const,
-        };
+      : { component: 'div' as const };
+
     return (
       <Box
         key={`${kind}-${text}`}
@@ -77,7 +63,7 @@ export default function PlayerFolder({
           background: 'transparent',
           p: 0,
           m: 0,
-          mb: 0.5,
+          mb: 0.25,
           cursor: isSelect ? 'pointer' : 'default',
           font: 'inherit',
           textAlign: 'left',
@@ -87,13 +73,9 @@ export default function PlayerFolder({
           sx={{
             fontFamily: 'var(--font-typewriter)',
             fontSize: '1rem',
-            fontWeight: 'bold',
             color: 'var(--text-color)',
-            lineHeight: 1.4,
+            lineHeight: 1.5,
             px: 0.5,
-            background: `linear-gradient(color-mix(in srgb, ${color} 20%, transparent), color-mix(in srgb, ${color} 20%, transparent)) no-repeat`,
-            backgroundSize: '100% 85%',
-            backgroundPosition: '0 60%',
           }}
         >
           {text}
@@ -103,10 +85,10 @@ export default function PlayerFolder({
             aria-hidden
             sx={{
               position: 'absolute',
-              top: '-15%',
-              left: '-8%',
-              width: '116%',
-              height: '130%',
+              top: '-10%',
+              left: '-6%',
+              width: '112%',
+              height: '120%',
               pointerEvents: 'none',
               border: '2.5px solid var(--evidence-color)',
               borderRadius: '55% 45% 52% 48% / 60% 40% 60% 40%',
@@ -119,42 +101,105 @@ export default function PlayerFolder({
     );
   };
 
-  return (
-    <Box sx={{ position: 'relative', width: '100%', maxWidth: 360, mx: 'auto' }}>
-      <Pushpin />
-      <Box
+  const renderSection = (
+    label: string,
+    items: string[],
+    kind: 'mean' | 'clue',
+    selected: string | null | undefined,
+    color: string,
+  ) => (
+    <Box sx={{ mb: kind === 'mean' ? 2 : 0 }}>
+      <Typography
         sx={{
-          background: `#f8f6f0 repeating-linear-gradient(transparent, transparent 23px, #e8e4da 23px, #e8e4da 24px) 0 36px`,
-          px: 2.5,
-          pt: 2,
-          pb: 4,
-          boxShadow: '0 3px 10px rgba(0,0,0,0.25)',
-          position: 'relative',
-          borderLeft: '2px solid rgba(220, 80, 80, 0.3)',
-          clipPath: tornEdge,
+          fontFamily: 'var(--font-typewriter)',
+          fontSize: '0.7rem',
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          letterSpacing: '3px',
+          color,
+          borderBottom: '1px solid rgba(0, 0, 0, 0.35)',
+          pb: 0.25,
+          mb: 1,
         }}
       >
+        {label}
+      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        {items.map((item) => renderLine(item, kind, selected === item))}
+      </Box>
+    </Box>
+  );
+
+  return (
+    <Box sx={{ position: 'relative', width: '100%', maxWidth: 360, mx: 'auto' }}>
+      {/* Tab */}
+      <Box
+        sx={{
+          position: 'relative',
+          width: 170,
+          height: 34,
+          mx: 'auto',
+          bgcolor: MANILA_BODY,
+          borderRadius: '4px 4px 0 0',
+          borderTop: `1px solid ${MANILA_EDGE}`,
+          borderLeft: `1px solid ${MANILA_EDGE}`,
+          borderRight: `1px solid ${MANILA_EDGE}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
+          zIndex: 1,
+        }}
+      >
+        <Pushpin />
         <Typography
           title={playerName}
           sx={{
-            fontFamily: 'var(--font-script)',
-            fontSize: '1.75rem',
+            fontFamily: 'var(--font-typewriter)',
+            fontSize: '0.85rem',
             fontWeight: 'bold',
+            textTransform: 'uppercase',
+            letterSpacing: '2px',
             color: 'var(--text-color)',
-            lineHeight: 1,
-            mb: 1.5,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            px: 1.5,
+            mt: 0.25,
           }}
         >
           {formatDisplayName(playerName)}
         </Typography>
+      </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          {means.map((m) => renderLine(m, 'mean', selectedMean === m))}
-          {clues.map((c) => renderLine(c, 'clue', selectedKey === c))}
-        </Box>
+      {/* Folder body */}
+      <Box
+        sx={{
+          position: 'relative',
+          bgcolor: MANILA_BODY,
+          border: `1px solid ${MANILA_EDGE}`,
+          borderRadius: '2px',
+          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
+          px: 3,
+          py: 2.5,
+        }}
+      >
+        {/* Subtle fold line near top (folder crease) */}
+        <Box
+          aria-hidden
+          sx={{
+            position: 'absolute',
+            top: 6,
+            left: 12,
+            right: 12,
+            height: 0,
+            borderTop: `1px solid ${MANILA_INNER_FOLD}`,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {renderSection(t('Means'), means, 'mean', selectedMean, 'var(--weapon-color)')}
+        {renderSection(t('Key evidence'), clues, 'clue', selectedKey, 'var(--evidence-color)')}
 
         {stamp && (
           <Box
@@ -164,7 +209,7 @@ export default function PlayerFolder({
               left: '50%',
               transform: 'translate(-50%, -50%) rotate(-15deg)',
               zIndex: 2,
-              border: '3px solid rgba(0, 0, 0, 0.3)',
+              border: '3px solid rgba(0, 0, 0, 0.35)',
               borderRadius: '4px',
               px: 1.5,
               py: 0.5,
@@ -177,7 +222,7 @@ export default function PlayerFolder({
                 fontSize: '1.4rem',
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
-                color: 'rgba(0, 0, 0, 0.35)',
+                color: 'rgba(0, 0, 0, 0.4)',
                 letterSpacing: '2px',
                 whiteSpace: 'nowrap',
               }}

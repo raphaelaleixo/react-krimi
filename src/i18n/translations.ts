@@ -148,4 +148,6 @@ export const translations: Record<string, string> = {
   'SUBMITTED': 'ENVIADO',
   'Private Detective': 'Detetive Particular',
   'The Murderer': 'O Assassino',
+  'Means': 'Causa',
+  'Key evidence': 'Evidência principal',
 };
