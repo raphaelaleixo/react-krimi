@@ -106,23 +106,31 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           clues={playerClues}
           mode="display"
           stamp={hasPassed ? t('Passed') : null}
+          footer={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <StampButton
+                variant="text"
+                onClick={handlePassTurn}
+                disabled={!!disableActions}
+              >
+                {t('Pass turn')}
+              </StampButton>
+              <StampButton
+                onClick={() => setSolveSheet(true)}
+                disabled={!!disableActions}
+              >
+                {t('Solve')}
+              </StampButton>
+            </Box>
+          }
         />
-
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <StampButton
-            variant="text"
-            onClick={handlePassTurn}
-            disabled={!!disableActions}
-          >
-            {t('Pass turn')}
-          </StampButton>
-          <StampButton
-            onClick={() => setSolveSheet(true)}
-            disabled={!!disableActions}
-          >
-            {t('Solve')}
-          </StampButton>
-        </Box>
       </Box>
 
       {/* Solve crime drawer — unchanged from previous implementation */}
