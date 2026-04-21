@@ -88,6 +88,8 @@ export default function AssigningCaseSheet({
 
         {/* Counter */}
         <Typography
+          id="assigning-case-counter"
+          aria-live="polite"
           sx={{
             fontFamily: 'var(--font-typewriter)',
             fontSize: '1rem',
@@ -101,7 +103,12 @@ export default function AssigningCaseSheet({
 
         {/* Start button */}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <StampButton variant="primary" disabled={!canStart} onClick={onStart}>
+          <StampButton
+            variant="primary"
+            disabled={!canStart}
+            onClick={onStart}
+            aria-describedby={!canStart ? 'assigning-case-counter' : undefined}
+          >
             {t('Start investigation')}
           </StampButton>
         </Box>

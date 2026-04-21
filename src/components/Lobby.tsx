@@ -10,7 +10,6 @@ import CasePolaroid from './board/CasePolaroid';
 import AssigningCaseSheet from './board/AssigningCaseSheet';
 import PolaroidCard from './board/PolaroidCard';
 
-const MAX_PLAYERS = 12;
 const CARD_COLUMN_WIDTH = 220;
 const CARD_GAP = 24;
 
@@ -77,7 +76,7 @@ export default function Lobby() {
           <AssigningCaseSheet
             detectiveName={detectiveName}
             count={readyPlayers.length}
-            maxCount={MAX_PLAYERS}
+            maxCount={roomState.config.maxPlayers}
             canStart={canStart}
             onStart={() => startTheGame(activeDetective)}
           />
