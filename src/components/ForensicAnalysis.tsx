@@ -13,6 +13,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
+import { isRolesRevealed } from '../utils/rules';
 import type { KrimiGameState } from '../types';
 
 interface ForensicAnalysisProps {
@@ -61,14 +62,11 @@ export default function ForensicAnalysis({ gameState, playerId }: ForensicAnalys
             {playerName}
           </Typography>
 
-          {!gameState.murdererChoice ? (
+          {!isRolesRevealed(gameState) ? (
             <Card>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2 }}>
-                  {t('The murderer is')}: <strong>{murderer.name}</strong>
-                </Typography>
                 <Typography variant="body1">
-                  {t('Waiting for the murderer to choose...')}
+                  {t('Waiting for all players to submit their picks...')}
                 </Typography>
               </CardContent>
             </Card>
@@ -83,7 +81,7 @@ export default function ForensicAnalysis({ gameState, playerId }: ForensicAnalys
                 </Typography>
                 <Box sx={{ mb: 2 }}>
                   <Chip
-                    label={gameState.murdererChoice.mean}
+                    label={gameState.murdererChoice?.mean ?? ''}
                     size="small"
                     sx={{ bgcolor: '#bbdefb' }}
                   />
@@ -93,7 +91,7 @@ export default function ForensicAnalysis({ gameState, playerId }: ForensicAnalys
                 </Typography>
                 <Box>
                   <Chip
-                    label={gameState.murdererChoice.key}
+                    label={gameState.murdererChoice?.key ?? ''}
                     size="small"
                     sx={{ bgcolor: '#ffcdd2' }}
                   />
