@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { DirectionalLink as RouterLink } from '../router/DirectionalLink';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';

@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
-import { useNavigate, useParams, Link as RouterLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { DirectionalLink as RouterLink } from '../router/DirectionalLink';
+import { useDirectionalNavigate } from '../router/useDirectionalNavigate';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -12,7 +14,7 @@ import PinnedNote from '../components/board/PinnedNote';
 import StampButton from '../components/board/StampButton';
 
 export default function PlayerJoin() {
-  const navigate = useNavigate();
+  const navigate = useDirectionalNavigate();
   const { id: roomId = '' } = useParams<{ id: string }>();
   const { joinRoom } = useGame();
   const { t } = useI18n();

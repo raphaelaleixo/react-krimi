@@ -1,5 +1,6 @@
 import { useState, useCallback, type FormEvent } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { DirectionalLink as RouterLink } from '../router/DirectionalLink';
+import { useDirectionalNavigate } from '../router/useDirectionalNavigate';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -17,7 +18,7 @@ import StampButton from '../components/board/StampButton';
 type SubmittingRole = 'host' | 'player' | null;
 
 export default function Join() {
-  const navigate = useNavigate();
+  const navigate = useDirectionalNavigate();
   const { t } = useI18n();
 
   const [code, setCode] = useState('');

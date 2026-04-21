@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { DirectionalLink as RouterLink } from "../router/DirectionalLink";
+import { useDirectionalNavigate } from "../router/useDirectionalNavigate";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -15,7 +16,7 @@ import logo from "../assets/logo.svg";
 import ludoratory from "../assets/ludoratory.svg";
 
 export default function Home() {
-  const navigate = useNavigate();
+  const navigate = useDirectionalNavigate();
   const { createRoom } = useGame();
   const { t, lang, setLang } = useI18n();
   const [hostWarningOpen, setHostWarningOpen] = useState(false);

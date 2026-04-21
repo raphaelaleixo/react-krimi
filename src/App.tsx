@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import krimiTheme from './theme/theme';
@@ -14,6 +14,17 @@ import HowToPlay from './pages/HowToPlay';
 import PlayerJoin from './pages/PlayerJoin';
 import RejoinPlayers from './pages/RejoinPlayers';
 
+const router = createBrowserRouter([
+  { path: '/', element: <Home /> },
+  { path: '/join', element: <Join /> },
+  { path: '/room/:id', element: <Room /> },
+  { path: '/room/:id/player', element: <PlayerJoin /> },
+  { path: '/room/:id/player/:playerId', element: <Player /> },
+  { path: '/room/:id/players', element: <RejoinPlayers /> },
+  { path: '/how-to-play', element: <HowToPlay /> },
+  { path: '/mock', element: <MockBoard /> },
+]);
+
 export default function App() {
   return (
     <ThemeProvider theme={krimiTheme}>
@@ -21,18 +32,7 @@ export default function App() {
       <GlobalStyles />
       <I18nProvider>
         <GameProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/join" element={<Join />} />
-              <Route path="/room/:id" element={<Room />} />
-              <Route path="/room/:id/player" element={<PlayerJoin />} />
-              <Route path="/room/:id/player/:playerId" element={<Player />} />
-              <Route path="/room/:id/players" element={<RejoinPlayers />} />
-              <Route path="/how-to-play" element={<HowToPlay />} />
-              <Route path="/mock" element={<MockBoard />} />
-            </Routes>
-          </BrowserRouter>
+          <RouterProvider router={router} />
         </GameProvider>
       </I18nProvider>
     </ThemeProvider>
