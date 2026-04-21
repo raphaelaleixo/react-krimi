@@ -52,16 +52,23 @@ export default function PlayerFolder({
   ) => {
     const color = kind === 'mean' ? WEAPON_COLOR : EVIDENCE_COLOR;
     const handleClick = () => {
-      if (!isSelect) return;
       if (kind === 'mean') onSelectMean?.(text);
       else onSelectKey?.(text);
     };
+    const interactiveProps = isSelect
+      ? {
+          component: 'button' as const,
+          type: 'button' as const,
+          onClick: handleClick,
+          disabled: false,
+        }
+      : {
+          component: 'div' as const,
+        };
     return (
       <Box
         key={`${kind}-${text}`}
-        component={isSelect ? 'button' : 'div'}
-        onClick={handleClick}
-        disabled={!isSelect || undefined}
+        {...interactiveProps}
         sx={{
           position: 'relative',
           display: 'inline-block',
