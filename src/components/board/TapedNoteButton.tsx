@@ -67,7 +67,7 @@ const TapedNoteButton = forwardRef<HTMLButtonElement, TapedNoteButtonProps>(
           },
           "& .tnb-tape": {
             position: "absolute",
-            top: -14,
+            top: isIcon ? -8 : -14,
             left: "50%",
             transform: "translateX(-50%)",
             width: isIcon ? "2.2em" : "4em",
