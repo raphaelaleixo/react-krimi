@@ -114,13 +114,13 @@ export default function PlayerFolder({
       <Typography
         sx={{
           fontFamily: 'var(--font-typewriter)',
-          fontSize: '0.7rem',
+          fontSize: '0.95rem',
           fontWeight: 'bold',
           textTransform: 'uppercase',
           letterSpacing: '3px',
           color,
           borderBottom: '1px solid rgba(0, 0, 0, 0.35)',
-          pb: 0.25,
+          pb: 0.5,
           mb: 1,
         }}
       >
