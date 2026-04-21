@@ -4,6 +4,7 @@ import Pushpin from './Pushpin';
 import StampButton from './StampButton';
 import TapedNoteButton from './TapedNoteButton';
 import { useI18n } from '../../hooks/useI18n';
+import { formatDisplayName } from '../../utils/formatDisplayName';
 
 interface AssigningCaseSheetProps {
   detectiveName: string | undefined;
@@ -78,9 +79,10 @@ export default function AssigningCaseSheet({
               ‹
             </TapedNoteButton>
 
-            <Box sx={{ minWidth: 140 }}>
+            <Box sx={{ minWidth: 140, maxWidth: '100%', overflow: 'hidden' }}>
               <Typography
                 component="span"
+                title={detectiveName ?? ''}
                 sx={{
                   fontFamily: 'var(--font-script)',
                   fontSize: '1.75em',
@@ -88,9 +90,13 @@ export default function AssigningCaseSheet({
                   color: 'var(--evidence-color)',
                   minHeight: '1.75em',
                   display: 'inline-block',
+                  maxWidth: '100%',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
-                {detectiveName ?? '\u00A0'}
+                {detectiveName ? formatDisplayName(detectiveName) : '\u00A0'}
               </Typography>
               <Box
                 sx={{
