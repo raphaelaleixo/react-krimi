@@ -132,4 +132,9 @@ export const translations: Record<string, string> = {
 
   'Investigators win if someone correctly names the Murderer\'s means {bold}and{/bold} key. The Murderer wins if the group runs out of rounds without a correct guess, or if all incorrect guesses are used up.':
     'Os Investigadores vencem se alguém disser corretamente a causa {bold}e{/bold} a evidência principal do Assassino. O Assassino vence se as rodadas acabarem sem um palpite correto, ou se todos os palpites errados forem gastos.',
+
+  // Lobby loading state — added 2026-04-21
+  'Waiting...': 'Aguarde...',
+  'Waiting for {n} more…': 'Aguardando mais {n}…',
+  'We can start the game now': 'Podemos começar o jogo',
 };
