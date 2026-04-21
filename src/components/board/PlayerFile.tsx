@@ -107,30 +107,44 @@ export default function PlayerFile({
         </Typography>
 
         {hasGameBody && (
-          <>
-            <Typography
-              sx={{
-                fontFamily: 'var(--font-typewriter)',
-                fontSize: '0.95rem',
-                fontWeight: 'bold',
-                color: WEAPON_COLOR,
-                lineHeight: 1.6,
-              }}
-            >
-              {means!.join(', ')}
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: 'var(--font-typewriter)',
-                fontSize: '0.95rem',
-                fontWeight: 'bold',
-                color: EVIDENCE_COLOR,
-                lineHeight: 1.6,
-              }}
-            >
-              {clues!.join(', ')}
-            </Typography>
-          </>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            {means!.map((m, i) => (
+              <Typography
+                key={`m-${i}`}
+                sx={{
+                  fontFamily: 'var(--font-typewriter)',
+                  fontSize: '0.95rem',
+                  fontWeight: 'bold',
+                  color: 'var(--text-color)',
+                  lineHeight: 1.4,
+                  px: 0.5,
+                  background: `linear-gradient(color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent), color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent)) no-repeat`,
+                  backgroundSize: '100% 85%',
+                  backgroundPosition: '0 60%',
+                }}
+              >
+                {m}
+              </Typography>
+            ))}
+            {clues!.map((c, i) => (
+              <Typography
+                key={`c-${i}`}
+                sx={{
+                  fontFamily: 'var(--font-typewriter)',
+                  fontSize: '0.95rem',
+                  fontWeight: 'bold',
+                  color: 'var(--text-color)',
+                  lineHeight: 1.4,
+                  px: 0.5,
+                  background: `linear-gradient(color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent), color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent)) no-repeat`,
+                  backgroundSize: '100% 85%',
+                  backgroundPosition: '0 60%',
+                }}
+              >
+                {c}
+              </Typography>
+            ))}
+          </Box>
         )}
 
         {hasLobbyBody && !hasGameBody && (
