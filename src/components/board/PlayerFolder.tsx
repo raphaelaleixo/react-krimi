@@ -141,7 +141,7 @@ export default function PlayerFolder({
           width: 210,
           height: 40,
           mx: 'auto',
-          bgcolor: MANILA_BODY,
+          bgcolor: '#f8f6f0',
           borderRadius: '6px 6px 0 0',
           borderTop: `1px solid ${MANILA_EDGE}`,
           borderLeft: `1px solid ${MANILA_EDGE}`,
