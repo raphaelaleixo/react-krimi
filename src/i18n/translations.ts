@@ -59,13 +59,19 @@ export const translations: Record<string, string> = {
   'Forensic Scientist': 'Cientista Forense',
   'Case': 'Caso',
 
-  // MurdererChoice
+  // PickPhase
+  'If you were the murderer, which cards would you want found at the scene?':
+    'Se você fosse o assassino, quais cartas você gostaria que fossem encontradas na cena do crime?',
   'Select your means of murder:': 'Selecione sua causa de morte:',
   'Select your key evidence:': 'Selecione sua evidência principal:',
-  'Send choice': 'Enviar escolha',
+  'Submit pick': 'Enviar escolha',
+  'Waiting for other players to submit their picks...':
+    'Esperando os outros jogadores enviarem suas escolhas...',
+  'Your locked pick': 'Sua escolha (travada)',
 
   // ForensicAnalysis
-  'Waiting for the murderer to choose...': 'Esperando o assassino escolher...',
+  'Waiting for all players to submit their picks...':
+    'Esperando todos os jogadores enviarem suas escolhas...',
   'The murderer is': 'O assassino é',
   'Means of murder:': 'Causa da morte:',
   'Key evidence:': 'Evidência principal:',
