@@ -11,68 +11,68 @@ interface LobbyWaitingNoteProps {
 
 const loadingDrop = keyframes`
   0% { text-shadow:
-    calc( 0 * var(--w)) -1.2em currentColor, calc(-1 * var(--w)) -1.2em currentColor, calc(-2 * var(--w)) -1.2em currentColor, calc(-3 * var(--w)) -1.2em currentColor, calc(-4 * var(--w)) -1.2em currentColor,
-    calc(-5 * var(--w)) -1.2em currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) -1.2em var(--text-color), calc(-1 * var(--w)) -1.2em var(--text-color), calc(-2 * var(--w)) -1.2em var(--text-color), calc(-3 * var(--w)) -1.2em var(--text-color), calc(-4 * var(--w)) -1.2em var(--text-color),
+    calc(-5 * var(--w)) -1.2em var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   4% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) -1.2em currentColor, calc(-2 * var(--w)) -1.2em currentColor, calc(-3 * var(--w)) -1.2em currentColor, calc(-4 * var(--w)) -1.2em currentColor,
-    calc(-5 * var(--w)) -1.2em currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) -1.2em var(--text-color), calc(-2 * var(--w)) -1.2em var(--text-color), calc(-3 * var(--w)) -1.2em var(--text-color), calc(-4 * var(--w)) -1.2em var(--text-color),
+    calc(-5 * var(--w)) -1.2em var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   8% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) -1.2em currentColor, calc(-3 * var(--w)) -1.2em currentColor, calc(-4 * var(--w)) -1.2em currentColor,
-    calc(-5 * var(--w)) -1.2em currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) -1.2em var(--text-color), calc(-3 * var(--w)) -1.2em var(--text-color), calc(-4 * var(--w)) -1.2em var(--text-color),
+    calc(-5 * var(--w)) -1.2em var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   12% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) -1.2em currentColor, calc(-4 * var(--w)) -1.2em currentColor,
-    calc(-5 * var(--w)) -1.2em currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) -1.2em var(--text-color), calc(-4 * var(--w)) -1.2em var(--text-color),
+    calc(-5 * var(--w)) -1.2em var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   16% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) -1.2em currentColor,
-    calc(-5 * var(--w)) -1.2em currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) -1.2em var(--text-color),
+    calc(-5 * var(--w)) -1.2em var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   20% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) -1.2em currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) -1.2em var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   24% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) -1.2em currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) -1.2em var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   28% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) -1.2em currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) -1.2em var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   32% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) 0 currentColor, calc(-8 * var(--w)) -1.2em currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) 0 var(--text-color), calc(-8 * var(--w)) -1.2em var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   36% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) 0 currentColor, calc(-8 * var(--w)) 0 currentColor, calc(-9 * var(--w)) -1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) 0 var(--text-color), calc(-8 * var(--w)) 0 var(--text-color), calc(-9 * var(--w)) -1.2em var(--text-color); }
   40%, 60% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) 0 currentColor, calc(-8 * var(--w)) 0 currentColor, calc(-9 * var(--w)) 0 currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) 0 var(--text-color), calc(-8 * var(--w)) 0 var(--text-color), calc(-9 * var(--w)) 0 var(--text-color); }
   64% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) 0 currentColor, calc(-8 * var(--w)) 0 currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) 0 var(--text-color), calc(-8 * var(--w)) 0 var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   68% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) 0 currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) 0 var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   72% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 0 currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 0 var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   76% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 0 currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 0 var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   80% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 0 currentColor,
-    calc(-5 * var(--w)) 1.2em currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 0 var(--text-color),
+    calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   84% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 0 currentColor, calc(-4 * var(--w)) 1.2em currentColor,
-    calc(-5 * var(--w)) 1.2em currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 0 var(--text-color), calc(-4 * var(--w)) 1.2em var(--text-color),
+    calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   88% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 0 currentColor, calc(-3 * var(--w)) 1.2em currentColor, calc(-4 * var(--w)) 1.2em currentColor,
-    calc(-5 * var(--w)) 1.2em currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 0 var(--text-color), calc(-3 * var(--w)) 1.2em var(--text-color), calc(-4 * var(--w)) 1.2em var(--text-color),
+    calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   92% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 0 currentColor, calc(-2 * var(--w)) 1.2em currentColor, calc(-3 * var(--w)) 1.2em currentColor, calc(-4 * var(--w)) 1.2em currentColor,
-    calc(-5 * var(--w)) 1.2em currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 0 var(--text-color), calc(-2 * var(--w)) 1.2em var(--text-color), calc(-3 * var(--w)) 1.2em var(--text-color), calc(-4 * var(--w)) 1.2em var(--text-color),
+    calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   96% { text-shadow:
-    calc( 0 * var(--w)) 0 currentColor, calc(-1 * var(--w)) 1.2em currentColor, calc(-2 * var(--w)) 1.2em currentColor, calc(-3 * var(--w)) 1.2em currentColor, calc(-4 * var(--w)) 1.2em currentColor,
-    calc(-5 * var(--w)) 1.2em currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 0 var(--text-color), calc(-1 * var(--w)) 1.2em var(--text-color), calc(-2 * var(--w)) 1.2em var(--text-color), calc(-3 * var(--w)) 1.2em var(--text-color), calc(-4 * var(--w)) 1.2em var(--text-color),
+    calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
   100% { text-shadow:
-    calc( 0 * var(--w)) 1.2em currentColor, calc(-1 * var(--w)) 1.2em currentColor, calc(-2 * var(--w)) 1.2em currentColor, calc(-3 * var(--w)) 1.2em currentColor, calc(-4 * var(--w)) 1.2em currentColor,
-    calc(-5 * var(--w)) 1.2em currentColor, calc(-6 * var(--w)) 1.2em currentColor, calc(-7 * var(--w)) 1.2em currentColor, calc(-8 * var(--w)) 1.2em currentColor, calc(-9 * var(--w)) 1.2em currentColor; }
+    calc( 0 * var(--w)) 1.2em var(--text-color), calc(-1 * var(--w)) 1.2em var(--text-color), calc(-2 * var(--w)) 1.2em var(--text-color), calc(-3 * var(--w)) 1.2em var(--text-color), calc(-4 * var(--w)) 1.2em var(--text-color),
+    calc(-5 * var(--w)) 1.2em var(--text-color), calc(-6 * var(--w)) 1.2em var(--text-color), calc(-7 * var(--w)) 1.2em var(--text-color), calc(-8 * var(--w)) 1.2em var(--text-color), calc(-9 * var(--w)) 1.2em var(--text-color); }
 `;
 
 export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNoteProps) {
@@ -116,6 +116,9 @@ export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNo
           whiteSpace: 'nowrap',
           color: 'transparent',
           animation: `${loadingDrop} 2s infinite`,
+          '@media (prefers-reduced-motion: reduce)': {
+            animation: 'none',
+          },
           '&::before': {
             content: 'attr(data-text)',
           },
