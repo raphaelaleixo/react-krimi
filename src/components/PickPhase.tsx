@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import CheckIcon from '@mui/icons-material/Check';
+import Typography from '@mui/material/Typography';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
+import CorkBoard from './board/CorkBoard';
+import PlayerFolder from './board/PlayerFolder';
+import WaitingNote from './board/WaitingNote';
+import Pushpin from './board/Pushpin';
+import StampButton from './board/StampButton';
 import type { KrimiGameState } from '../types';
 
 interface PickPhaseProps {
@@ -25,10 +23,10 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
   const existingPick = gameState.playerPicks?.[playerOrderIndex];
 
   const [selectedMean, setSelectedMean] = useState<string | null>(
-    existingPick?.mean ?? null
+    existingPick?.mean ?? null,
   );
   const [selectedKey, setSelectedKey] = useState<string | null>(
-    existingPick?.key ?? null
+    existingPick?.key ?? null,
   );
   const [submitting, setSubmitting] = useState(false);
 
@@ -36,11 +34,11 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
 
   const playerMeans = gameState.means.slice(
     playerOrderIndex * 4,
-    playerOrderIndex * 4 + 4
+    playerOrderIndex * 4 + 4,
   );
   const playerClues = gameState.clues.slice(
     playerOrderIndex * 4,
-    playerOrderIndex * 4 + 4
+    playerOrderIndex * 4 + 4,
   );
 
   const playerName = gameState.playerNames[playerId] || `Player ${playerId}`;
@@ -56,77 +54,69 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
   };
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Grid container spacing={4}>
-        <Grid size={{ xs: 12, md: 8 }} sx={{ mx: 'auto' }}>
-          <Typography variant="h2" sx={{ mb: 4 }}>
-            {playerName}
+    <CorkBoard>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 4,
+          px: 2,
+          py: 5,
+          width: '100%',
+          maxWidth: 480,
+          mx: 'auto',
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            width: '100%',
+            bgcolor: '#f8f6f0',
+            boxShadow: '0 3px 10px rgba(0,0,0,0.2)',
+            px: 3,
+            py: 2.5,
+          }}
+        >
+          <Pushpin color="#4a7c59" />
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '1rem',
+              lineHeight: 1.4,
+              color: 'var(--text-color)',
+              textAlign: 'center',
+            }}
+          >
+            {t('If you were the murderer, which cards would you want found at the scene?')}
           </Typography>
-          <Card>
-            <CardContent>
-              {submitted ? (
-                <Typography variant="body1">
-                  {t('Waiting for other players to submit their picks...')}
-                </Typography>
-              ) : (
-                <>
-                  <Typography variant="body1" sx={{ mb: 3 }}>
-                    {t('If you were the murderer, which cards would you want found at the scene?')}
-                  </Typography>
+        </Box>
 
-                  <Typography variant="body2" sx={{ mb: 1 }}>
-                    {t('Select your means of murder:')}
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-                    {playerMeans.map((mean) => (
-                      <Chip
-                        key={mean}
-                        label={mean}
-                        size="small"
-                        icon={selectedMean === mean ? <CheckIcon /> : undefined}
-                        onClick={() => setSelectedMean(mean)}
-                        sx={{
-                          bgcolor: selectedMean === mean ? '#90caf9' : '#bbdefb',
-                          opacity: 1,
-                          cursor: 'pointer',
-                        }}
-                      />
-                    ))}
-                  </Box>
+        <PlayerFolder
+          playerName={playerName}
+          means={playerMeans}
+          clues={playerClues}
+          mode={submitted ? 'display' : 'select'}
+          selectedMean={selectedMean}
+          selectedKey={selectedKey}
+          onSelectMean={setSelectedMean}
+          onSelectKey={setSelectedKey}
+          stamp={submitted ? t('SUBMITTED') : null}
+        />
 
-                  <Typography variant="body2" sx={{ mb: 1 }}>
-                    {t('Select your key evidence:')}
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-                    {playerClues.map((clue) => (
-                      <Chip
-                        key={clue}
-                        label={clue}
-                        size="small"
-                        icon={selectedKey === clue ? <CheckIcon /> : undefined}
-                        onClick={() => setSelectedKey(clue)}
-                        sx={{
-                          bgcolor: selectedKey === clue ? '#ef9a9a' : '#ffcdd2',
-                          opacity: 1,
-                          cursor: 'pointer',
-                        }}
-                      />
-                    ))}
-                  </Box>
-
-                  <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    disabled={!selectedMean || !selectedKey || submitting}
-                  >
-                    {t('Submit pick')}
-                  </Button>
-                </>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Container>
+        {submitted ? (
+          <WaitingNote
+            subtitle={t('Waiting for other players to submit their picks...')}
+          />
+        ) : (
+          <StampButton
+            onClick={handleSubmit}
+            disabled={!selectedMean || !selectedKey || submitting}
+          >
+            {t('Submit pick')}
+          </StampButton>
+        )}
+      </Box>
+    </CorkBoard>
   );
 }
