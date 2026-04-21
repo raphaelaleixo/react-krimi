@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Pushpin from './Pushpin';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
 
@@ -14,6 +14,7 @@ export interface PlayerFolderProps {
   onSelectMean?: (mean: string) => void;
   onSelectKey?: (key: string) => void;
   stamp?: string | null;
+  footer?: ReactNode;
 }
 
 const MANILA_BODY = '#d4b87d';
@@ -30,6 +31,7 @@ export default function PlayerFolder({
   onSelectMean,
   onSelectKey,
   stamp,
+  footer,
 }: PlayerFolderProps) {
   const { t } = useI18n();
   const isSelect = mode === 'select';
@@ -136,11 +138,11 @@ export default function PlayerFolder({
       <Box
         sx={{
           position: 'relative',
-          width: 170,
-          height: 34,
+          width: 210,
+          height: 40,
           mx: 'auto',
           bgcolor: MANILA_BODY,
-          borderRadius: '4px 4px 0 0',
+          borderRadius: '6px 6px 0 0',
           borderTop: `1px solid ${MANILA_EDGE}`,
           borderLeft: `1px solid ${MANILA_EDGE}`,
           borderRight: `1px solid ${MANILA_EDGE}`,
@@ -151,12 +153,11 @@ export default function PlayerFolder({
           zIndex: 1,
         }}
       >
-        <Pushpin />
         <Typography
           title={playerName}
           sx={{
             fontFamily: 'var(--font-typewriter)',
-            fontSize: '0.85rem',
+            fontSize: '0.95rem',
             fontWeight: 'bold',
             textTransform: 'uppercase',
             letterSpacing: '2px',
@@ -164,8 +165,7 @@ export default function PlayerFolder({
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            px: 1.5,
-            mt: 0.25,
+            px: 2,
           }}
         >
           {formatDisplayName(playerName)}
@@ -200,6 +200,8 @@ export default function PlayerFolder({
 
         {renderSection(t('Means'), means, 'mean', selectedMean, 'var(--weapon-color)')}
         {renderSection(t('Key evidence'), clues, 'clue', selectedKey, 'var(--evidence-color)')}
+
+        {footer && <Box sx={{ mt: 2 }}>{footer}</Box>}
 
         {stamp && (
           <Box
