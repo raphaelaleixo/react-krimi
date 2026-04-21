@@ -77,7 +77,7 @@ export default function ForensicSheet({
               fontFamily: 'var(--font-script)',
               fontSize: '1.75em',
               fontWeight: 'bold',
-              color: 'var(--weapon-color)',
+              color: 'var(--evidence-color)',
               display: 'inline-block',
               maxWidth: '100%',
               whiteSpace: 'nowrap',
