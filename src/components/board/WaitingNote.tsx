@@ -6,7 +6,7 @@ import { useI18n } from '../../hooks/useI18n';
 
 interface WaitingNoteProps {
   subtitle: string;
-  width?: number;
+  width?: number | string;
 }
 
 const loadingDrop = keyframes`

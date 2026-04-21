@@ -156,6 +156,7 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
             {submitted ? (
               <motion.div
                 key="waiting"
+                style={{ width: '100%' }}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
@@ -163,6 +164,7 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
               >
                 <WaitingNote
                   subtitle={t('Waiting for other players to submit their picks...')}
+                  width="100%"
                 />
               </motion.div>
             ) : (
