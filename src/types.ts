@@ -21,6 +21,7 @@ export interface KrimiGameState {
   analysis: AnalysisItem[];
   forensicAnalysis?: string[];
   murdererChoice?: { mean: string; key: string };
+  playerPicks?: Record<number, { mean: string; key: string }>;
   passedTurns?: boolean[];
   guesses?: (GuessData | false)[];
   round: number;
