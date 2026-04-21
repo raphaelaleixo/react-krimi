@@ -1,22 +1,24 @@
 import { useState, useMemo } from 'react';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import Button from '@mui/material/Button';
 import CheckIcon from '@mui/icons-material/Check';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
+import CorkBoard from './board/CorkBoard';
+import RoleCard from './board/RoleCard';
+import PlayerFolder from './board/PlayerFolder';
+import StampButton from './board/StampButton';
 import type { KrimiGameState } from '../types';
 
 interface DetectiveProps {
@@ -28,7 +30,6 @@ interface DetectiveProps {
 export default function Detective({ gameState, playerId, playerOrderIndex }: DetectiveProps) {
   const { passTurn, makeGuess } = useGame();
   const { t } = useI18n();
-  const [roleSheet, setRoleSheet] = useState(true);
   const [solveSheet, setSolveSheet] = useState(false);
   const [guess, setGuess] = useState<{ player: number | null; mean: string | null; key: string | null }>({
     player: null,
@@ -45,7 +46,7 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
     );
   }, [gameState.passedTurns, gameState.guesses, playerOrderIndex]);
 
-  const playerRole = isMurderer ? t('the murderer') : t('a detective');
+  const hasPassed = !!(gameState.passedTurns && gameState.passedTurns[playerOrderIndex]);
 
   // Other players (excluding detective and self) for guessing
   const otherPlayers = useMemo(() => {
@@ -79,84 +80,52 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
   const playerName = gameState.playerNames[playerId] || `Player ${playerId}`;
 
   return (
-    <Grid container sx={{ height: '100vh', flexDirection: 'column', justifyContent: 'center' }}>
-      <Grid size={{ xs: 12, md: 6 }} sx={{ mt: 10, mx: 'auto' }}>
-        <Card>
-          <CardContent>
-            <Typography variant="h2" sx={{ mb: 4 }}>
-              {playerName}
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
-              {playerMeans.map((mean) => (
-                <Chip key={mean} label={mean} size="small" sx={{ bgcolor: '#bbdefb' }} />
-              ))}
-            </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {playerClues.map((clue) => (
-                <Chip key={clue} label={clue} size="small" sx={{ bgcolor: '#ffcdd2' }} />
-              ))}
-            </Box>
-          </CardContent>
-          <CardActions>
-            <Button onClick={() => setRoleSheet(true)}>{t('Role')}</Button>
-            <Button onClick={handlePassTurn} disabled={!!disableActions}>
-              {t('Pass turn')}
-            </Button>
-            <Button
-              onClick={() => setSolveSheet(true)}
-              color="error"
-              disabled={!!disableActions}
-            >
-              {t('Solve')}
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
-
-      {/* Role reveal drawer */}
-      <SwipeableDrawer
-        anchor="bottom"
-        open={roleSheet}
-        onClose={() => setRoleSheet(false)}
-        onOpen={() => setRoleSheet(true)}
+    <CorkBoard>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 3,
+          px: 2,
+          py: 4,
+          width: '100%',
+          maxWidth: 480,
+          mx: 'auto',
+        }}
       >
-        <Box sx={{ height: 600, textAlign: 'center', overflow: 'auto' }}>
-          <Container>
-            <Button
-              variant="contained"
-              sx={{ mt: 6 }}
-              onClick={() => setRoleSheet(false)}
-            >
-              {t('close')}
-            </Button>
-            <Typography variant="h5" sx={{ mt: 4 }}>
-              {t('You are')} {playerRole}
-            </Typography>
-            {isMurderer && gameState.murdererChoice && (
-              <Box sx={{ mt: 3 }}>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  {t('Your locked pick')}
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Chip
-                    label={gameState.murdererChoice.mean}
-                    size="small"
-                    sx={{ bgcolor: '#bbdefb' }}
-                  />
-                  <Chip
-                    label={gameState.murdererChoice.key}
-                    size="small"
-                    sx={{ bgcolor: '#ffcdd2' }}
-                  />
-                </Box>
-              </Box>
-            )}
-          </Container>
-        </Box>
-      </SwipeableDrawer>
+        <RoleCard
+          playerName={playerName}
+          role={isMurderer ? 'murderer' : 'detective'}
+          lockedPick={isMurderer && gameState.murdererChoice ? gameState.murdererChoice : undefined}
+        />
 
-      {/* Solve crime drawer */}
+        <PlayerFolder
+          playerName={playerName}
+          means={playerMeans}
+          clues={playerClues}
+          mode="display"
+          stamp={hasPassed ? t('Passed') : null}
+        />
+
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <StampButton
+            variant="text"
+            onClick={handlePassTurn}
+            disabled={!!disableActions}
+          >
+            {t('Pass turn')}
+          </StampButton>
+          <StampButton
+            onClick={() => setSolveSheet(true)}
+            disabled={!!disableActions}
+          >
+            {t('Solve')}
+          </StampButton>
+        </Box>
+      </Box>
+
+      {/* Solve crime drawer — unchanged from previous implementation */}
       <SwipeableDrawer
         anchor="bottom"
         open={solveSheet}
@@ -260,6 +229,6 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           </Container>
         </Box>
       </SwipeableDrawer>
-    </Grid>
+    </CorkBoard>
   );
 }
