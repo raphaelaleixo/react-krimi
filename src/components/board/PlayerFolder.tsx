@@ -157,8 +157,8 @@ export default function PlayerFolder({
           title={playerName}
           sx={{
             fontFamily: 'var(--font-typewriter)',
-            fontSize: '0.95rem',
-            fontWeight: 'bold',
+            fontSize: '1.15rem',
+            fontWeight: 900,
             textTransform: 'uppercase',
             letterSpacing: '2px',
             color: 'var(--text-color)',
