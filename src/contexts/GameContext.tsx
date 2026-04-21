@@ -36,7 +36,6 @@ interface GameContextValue {
   joinRoom: (roomId: string, name: string) => Promise<number>;
   setDetective: (playerOrderIndex: number) => Promise<void>;
   startTheGame: (detectiveIndex: number) => Promise<void>;
-  setMurdererChoice: (choice: { mean: string; key: string }) => Promise<void>;
   submitPick: (playerOrderIndex: number, pick: { mean: string; key: string }) => Promise<void>;
   setAnalysis: (analysis: string[]) => Promise<void>;
   passTurn: (playerOrderIndex: number) => Promise<void>;
@@ -192,13 +191,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     await set(ref(database, `rooms/${roomId}/game`), newGameState);
   }, [roomState]);
 
-  const setMurdererChoice = useCallback(async (choice: { mean: string; key: string }) => {
-    if (!roomState) return;
-    await update(ref(database, `rooms/${roomState.roomId}/game`), {
-      murdererChoice: choice,
-    });
-  }, [roomState]);
-
   const submitPick = useCallback(async (playerOrderIndex: number, pick: { mean: string; key: string }) => {
     if (!roomState) return;
     const roomId = roomState.roomId;
@@ -342,7 +334,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
         joinRoom,
         setDetective,
         startTheGame,
-        setMurdererChoice,
         submitPick,
         setAnalysis,
         passTurn,
