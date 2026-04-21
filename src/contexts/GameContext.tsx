@@ -37,6 +37,7 @@ interface GameContextValue {
   setDetective: (playerOrderIndex: number) => Promise<void>;
   startTheGame: (detectiveIndex: number) => Promise<void>;
   setMurdererChoice: (choice: { mean: string; key: string }) => Promise<void>;
+  submitPick: (playerOrderIndex: number, pick: { mean: string; key: string }) => Promise<void>;
   setAnalysis: (analysis: string[]) => Promise<void>;
   passTurn: (playerOrderIndex: number) => Promise<void>;
   makeGuess: (playerOrderIndex: number, guess: GuessData) => Promise<void>;
@@ -198,6 +199,36 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, [roomState]);
 
+  const submitPick = useCallback(async (playerOrderIndex: number, pick: { mean: string; key: string }) => {
+    if (!roomState) return;
+    const roomId = roomState.roomId;
+
+    // Step 1: write this player's pick.
+    await set(
+      ref(database, `rooms/${roomId}/game/playerPicks/${playerOrderIndex}`),
+      pick
+    );
+
+    // Step 2: re-read game state. If all non-forensic players have picked
+    // and murdererChoice isn't set yet, finalize it from the drawn murderer's
+    // pick. Idempotent: concurrent last-submitters write identical data.
+    const snap = await get(ref(database, `rooms/${roomId}/game`));
+    const latest = snap.val() as KrimiGameState | null;
+    if (!latest) return;
+
+    const picks = latest.playerPicks || {};
+    const expectedPicks = latest.playerOrder.length - 1;
+    const allPicked = Object.keys(picks).length === expectedPicks;
+    if (allPicked && !latest.murdererChoice) {
+      const murdererPick = picks[latest.murderer];
+      if (murdererPick) {
+        await update(ref(database, `rooms/${roomId}/game`), {
+          murdererChoice: murdererPick,
+        });
+      }
+    }
+  }, [roomState]);
+
   const setAnalysis = useCallback(async (forensicAnalysis: string[]) => {
     if (!roomState) return;
     await update(ref(database, `rooms/${roomState.roomId}/game`), {
@@ -312,6 +343,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setDetective,
         startTheGame,
         setMurdererChoice,
+        submitPick,
         setAnalysis,
         passTurn,
         makeGuess,
