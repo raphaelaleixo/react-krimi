@@ -107,7 +107,7 @@ export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNo
           '--w': '10ch',
           display: 'inline-block',
           fontFamily: 'var(--font-typewriter)',
-          fontSize: '2rem',
+          fontSize: '1.25rem',
           lineHeight: 1.2,
           fontWeight: 'bold',
           letterSpacing: 'var(--w)',
@@ -132,7 +132,7 @@ export default function LobbyWaitingNote({ remaining, canStart }: LobbyWaitingNo
       <Typography
         aria-live="polite"
         sx={{
-          mt: 1,
+          mt: -0.5,
           fontFamily: 'var(--font-typewriter)',
           fontSize: '0.9rem',
           letterSpacing: '1px',
