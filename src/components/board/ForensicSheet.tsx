@@ -73,9 +73,8 @@ export default function ForensicSheet({
             component="span"
             sx={{
               fontFamily: 'var(--font-script)',
-              fontSize: '1.5rem',
+              fontSize: '1.75em',
               fontWeight: 'bold',
-              textTransform: 'uppercase',
               color: 'var(--weapon-color)',
             }}
           >

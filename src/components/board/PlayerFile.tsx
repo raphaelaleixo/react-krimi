@@ -90,8 +90,7 @@ export default function PlayerFile({
         <Typography
           sx={{
             fontFamily: 'var(--font-script)',
-            fontSize: '1.7rem',
-            textTransform: 'uppercase',
+            fontSize: '1.75em',
             fontWeight: 'bold',
             color: 'var(--text-color)',
             lineHeight: 1,
