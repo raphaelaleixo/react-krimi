@@ -9,6 +9,7 @@ import CorkBoard from './board/CorkBoard';
 import CasePolaroid from './board/CasePolaroid';
 import AssigningCaseSheet from './board/AssigningCaseSheet';
 import PlayerFile from './board/PlayerFile';
+import LobbyWaitingNote from './board/LobbyWaitingNote';
 
 const CARD_COLUMN_WIDTH = 220;
 const CARD_GAP = 24;
@@ -138,6 +139,11 @@ export default function Lobby() {
               })}
             </AnimatePresence>
           </Box>
+
+          <LobbyWaitingNote
+            remaining={Math.max(0, roomState.config.minPlayers - readyPlayers.length)}
+            canStart={canStart}
+          />
         </Box>
       </Box>
     </CorkBoard>
