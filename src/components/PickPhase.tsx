@@ -68,7 +68,7 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
           <motion.div
             key="stamp"
             initial={{ scale: 1.8, rotate: -30, opacity: 0 }}
-            animate={{ scale: 1, rotate: -6, opacity: 1 }}
+            animate={{ scale: 1, rotate: -1.5, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 420, damping: 18 }}
           >
