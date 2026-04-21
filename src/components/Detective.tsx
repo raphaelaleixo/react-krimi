@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel';
 import CheckIcon from '@mui/icons-material/Check';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
-import MurdererChoice from './MurdererChoice';
 import type { KrimiGameState } from '../types';
 
 interface DetectiveProps {
@@ -134,12 +133,24 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
             <Typography variant="h5" sx={{ mt: 4 }}>
               {t('You are')} {playerRole}
             </Typography>
-            {isMurderer && (
-              <MurdererChoice
-                gameState={gameState}
-                playerOrderIndex={playerOrderIndex}
-                onChoice={() => setRoleSheet(false)}
-              />
+            {isMurderer && gameState.murdererChoice && (
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                  {t('Your locked pick')}
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <Chip
+                    label={gameState.murdererChoice.mean}
+                    size="small"
+                    sx={{ bgcolor: '#bbdefb' }}
+                  />
+                  <Chip
+                    label={gameState.murdererChoice.key}
+                    size="small"
+                    sx={{ bgcolor: '#ffcdd2' }}
+                  />
+                </Box>
+              </Box>
             )}
           </Container>
         </Box>
