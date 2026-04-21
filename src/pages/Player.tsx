@@ -10,6 +10,8 @@ import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
 import Detective from '../components/Detective';
 import ForensicAnalysis from '../components/ForensicAnalysis';
+import PickPhase from '../components/PickPhase';
+import { isRolesRevealed } from '../utils/rules';
 
 export default function Player() {
   const { id, playerId: playerIdParam } = useParams<{ id: string; playerId: string }>();
@@ -74,6 +76,9 @@ export default function Player() {
         if (playerOrderIndex === -1) return notFound;
         if (playerOrderIndex === gameState.detective) {
           return <ForensicAnalysis gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+        }
+        if (!isRolesRevealed(gameState)) {
+          return <PickPhase gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
         }
         return <Detective gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
       }}
