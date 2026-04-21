@@ -1,14 +1,17 @@
 import { useMemo } from 'react';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import Pushpin from './Pushpin';
+
+function generateNameplateRotation() {
+  return Math.random() * 3 - 1.5;
+}
 
 function generateTornEdge() {
   const points: string[] = ['0% 0%', '100% 0%'];
   const steps = 30;
-  // Right side down to bottom-right
   points.push('100% 95%');
-  // Jagged bottom edge, right to left
   for (let i = steps; i >= 0; i--) {
     const x = (i / steps) * 100;
     const y = 95 + Math.random() * 3;
@@ -17,15 +20,25 @@ function generateTornEdge() {
   return `polygon(${points.join(', ')})`;
 }
 
-interface SuspectCardProps {
+export type PolaroidRole = 'detective' | 'investigator';
+
+interface PolaroidCardProps {
   name: string;
-  means: string[];
-  clues: string[];
   rotation: number;
   offsetY: number;
+  // game-only
+  means?: string[];
+  clues?: string[];
   stamp?: string;
   guessCount?: number;
+  // lobby-only
+  slotLabel?: string;
+  role?: PolaroidRole;
+  onToggleRole?: () => void;
 }
+
+const WEAPON_COLOR = 'var(--weapon-color)';
+const EVIDENCE_COLOR = 'var(--evidence-color)';
 
 export default function PolaroidCard({
   name,
@@ -35,8 +48,15 @@ export default function PolaroidCard({
   offsetY,
   stamp,
   guessCount = 0,
-}: SuspectCardProps) {
+  slotLabel,
+  role,
+  onToggleRole,
+}: PolaroidCardProps) {
   const tornEdge = useMemo(() => generateTornEdge(), []);
+  const nameplateRotation = useMemo(() => generateNameplateRotation(), []);
+
+  const hasGameBody = means !== undefined && clues !== undefined;
+  const hasLobbyBody = slotLabel !== undefined;
 
   return (
     <Box
@@ -49,16 +69,14 @@ export default function PolaroidCard({
     >
       <Pushpin />
 
-      {/* Notebook page */}
+      {/* Notebook page (clipped by torn edge) */}
       <Box
         sx={{
           background: `#f8f6f0 repeating-linear-gradient(transparent, transparent 23px, #e8e4da 23px, #e8e4da 24px) 0 36px`,
           p: 2,
           boxShadow: '0 3px 8px rgba(0,0,0,0.2)',
           position: 'relative',
-          // Red margin line
           borderLeft: '2px solid rgba(220, 80, 80, 0.3)',
-          // Torn bottom edge
           clipPath: tornEdge,
           pb: 4,
         }}
@@ -80,7 +98,7 @@ export default function PolaroidCard({
           </Typography>
         )}
 
-        {/* Player name at the top */}
+        {/* Name */}
         <Typography
           sx={{
             fontFamily: 'var(--font-script)',
@@ -96,28 +114,48 @@ export default function PolaroidCard({
           {name}
         </Typography>
 
-        <Typography
-          sx={{
-            fontFamily: 'var(--font-typewriter)',
-            fontSize: '0.95rem',
-            fontWeight: 'bold',
-            color: 'var(--weapon-color)',
-            lineHeight: 1.6,
-          }}
-        >
-          {means.join(', ')}
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: 'var(--font-typewriter)',
-            fontSize: '0.95rem',
-            fontWeight: 'bold',
-            color: 'var(--evidence-color)',
-            lineHeight: 1.6,
-          }}
-        >
-          {clues.join(', ')}
-        </Typography>
+        {hasGameBody && (
+          <>
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-typewriter)',
+                fontSize: '0.95rem',
+                fontWeight: 'bold',
+                color: WEAPON_COLOR,
+                lineHeight: 1.6,
+              }}
+            >
+              {means!.join(', ')}
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-typewriter)',
+                fontSize: '0.95rem',
+                fontWeight: 'bold',
+                color: EVIDENCE_COLOR,
+                lineHeight: 1.6,
+              }}
+            >
+              {clues!.join(', ')}
+            </Typography>
+          </>
+        )}
+
+        {hasLobbyBody && !hasGameBody && (
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '0.95rem',
+              fontWeight: 'bold',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              color: 'var(--text-color)',
+              lineHeight: 1.6,
+            }}
+          >
+            {slotLabel}
+          </Typography>
+        )}
 
         {/* Rubber stamp overlay */}
         {stamp && (
@@ -151,6 +189,52 @@ export default function PolaroidCard({
           </Box>
         )}
       </Box>
+
+      {/* Glued-on role nameplate (sibling — outside the torn-edge clip) */}
+      {role && (
+        <ButtonBase
+          disableRipple
+          onClick={onToggleRole}
+          disabled={!onToggleRole}
+          sx={{
+            display: 'block',
+            width: '90%',
+            mx: 'auto',
+            mt: -1,
+            px: 2,
+            py: 0.75,
+            bgcolor: '#fff',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
+            transform: `rotate(${nameplateRotation}deg)`,
+            transition: 'transform 200ms ease, box-shadow 200ms ease',
+            '&:hover': onToggleRole
+              ? {
+                  transform: `rotate(${nameplateRotation}deg) translateY(-2px)`,
+                  boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
+                }
+              : undefined,
+            '@media (prefers-reduced-motion: reduce)': {
+              transition: 'none',
+              '&:hover': { transform: `rotate(${nameplateRotation}deg)` },
+            },
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '1rem',
+              fontWeight: 700,
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              color: role === 'detective' ? EVIDENCE_COLOR : WEAPON_COLOR,
+              lineHeight: 1.2,
+            }}
+          >
+            {role === 'detective' ? 'Forensic Scientist' : 'Investigator'}
+          </Typography>
+        </ButtonBase>
+      )}
     </Box>
   );
 }
