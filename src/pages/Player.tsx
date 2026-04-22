@@ -50,6 +50,9 @@ export default function Player() {
   const murdererName = gameState
     ? gameState.playerNames[gameState.playerOrder[gameState.murderer]] || ''
     : '';
+  const detectiveName = gameState
+    ? gameState.playerNames[gameState.playerOrder[gameState.detective]] || ''
+    : '';
 
   return (
     <>
@@ -89,8 +92,22 @@ export default function Player() {
       />
       {gameState && (
         <>
-          <RoundTitleCard round={gameState.round} />
-          <GameOverReveal finished={gameState.finished} murdererName={murdererName} />
+          <RoundTitleCard round={gameState.round} detectiveName={detectiveName} />
+          <GameOverReveal
+            finished={gameState.finished}
+            roomId={roomState.roomId}
+            winner={gameState.winner}
+            murdererName={murdererName}
+            murdererMeans={gameState.means.slice(
+              gameState.murderer * 4,
+              gameState.murderer * 4 + 4,
+            )}
+            murdererClues={gameState.clues.slice(
+              gameState.murderer * 4,
+              gameState.murderer * 4 + 4,
+            )}
+            murdererChoice={gameState.murdererChoice}
+          />
         </>
       )}
     </>

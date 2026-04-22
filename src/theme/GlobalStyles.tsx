@@ -22,6 +22,9 @@ export default function GlobalStyles() {
         :root {
           --font-typewriter: 'Special Elite', monospace;
           --font-script: 'Story Script', cursive;
+          --text-color: #1C1B1B;
+          --weapon-color: #3A7085;
+          --evidence-color: #9E1B1B;
         }
 
         body {
@@ -135,6 +138,10 @@ export default function GlobalStyles() {
           from { translate: 0 50px; rotate: -3deg; opacity: 0; }
           to   { translate: 0 0; rotate: 0deg; opacity: 1; }
         }
+        @keyframes krimi-tossed-out {
+          from { translate: 0 0; rotate: 0deg; opacity: 1; }
+          to   { translate: 0 50px; rotate: -3deg; opacity: 0; }
+        }
         @keyframes krimi-fade-in {
           from { opacity: 0; }
           to   { opacity: 1; }
@@ -158,6 +165,9 @@ export default function GlobalStyles() {
         .krimi-anim-tossed {
           animation: krimi-tossed-in 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
+        .krimi-anim-tossed-out {
+          animation: krimi-tossed-out 450ms cubic-bezier(0.4, 0, 0.6, 1) both;
+        }
         .krimi-anim-fade {
           animation: krimi-fade-in 250ms ease-out both;
         }
@@ -179,6 +189,7 @@ export default function GlobalStyles() {
         @media (prefers-reduced-motion: reduce) {
           .krimi-anim-pinned,
           .krimi-anim-tossed,
+          .krimi-anim-tossed-out,
           .krimi-anim-stamp,
           .krimi-anim-check,
           .krimi-anim-cross-1,

@@ -10,6 +10,7 @@ import Join from './pages/Join';
 import Room from './pages/Room';
 import Player from './pages/Player';
 import MockBoard from './pages/MockBoard';
+import MockChangeRound from './pages/MockChangeRound';
 import HowToPlay from './pages/HowToPlay';
 import PlayerJoin from './pages/PlayerJoin';
 import RejoinPlayers from './pages/RejoinPlayers';
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   { path: '/room/:id/players', element: <RejoinPlayers /> },
   { path: '/how-to-play', element: <HowToPlay /> },
   { path: '/mock', element: <MockBoard /> },
+  { path: '/mock-change-round', element: <MockChangeRound /> },
 ]);
 
 export default function App() {

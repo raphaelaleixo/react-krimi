@@ -168,7 +168,14 @@ export const translations: Record<string, string> = {
 
   // State-change transitions — added 2026-04-22
   'Round {n}': 'Rodada {n}',
+  '{name}, please add a new forensic clue to every player.':
+    '{name}, por favor adicione uma nova pista forense para cada jogador.',
   'You may now guess': 'Você pode palpitar agora',
   'Case Closed': 'Caso Encerrado',
+  'Detectives Win': 'Detetives Venceram',
+  'Murderer Wins': 'Assassino Venceu',
+  'Murderer caught': 'Assassino capturado',
+  'Case #{id}': 'Caso #{id}',
+  'Murderer still at large': 'Assassino ainda foragido',
   'Tap to continue': 'Toque para continuar',
 };

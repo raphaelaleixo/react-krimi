@@ -132,8 +132,16 @@ export default function Board() {
 
   return (
     <>
-      <RoundTitleCard round={gameState.round} />
-      <GameOverReveal finished={gameState.finished} murdererName={murdererName} />
+      <RoundTitleCard round={gameState.round} detectiveName={detectiveName} />
+      <GameOverReveal
+        finished={gameState.finished}
+        roomId={roomState?.roomId ?? ''}
+        winner={gameState.winner}
+        murdererName={murdererName}
+        murdererMeans={gameState.means.slice(gameState.murderer * 4, gameState.murderer * 4 + 4)}
+        murdererClues={gameState.clues.slice(gameState.murderer * 4, gameState.murderer * 4 + 4)}
+        murdererChoice={gameState.murdererChoice}
+      />
     <CaseBoardLayout
       corkRef={corkRef}
       animateItems
