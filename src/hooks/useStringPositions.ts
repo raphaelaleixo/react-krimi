@@ -52,6 +52,10 @@ export function useStringPositions(
   }, [containerRef, refs, connections]);
 
   useLayoutEffect(() => {
+    // Measuring DOM layout on mount/resize requires syncing state
+    // after the browser paints — setPositions in an effect is the
+    // correct pattern here.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     measure();
 
     const container = containerRef.current;
@@ -60,7 +64,7 @@ export function useStringPositions(
     const observer = new ResizeObserver(() => measure());
     observer.observe(container);
     return () => observer.disconnect();
-  }, [measure]);
+  }, [containerRef, measure]);
 
   return positions;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Context + hook + Provider colocated for this app. */
 import {
   createContext,
   useContext,

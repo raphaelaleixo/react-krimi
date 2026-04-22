@@ -7,13 +7,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AnimatePresence, motion } from 'motion/react';
 import { useI18n } from '../../hooks/useI18n';
 import type { AnalysisItem } from '../../data/analysis';
-import {
-  GluedNote,
-  ROUND_1_COUNT,
-  SheetFrame,
-  SheetHeader,
-  randomRotation,
-} from './forensicSheetParts';
+import { GluedNote, SheetFrame, SheetHeader } from './forensicSheetParts';
+import { ROUND_1_COUNT, randomRotation } from './forensicSheetConfig';
 import StampButton from './StampButton';
 
 interface ForensicSheetFillableProps {

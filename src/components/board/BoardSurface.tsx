@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import type { ReactNode } from "react";
-import CoffeeStains from "./CoffeeStains";
 
 export default function BoardSurface({ children }: { children: ReactNode }) {
   return (

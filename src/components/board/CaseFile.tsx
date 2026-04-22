@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import type { ReactNode, CSSProperties } from "react";
 import Pushpin from "./Pushpin";
@@ -30,10 +30,10 @@ export default function CaseFile({
   maxWidth = 480,
 }: CaseFileProps) {
   const tornEdge = useMemo(() => generateTornEdge(), []);
-  const appliedRotation = useMemo(
-    () => (disableRotation ? 0 : rotation ?? Math.random() * 5 - 2.5),
-    [disableRotation, rotation],
-  );
+  const [fallbackRotation] = useState(() => Math.random() * 5 - 2.5);
+  const appliedRotation = disableRotation
+    ? 0
+    : rotation ?? fallbackRotation;
 
   return (
     <Box

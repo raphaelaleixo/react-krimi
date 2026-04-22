@@ -7,44 +7,57 @@ import CasePolaroid from "./board/CasePolaroid";
 import CorkBoard from "./board/CorkBoard";
 import PlayerFile from "./board/PlayerFile";
 import ForensicSheet from "./board/ForensicSheet";
-import { ROUND_1_COUNT } from "./board/forensicSheetParts";
+import { ROUND_1_COUNT } from "./board/forensicSheetConfig";
 import GuessNote from "./board/GuessNote";
 import WaitingNote from "./board/WaitingNote";
 
 import { useI18n } from "../hooks/useI18n";
 import { useMasonryLayout } from "../hooks/useMasonryLayout";
 
-function randomRotation() {
-  return parseInt(String(3 - Math.random() * 6));
+// Deterministic hash so rotations are stable across renders without Math.random().
+function hash(seed: number): number {
+  return (Math.imul(seed | 0, 2654435761) >>> 0);
+}
+
+function seededRotation(seed: number): number {
+  return (hash(seed) % 5) - 2;
+}
+
+function seededOffset(seed: number): number {
+  return (hash(seed) % 21) - 10;
 }
 
 export default function Board() {
   const { gameState, roomState } = useGame();
   const { t } = useI18n();
 
+  const playerOrder = gameState?.playerOrder;
+
   const joinUrl = useMemo(
     () => buildJoinUrl(roomState?.roomId || ""),
     [roomState?.roomId],
   );
 
-  // Memoize random rotations so they don't change on re-render
   const cardRotations = useMemo(() => {
-    if (!gameState) return {};
     const rotations: Record<number, { card: number; stamp: number }> = {};
-    gameState.playerOrder.forEach((pid) => {
-      rotations[pid] = { card: randomRotation(), stamp: randomRotation() };
+    if (!playerOrder) return rotations;
+    playerOrder.forEach((pid) => {
+      rotations[pid] = {
+        card: seededRotation(pid * 2),
+        stamp: seededRotation(pid * 2 + 1),
+      };
     });
     return rotations;
-  }, [gameState?.playerOrder]);
+  }, [playerOrder]);
 
   const cardOffsets = useMemo(() => {
-    if (!gameState) return {};
     const offsets: Record<number, number> = {};
-    gameState.playerOrder.forEach((pid) => {
-      offsets[pid] = Math.floor(Math.random() * 20) - 10;
+    if (!playerOrder) return offsets;
+    playerOrder.forEach((pid) => {
+      offsets[pid] = seededOffset(pid * 3 + 11);
     });
     return offsets;
-  }, [gameState?.playerOrder]);
+  }, [playerOrder]);
 
   const corkRef = useRef<HTMLDivElement>(null);
   const masonryRef = useRef<HTMLDivElement>(null);
@@ -75,32 +88,6 @@ export default function Board() {
     if (contentRef.current) observer.observe(contentRef.current);
     return () => observer.disconnect();
   });
-
-  if (!gameState) return null;
-
-  const stillPicking = !gameState.finished && !gameState.murdererChoice;
-
-  const forensicReady =
-    gameState.availableClues > 0 &&
-    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
-    (gameState.forensicAnalysis ?? [])
-      .slice(0, gameState.availableClues)
-      .every(Boolean);
-
-  const waitingForensic =
-    !gameState.finished && !stillPicking && !forensicReady;
-
-  const suspects = gameState.playerOrder
-    .map((pid, idx) => ({
-      id: pid,
-      index: idx,
-      name: gameState.playerNames[pid],
-    }))
-    .filter((p) => p.index !== gameState.detective);
-
-  const detectiveName =
-    gameState.playerNames[gameState.playerOrder[gameState.detective]] ||
-    "Detective";
 
   const guessData = useMemo(() => {
     if (!gameState?.guesses) return [];
@@ -148,8 +135,34 @@ export default function Board() {
   }, [guessData]);
 
   const guessNoteRotations = useMemo(() => {
-    return guessData.map(() => Math.floor(3 - Math.random() * 6));
-  }, [guessData.length]);
+    return guessData.map((g) => seededRotation(g.playerIndex * 101 + 7));
+  }, [guessData]);
+
+  if (!gameState) return null;
+
+  const stillPicking = !gameState.finished && !gameState.murdererChoice;
+
+  const forensicReady =
+    gameState.availableClues > 0 &&
+    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
+    (gameState.forensicAnalysis ?? [])
+      .slice(0, gameState.availableClues)
+      .every(Boolean);
+
+  const waitingForensic =
+    !gameState.finished && !stillPicking && !forensicReady;
+
+  const suspects = gameState.playerOrder
+    .map((pid, idx) => ({
+      id: pid,
+      index: idx,
+      name: gameState.playerNames[pid],
+    }))
+    .filter((p) => p.index !== gameState.detective);
+
+  const detectiveName =
+    gameState.playerNames[gameState.playerOrder[gameState.detective]] ||
+    "Detective";
 
   return (
     <CorkBoard corkRef={corkRef}>
@@ -189,7 +202,6 @@ export default function Board() {
             detectiveName={detectiveName}
             analysis={gameState.analysis}
             forensicAnalysis={gameState.forensicAnalysis}
-            round={gameState.round}
           />
         </Box>
 

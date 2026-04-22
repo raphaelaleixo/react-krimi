@@ -3,19 +3,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useI18n } from "../../hooks/useI18n";
 import type { AnalysisItem } from "../../data/analysis";
-import {
-  GluedNote,
-  ROUND_1_COUNT,
-  SheetFrame,
-  SheetHeader,
-  randomRotation,
-} from "./forensicSheetParts";
+import { GluedNote, SheetFrame, SheetHeader } from "./forensicSheetParts";
+import { ROUND_1_COUNT, randomRotation } from "./forensicSheetConfig";
 
 interface ForensicSheetProps {
   detectiveName: string;
   analysis: AnalysisItem[];
   forensicAnalysis?: string[];
-  round: number;
 }
 
 function AnalysisLine({
@@ -60,7 +54,6 @@ export default function ForensicSheet({
   detectiveName,
   analysis,
   forensicAnalysis,
-  round: _round,
 }: ForensicSheetProps) {
   const { t } = useI18n();
   const gluedNoteRotations = useMemo(() => {

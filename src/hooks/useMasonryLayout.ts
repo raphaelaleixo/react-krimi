@@ -62,7 +62,7 @@ export function useMasonryLayout(
     const observer = new ResizeObserver(() => recalculate());
     observer.observe(container);
     return () => observer.disconnect();
-  }, [recalculate]);
+  }, [containerRef, recalculate]);
 
   return { styles, containerHeight, setItemRef, offsetX };
 }

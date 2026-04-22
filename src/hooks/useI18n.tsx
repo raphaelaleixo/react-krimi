@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Context + hook + Provider colocated for this app. */
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { translations } from '../i18n/translations';
 
