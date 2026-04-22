@@ -1,4 +1,4 @@
-import { useMemo, useRef, useCallback, useState, useEffect } from "react";
+import { useMemo, useRef, useCallback } from "react";
 import Box from "@mui/material/Box";
 import { motion, AnimatePresence } from "motion/react";
 import { useGame } from "../contexts/GameContext";
@@ -70,26 +70,6 @@ export default function Board() {
   const suspectCount = gameState ? gameState.playerOrder.length - 1 : 0;
   const masonry = useMasonryLayout(masonryRef, suspectCount, 220, 24);
 
-  // Calculate vertical centering offset manually so we can animate it
-  const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [centerOffset, setCenterOffset] = useState(0);
-
-  useEffect(() => {
-    const measure = () => {
-      const container = containerRef.current;
-      const content = contentRef.current;
-      if (!container || !content) return;
-      const spare = container.clientHeight - content.scrollHeight;
-      setCenterOffset(Math.max(0, spare / 2));
-    };
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (containerRef.current) observer.observe(containerRef.current);
-    if (contentRef.current) observer.observe(contentRef.current);
-    return () => observer.disconnect();
-  });
-
   const guessByAccuser = useMemo(() => {
     const map: Record<
       number,
@@ -160,7 +140,7 @@ export default function Board() {
 
   return (
     <CorkBoard corkRef={corkRef}>
-      <Box sx={{ display: "flex", p: 3, gap: 3 }}>
+      <Box sx={{ display: "flex", p: 3, gap: 3, minHeight: "100vh" }}>
         <Box>
           {/* Join QR polaroid */}
           {roomState && (
@@ -199,21 +179,20 @@ export default function Board() {
           />
         </Box>
 
-        <Box sx={{ flex: 3 }}>
-          <Box ref={containerRef}>
-            <motion.div
-              ref={contentRef}
-              animate={{ y: centerOffset }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              <Box
-                ref={masonryRef}
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  height: masonry.containerHeight,
-                }}
-              >
+        <Box
+          sx={{
+            flex: 3,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <motion.div
+            ref={masonryRef}
+            animate={{ height: masonry.containerHeight }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            style={{ position: "relative", width: "100%" }}
+          >
                 {suspects.map((player, i) => {
                   const rotation = cardRotations[player.id]?.card || 0;
                   const offsetY = cardOffsets[player.id] || 0;
@@ -231,13 +210,26 @@ export default function Board() {
                   const noteRotation = seededRotation(player.index * 101 + 7);
 
                   return (
-                    <Box
+                    <motion.div
                       key={player.id}
+                      layout
                       ref={(el: HTMLDivElement | null) => {
                         setElementRef(`card-${player.id}`, el);
                         masonry.setItemRef(i, el);
                       }}
-                      sx={{ width: 220, ...(masonryStyle || {}) }}
+                      transition={{
+                        layout: {
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 30,
+                        },
+                      }}
+                      style={{
+                        width: 220,
+                        position: "absolute",
+                        left: masonryStyle?.left ?? 0,
+                        top: masonryStyle?.top ?? 0,
+                      }}
                     >
                       <PlayerFile
                         name={player.name}
@@ -334,12 +326,10 @@ export default function Board() {
                           )}
                         </AnimatePresence>
                       </Box>
-                    </Box>
+                    </motion.div>
                   );
                 })}
-              </Box>
-            </motion.div>
-          </Box>
+              </motion.div>
         </Box>
       </Box>
     </CorkBoard>

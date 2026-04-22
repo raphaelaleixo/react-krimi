@@ -106,9 +106,11 @@ export default function Lobby() {
         </Box>
 
         <Box sx={{ flex: 3 }}>
-          <Box
+          <motion.div
             ref={masonryRef}
-            sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}
+            animate={{ height: masonry.containerHeight }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            style={{ position: 'relative', width: '100%' }}
           >
             <AnimatePresence>
               {investigators.map(({ slot, originalIndex }, j) => {
@@ -116,10 +118,16 @@ export default function Lobby() {
                 return (
                   <motion.div
                     key={slot.id}
+                    layout
                     initial={{ opacity: 0, scale: 0.7, y: -40 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.6, y: 20 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 25,
+                      layout: { type: 'spring', stiffness: 300, damping: 30 },
+                    }}
                     ref={(el: HTMLDivElement | null) => masonry.setItemRef(j, el)}
                     style={{
                       width: CARD_COLUMN_WIDTH,
@@ -138,7 +146,7 @@ export default function Lobby() {
                 );
               })}
             </AnimatePresence>
-          </Box>
+          </motion.div>
 
           <WaitingNote
             subtitle={
