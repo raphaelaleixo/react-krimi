@@ -1,10 +1,10 @@
-import { useMemo, useRef, useCallback } from "react";
+import { useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import { motion, AnimatePresence } from "motion/react";
 import { useGame } from "../contexts/GameContext";
 import { buildJoinUrl } from "react-gameroom";
+import CaseBoardLayout from "./board/CaseBoardLayout";
 import CasePolaroid from "./board/CasePolaroid";
-import CorkBoard from "./board/CorkBoard";
 import PlayerFile from "./board/PlayerFile";
 import ForensicSheet from "./board/ForensicSheet";
 import { ROUND_1_COUNT } from "./board/forensicSheetConfig";
@@ -13,7 +13,6 @@ import PassNote from "./board/PassNote";
 import WaitingNote from "./board/WaitingNote";
 
 import { useI18n } from "../hooks/useI18n";
-import { useMasonryLayout } from "../hooks/useMasonryLayout";
 
 // Deterministic hash so rotations are stable across renders without Math.random().
 function hash(seed: number): number {
@@ -61,14 +60,6 @@ export default function Board() {
   }, [playerOrder]);
 
   const corkRef = useRef<HTMLDivElement>(null);
-  const masonryRef = useRef<HTMLDivElement>(null);
-  const elementRefs = useRef<Map<string, HTMLElement | null>>(new Map());
-  const setElementRef = useCallback((key: string, el: HTMLElement | null) => {
-    elementRefs.current.set(key, el);
-  }, []);
-
-  const suspectCount = gameState ? gameState.playerOrder.length - 1 : 0;
-  const masonry = useMasonryLayout(masonryRef, suspectCount, 220, 24);
 
   const guessByAccuser = useMemo(() => {
     const map: Record<
@@ -139,10 +130,12 @@ export default function Board() {
     "Detective";
 
   return (
-    <CorkBoard corkRef={corkRef}>
-      <Box sx={{ display: "flex", p: 3, gap: 3, minHeight: "100vh" }}>
-        <Box>
-          {/* Join QR polaroid */}
+    <CaseBoardLayout
+      corkRef={corkRef}
+      items={suspects}
+      getItemKey={(p) => p.id}
+      leftPanel={
+        <>
           {roomState && (
             <CasePolaroid
               roomId={roomState.roomId}
@@ -177,161 +170,107 @@ export default function Board() {
             analysis={gameState.analysis}
             forensicAnalysis={gameState.forensicAnalysis}
           />
-        </Box>
+        </>
+      }
+      renderItem={(player) => {
+        const rotation = cardRotations[player.id]?.card || 0;
+        const offsetY = cardOffsets[player.id] || 0;
+        const playerMeans = gameState.means.slice(
+          player.index * 4,
+          player.index * 4 + 4,
+        );
+        const playerClues = gameState.clues.slice(
+          player.index * 4,
+          player.index * 4 + 4,
+        );
+        const hasPassed = !!gameState.passedTurns?.[player.index];
+        const guess = guessByAccuser[player.index];
+        const noteRotation = seededRotation(player.index * 101 + 7);
 
-        <Box
-          sx={{
-            flex: 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <motion.div
-            ref={masonryRef}
-            animate={{ height: masonry.containerHeight }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            style={{ position: "relative", width: "100%" }}
-          >
-                {suspects.map((player, i) => {
-                  const rotation = cardRotations[player.id]?.card || 0;
-                  const offsetY = cardOffsets[player.id] || 0;
-                  const playerMeans = gameState.means.slice(
-                    player.index * 4,
-                    player.index * 4 + 4,
-                  );
-                  const playerClues = gameState.clues.slice(
-                    player.index * 4,
-                    player.index * 4 + 4,
-                  );
-                  const masonryStyle = masonry.styles[i];
-                  const hasPassed = !!gameState.passedTurns?.[player.index];
-                  const guess = guessByAccuser[player.index];
-                  const noteRotation = seededRotation(player.index * 101 + 7);
-
-                  return (
-                    <motion.div
-                      key={player.id}
-                      layout
-                      ref={(el: HTMLDivElement | null) => {
-                        setElementRef(`card-${player.id}`, el);
-                        masonry.setItemRef(i, el);
-                      }}
-                      transition={{
-                        layout: {
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 30,
-                        },
-                      }}
-                      style={{
-                        width: 220,
-                        position: "absolute",
-                        left: masonryStyle?.left ?? 0,
-                        top: masonryStyle?.top ?? 0,
-                      }}
-                    >
-                      <PlayerFile
-                        name={player.name}
-                        means={playerMeans}
-                        clues={playerClues}
-                        rotation={rotation}
-                        offsetY={offsetY}
-                        guessCount={guessCountByPlayer[player.id] || 0}
-                        hasPicked={
-                          stillPicking &&
-                          !!gameState.playerPicks?.[player.index]
-                        }
-                      />
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <AnimatePresence>
-                          {hasPassed && (
-                            <motion.div
-                              key="pass"
-                              initial={{
-                                opacity: 0,
-                                scale: 0.4,
-                                y: -30,
-                                rotate: 0,
-                              }}
-                              animate={{
-                                opacity: 1,
-                                scale: 1,
-                                y: 0,
-                                rotate: noteRotation,
-                              }}
-                              exit={{ opacity: 0, scale: 0.4, y: -20 }}
-                              transition={{
-                                opacity: { duration: 0.3 },
-                                scale: {
-                                  type: "spring",
-                                  stiffness: 400,
-                                  damping: 20,
-                                },
-                                y: {
-                                  type: "spring",
-                                  stiffness: 400,
-                                  damping: 20,
-                                },
-                              }}
-                              style={{ marginTop: -40 }}
-                            >
-                              <PassNote rotation={0} />
-                            </motion.div>
-                          )}
-                          {!hasPassed && guess && (
-                            <motion.div
-                              key="guess"
-                              initial={{
-                                opacity: 0,
-                                scale: 0.4,
-                                y: -30,
-                                rotate: 0,
-                              }}
-                              animate={{
-                                opacity: 1,
-                                scale: 1,
-                                y: 0,
-                                rotate: noteRotation,
-                              }}
-                              exit={{ opacity: 0, scale: 0.4, y: -20 }}
-                              transition={{
-                                opacity: { duration: 0.3 },
-                                scale: {
-                                  type: "spring",
-                                  stiffness: 400,
-                                  damping: 20,
-                                },
-                                y: {
-                                  type: "spring",
-                                  stiffness: 400,
-                                  damping: 20,
-                                },
-                              }}
-                              style={{ marginTop: -40 }}
-                            >
-                              <GuessNote
-                                accusedName={guess.accusedName}
-                                mean={guess.mean}
-                                evidenceKey={guess.evidenceKey}
-                                isWrong={guess.isWrong}
-                                rotation={0}
-                              />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </Box>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-        </Box>
-      </Box>
-    </CorkBoard>
+        return (
+          <>
+            <PlayerFile
+              name={player.name}
+              means={playerMeans}
+              clues={playerClues}
+              rotation={rotation}
+              offsetY={offsetY}
+              guessCount={guessCountByPlayer[player.id] || 0}
+              hasPicked={
+                stillPicking && !!gameState.playerPicks?.[player.index]
+              }
+            />
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <AnimatePresence>
+                {hasPassed && (
+                  <motion.div
+                    key="pass"
+                    initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      y: 0,
+                      rotate: noteRotation,
+                    }}
+                    exit={{ opacity: 0, scale: 0.4, y: -20 }}
+                    transition={{
+                      opacity: { duration: 0.3 },
+                      scale: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 20,
+                      },
+                      y: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 20,
+                      },
+                    }}
+                    style={{ marginTop: -40 }}
+                  >
+                    <PassNote rotation={0} />
+                  </motion.div>
+                )}
+                {!hasPassed && guess && (
+                  <motion.div
+                    key="guess"
+                    initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      y: 0,
+                      rotate: noteRotation,
+                    }}
+                    exit={{ opacity: 0, scale: 0.4, y: -20 }}
+                    transition={{
+                      opacity: { duration: 0.3 },
+                      scale: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 20,
+                      },
+                      y: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 20,
+                      },
+                    }}
+                    style={{ marginTop: -40 }}
+                  >
+                    <GuessNote
+                      accusedName={guess.accusedName}
+                      mean={guess.mean}
+                      evidenceKey={guess.evidenceKey}
+                      isWrong={guess.isWrong}
+                      rotation={0}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Box>
+          </>
+        );
+      }}
+    />
   );
 }
