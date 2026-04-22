@@ -98,6 +98,7 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           playerName={playerName}
           role={isMurderer ? 'murderer' : 'detective'}
           lockedPick={isMurderer && gameState.murdererChoice ? gameState.murdererChoice : undefined}
+          width="100%"
         />
 
         <PlayerFolder
@@ -105,6 +106,7 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           means={playerMeans}
           clues={playerClues}
           mode="display"
+          hideTab
           stamp={hasPassed ? t('Passed') : null}
           footer={
             <Box

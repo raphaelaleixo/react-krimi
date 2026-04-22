@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { motion } from 'motion/react';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
 
@@ -15,6 +16,7 @@ export interface PlayerFolderProps {
   onSelectKey?: (key: string) => void;
   stamp?: string | null;
   footer?: ReactNode;
+  hideTab?: boolean;
 }
 
 const MANILA_BODY = '#d4b87d';
@@ -32,6 +34,7 @@ export default function PlayerFolder({
   onSelectKey,
   stamp,
   footer,
+  hideTab = false,
 }: PlayerFolderProps) {
   const { t } = useI18n();
   const isSelect = mode === 'select';
@@ -134,42 +137,53 @@ export default function PlayerFolder({
 
   return (
     <Box sx={{ position: 'relative', width: '100%', maxWidth: 360, mx: 'auto' }}>
-      {/* Tab */}
+      {/* Tab — slides down into folder body when hideTab flips true */}
       <Box
-        sx={{
-          position: 'relative',
-          width: 210,
-          height: 40,
-          mx: 'auto',
-          bgcolor: '#f8f6f0',
-          borderRadius: '6px 6px 0 0',
-          borderTop: `1px solid ${MANILA_EDGE}`,
-          borderLeft: `1px solid ${MANILA_EDGE}`,
-          borderRight: `1px solid ${MANILA_EDGE}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
-          zIndex: 1,
-        }}
+        component={motion.div}
+        initial={{ height: 40 }}
+        animate={{ height: hideTab ? 0 : 40 }}
+        transition={{ duration: 0.45, delay: hideTab ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
+        sx={{ overflow: 'hidden' }}
       >
-        <Typography
-          title={playerName}
+        <Box
+          component={motion.div}
+          initial={{ y: 0, opacity: 1 }}
+          animate={{ y: hideTab ? 40 : 0, opacity: hideTab ? 0 : 1 }}
+          transition={{ duration: 0.45, delay: hideTab ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
           sx={{
-            fontFamily: 'var(--font-typewriter)',
-            fontSize: '1.15rem',
-            fontWeight: 900,
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            color: 'var(--text-color)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            px: 2,
+            position: 'relative',
+            width: 210,
+            height: 40,
+            mx: 'auto',
+            bgcolor: '#f8f6f0',
+            borderRadius: '6px 6px 0 0',
+            borderTop: `1px solid ${MANILA_EDGE}`,
+            borderLeft: `1px solid ${MANILA_EDGE}`,
+            borderRight: `1px solid ${MANILA_EDGE}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
           }}
         >
-          {formatDisplayName(playerName)}
-        </Typography>
+          <Typography
+            title={playerName}
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '1.15rem',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+              color: 'var(--text-color)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              px: 2,
+            }}
+          >
+            {formatDisplayName(playerName)}
+          </Typography>
+        </Box>
       </Box>
 
       {/* Folder body */}

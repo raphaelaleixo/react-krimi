@@ -9,12 +9,13 @@ export interface RoleCardProps {
   playerName: string;
   role: 'detective' | 'murderer';
   lockedPick?: { mean: string; key: string };
+  width?: number | string;
 }
 
 const WEAPON_COLOR = 'var(--weapon-color)';
 const EVIDENCE_COLOR = 'var(--evidence-color)';
 
-export default function RoleCard({ playerName, role, lockedPick }: RoleCardProps) {
+export default function RoleCard({ playerName, role, lockedPick, width = 260 }: RoleCardProps) {
   const { t } = useI18n();
   const isMurderer = role === 'murderer';
 
@@ -26,7 +27,7 @@ export default function RoleCard({ playerName, role, lockedPick }: RoleCardProps
       transition={{ type: 'spring', stiffness: 300, damping: 18 }}
       sx={{
         position: 'relative',
-        width: 260,
+        width,
         mx: 'auto',
         bgcolor: '#f5efe0',
         boxShadow: '0 3px 10px rgba(0,0,0,0.3)',
