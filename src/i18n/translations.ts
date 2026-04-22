@@ -154,4 +154,7 @@ export const translations: Record<string, string> = {
   'Means': 'Causa',
   'Key evidence': 'Evidência principal',
   'Waiting for the Forensic Scientist...': 'Esperando o Cientista Forense...',
+
+  // PlayerJoin restyle — added 2026-04-22
+  'Enter your nickname for the case file.': 'Coloque seu apelido no arquivo do caso.',
 };
