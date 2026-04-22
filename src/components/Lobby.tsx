@@ -91,7 +91,7 @@ export default function Lobby() {
           <CasePolaroid
             roomId={roomState.roomId}
             joinUrl={joinUrl}
-            currentRound={0}
+            crossedRounds={0}
           />
           <AssigningCaseSheet
             detectiveName={detectiveName}

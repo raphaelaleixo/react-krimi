@@ -1,31 +1,30 @@
-import { useMemo, useRef, useCallback, useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import { motion, AnimatePresence } from 'motion/react';
-import { useGame } from '../contexts/GameContext';
-import { buildJoinUrl } from 'react-gameroom';
-import CasePolaroid from './board/CasePolaroid';
-import CorkBoard from './board/CorkBoard';
-import PlayerFile from './board/PlayerFile';
-import ForensicSheet from './board/ForensicSheet';
-import GuessNote from './board/GuessNote';
-import WaitingNote from './board/WaitingNote';
+import { useMemo, useRef, useCallback, useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import { motion, AnimatePresence } from "motion/react";
+import { useGame } from "../contexts/GameContext";
+import { buildJoinUrl } from "react-gameroom";
+import CasePolaroid from "./board/CasePolaroid";
+import CorkBoard from "./board/CorkBoard";
+import PlayerFile from "./board/PlayerFile";
+import ForensicSheet from "./board/ForensicSheet";
+import { ROUND_1_COUNT } from "./board/forensicSheetParts";
+import GuessNote from "./board/GuessNote";
+import WaitingNote from "./board/WaitingNote";
 
-import { useI18n } from '../hooks/useI18n';
-import { useMasonryLayout } from '../hooks/useMasonryLayout';
-
+import { useI18n } from "../hooks/useI18n";
+import { useMasonryLayout } from "../hooks/useMasonryLayout";
 
 function randomRotation() {
   return parseInt(String(3 - Math.random() * 6));
 }
-
 
 export default function Board() {
   const { gameState, roomState } = useGame();
   const { t } = useI18n();
 
   const joinUrl = useMemo(
-    () => buildJoinUrl(roomState?.roomId || ''),
-    [roomState?.roomId]
+    () => buildJoinUrl(roomState?.roomId || ""),
+    [roomState?.roomId],
   );
 
   // Memoize random rotations so they don't change on re-render
@@ -77,8 +76,6 @@ export default function Board() {
     return () => observer.disconnect();
   });
 
-
-
   if (!gameState) return null;
 
   const stillPicking = !gameState.finished && !gameState.murdererChoice;
@@ -94,25 +91,33 @@ export default function Board() {
     !gameState.finished && !stillPicking && !forensicReady;
 
   const suspects = gameState.playerOrder
-    .map((pid, idx) => ({ id: pid, index: idx, name: gameState.playerNames[pid] }))
+    .map((pid, idx) => ({
+      id: pid,
+      index: idx,
+      name: gameState.playerNames[pid],
+    }))
     .filter((p) => p.index !== gameState.detective);
 
   const detectiveName =
-    gameState.playerNames[gameState.playerOrder[gameState.detective]] || 'Detective';
+    gameState.playerNames[gameState.playerOrder[gameState.detective]] ||
+    "Detective";
 
   const guessData = useMemo(() => {
     if (!gameState?.guesses) return [];
     return gameState.guesses
       .map((guess, playerIndex) => {
-        if (!guess || typeof guess !== 'object') return null;
-        const accuserName = gameState.playerNames[gameState.playerOrder[playerIndex]];
+        if (!guess || typeof guess !== "object") return null;
+        const accuserName =
+          gameState.playerNames[gameState.playerOrder[playerIndex]];
         const accusedPid = gameState.playerOrder[guess.player];
         const accusedName = gameState.playerNames[accusedPid];
-        const isWrong = gameState.finished && !(
-          gameState.murdererChoice &&
-          guess.mean === gameState.murdererChoice.mean &&
-          guess.key === gameState.murdererChoice.key
-        );
+        const isWrong =
+          gameState.finished &&
+          !(
+            gameState.murdererChoice &&
+            guess.mean === gameState.murdererChoice.mean &&
+            guess.key === gameState.murdererChoice.key
+          );
         return {
           playerIndex,
           accuserName,
@@ -124,14 +129,14 @@ export default function Board() {
         };
       })
       .filter(Boolean) as Array<{
-        playerIndex: number;
-        accuserName: string;
-        accusedName: string;
-        accusedPid: number;
-        mean: string;
-        evidenceKey: string;
-        isWrong: boolean;
-      }>;
+      playerIndex: number;
+      accuserName: string;
+      accusedName: string;
+      accusedPid: number;
+      mean: string;
+      evidenceKey: string;
+      isWrong: boolean;
+    }>;
   }, [gameState]);
 
   const guessCountByPlayer = useMemo(() => {
@@ -148,27 +153,34 @@ export default function Board() {
 
   return (
     <CorkBoard corkRef={corkRef}>
-      <Box sx={{ display: 'flex', p: 3, gap: 3 }}>
+      <Box sx={{ display: "flex", pt: 3, pr: 3, gap: 3 }}>
         <Box>
           {/* Join QR polaroid */}
           {roomState && (
             <CasePolaroid
               roomId={roomState.roomId}
               joinUrl={joinUrl}
-              currentRound={gameState.round}
+              crossedRounds={Math.max(
+                0,
+                Math.min(
+                  3,
+                  (gameState.forensicAnalysis?.filter(Boolean).length ?? 0) -
+                    (ROUND_1_COUNT - 1),
+                ),
+              )}
             />
           )}
 
           {stillPicking && (
             <WaitingNote
-              subtitle={t('Waiting for all players to submit their picks...')}
+              subtitle={t("Waiting for all players to submit their picks...")}
               width={340}
             />
           )}
 
           {waitingForensic && (
             <WaitingNote
-              subtitle={t('Waiting for the Forensic Scientist...')}
+              subtitle={t("Waiting for the Forensic Scientist...")}
               width={340}
             />
           )}
@@ -178,83 +190,119 @@ export default function Board() {
             analysis={gameState.analysis}
             forensicAnalysis={gameState.forensicAnalysis}
             round={gameState.round}
-            forensicScientistLabel={t('Forensic Scientist')}
           />
         </Box>
 
         <Box sx={{ flex: 3 }}>
-
           <Box ref={containerRef}>
-          <motion.div
-            ref={contentRef}
-            animate={{ y: centerOffset }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
-          <Box ref={masonryRef} sx={{ position: 'relative', width: '100%', height: masonry.containerHeight }}>
-            {suspects.map((player, i) => {
-              const rotation = cardRotations[player.id]?.card || 0;
-              const offsetY = cardOffsets[player.id] || 0;
-              const playerMeans = gameState.means.slice(player.index * 4, player.index * 4 + 4);
-              const playerClues = gameState.clues.slice(player.index * 4, player.index * 4 + 4);
-              const masonryStyle = masonry.styles[i];
-
-              return (
-                <Box
-                  key={player.id}
-                  ref={(el: HTMLDivElement | null) => {
-                    setElementRef(`card-${player.id}`, el);
-                    masonry.setItemRef(i, el);
-                  }}
-                  sx={{ width: 220, ...(masonryStyle || {}) }}
-                >
-                  <PlayerFile
-                    name={player.name}
-                    means={playerMeans}
-                    clues={playerClues}
-                    rotation={rotation}
-                    offsetY={offsetY}
-                    stamp={gameState.passedTurns?.[player.index] ? t('Passed') : undefined}
-                    guessCount={guessCountByPlayer[player.id] || 0}
-                    hasPicked={stillPicking && !!gameState.playerPicks?.[player.index]}
-                  />
-                </Box>
-              );
-            })}
-          </Box>
-
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignContent: 'flex-start', pt: 3, pl: `${masonry.offsetX}px` }}>
-            <AnimatePresence>
-            {guessData.map((guess, i) => (
-              <motion.div
-                key={guess.playerIndex}
-                layout
-                initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
-                animate={{ opacity: 1, scale: 1, y: 0, rotate: guessNoteRotations[i] }}
-                transition={{
-                  layout: { type: 'spring', stiffness: 300, damping: 25 },
-                  opacity: { duration: 0.3 },
-                  scale: { type: 'spring', stiffness: 400, damping: 20 },
-                  y: { type: 'spring', stiffness: 400, damping: 20 },
+            <motion.div
+              ref={contentRef}
+              animate={{ y: centerOffset }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <Box
+                ref={masonryRef}
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  height: masonry.containerHeight,
                 }}
-                style={{ marginLeft: i > 0 ? -16 : 0, marginTop: guessNoteRotations[i] * 3 }}
               >
-              <GuessNote
-                ref={(el: HTMLDivElement | null) => setElementRef(`guess-${guess.playerIndex}`, el)}
-                accuserName={guess.accuserName}
-                accusedName={guess.accusedName}
-                mean={guess.mean}
-                evidenceKey={guess.evidenceKey}
-                isWrong={guess.isWrong}
-                rotation={0}
-              />
-              </motion.div>
-            ))}
-            </AnimatePresence>
-          </Box>
-          </motion.div>
+                {suspects.map((player, i) => {
+                  const rotation = cardRotations[player.id]?.card || 0;
+                  const offsetY = cardOffsets[player.id] || 0;
+                  const playerMeans = gameState.means.slice(
+                    player.index * 4,
+                    player.index * 4 + 4,
+                  );
+                  const playerClues = gameState.clues.slice(
+                    player.index * 4,
+                    player.index * 4 + 4,
+                  );
+                  const masonryStyle = masonry.styles[i];
+
+                  return (
+                    <Box
+                      key={player.id}
+                      ref={(el: HTMLDivElement | null) => {
+                        setElementRef(`card-${player.id}`, el);
+                        masonry.setItemRef(i, el);
+                      }}
+                      sx={{ width: 220, ...(masonryStyle || {}) }}
+                    >
+                      <PlayerFile
+                        name={player.name}
+                        means={playerMeans}
+                        clues={playerClues}
+                        rotation={rotation}
+                        offsetY={offsetY}
+                        stamp={
+                          gameState.passedTurns?.[player.index]
+                            ? t("Passed")
+                            : undefined
+                        }
+                        guessCount={guessCountByPlayer[player.id] || 0}
+                        hasPicked={
+                          stillPicking &&
+                          !!gameState.playerPicks?.[player.index]
+                        }
+                      />
+                    </Box>
+                  );
+                })}
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "flex-start",
+                  alignContent: "flex-start",
+                  pt: 0,
+                  pl: `${masonry.offsetX}px`,
+                }}
+              >
+                <AnimatePresence>
+                  {guessData.map((guess, i) => (
+                    <motion.div
+                      key={guess.playerIndex}
+                      layout
+                      initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        rotate: guessNoteRotations[i],
+                      }}
+                      transition={{
+                        layout: { type: "spring", stiffness: 300, damping: 25 },
+                        opacity: { duration: 0.3 },
+                        scale: { type: "spring", stiffness: 400, damping: 20 },
+                        y: { type: "spring", stiffness: 400, damping: 20 },
+                      }}
+                      style={{
+                        marginLeft: i > 0 ? -16 : 0,
+                        marginTop: guessNoteRotations[i] * 3,
+                      }}
+                    >
+                      <GuessNote
+                        ref={(el: HTMLDivElement | null) =>
+                          setElementRef(`guess-${guess.playerIndex}`, el)
+                        }
+                        accuserName={guess.accuserName}
+                        accusedName={guess.accusedName}
+                        mean={guess.mean}
+                        evidenceKey={guess.evidenceKey}
+                        isWrong={guess.isWrong}
+                        rotation={0}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </Box>
+            </motion.div>
           </Box>
         </Box>
-
       </Box>
     </CorkBoard>
   );

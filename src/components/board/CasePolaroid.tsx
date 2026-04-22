@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { motion } from 'motion/react';
 import { RoomQRCode } from 'react-gameroom';
 import { useI18n } from '../../hooks/useI18n';
 
@@ -35,11 +36,11 @@ function generateDistressedCircle() {
 interface CasePolaroidProps {
   roomId: string;
   joinUrl: string;
-  /** 0 for lobby (no rounds crossed). 1–3 in-game (rounds ≤ currentRound are crossed). */
-  currentRound: number;
+  /** How many round stamps to cross out (0–3). A round is crossed once its forensic analysis is submitted. */
+  crossedRounds: number;
 }
 
-export default function CasePolaroid({ roomId, joinUrl, currentRound }: CasePolaroidProps) {
+export default function CasePolaroid({ roomId, joinUrl, crossedRounds }: CasePolaroidProps) {
   const { t } = useI18n();
 
   const stampClipPaths = useMemo(
@@ -132,7 +133,7 @@ export default function CasePolaroid({ roomId, joinUrl, currentRound }: CasePola
               >
                 {r}
               </Typography>
-              {r <= currentRound && (
+              {r <= crossedRounds && (
                 <>
                   <Box
                     sx={{
@@ -141,12 +142,24 @@ export default function CasePolaroid({ roomId, joinUrl, currentRound }: CasePola
                       left: '-4px',
                       right: '-4px',
                       height: '3px',
-                      bgcolor: 'var(--evidence-color)',
                       transform: 'rotate(-25deg)',
                       transformOrigin: 'center',
-                      clipPath: crossClipPaths[r - 1][0],
                     }}
-                  />
+                  >
+                    <Box
+                      component={motion.div}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.18, ease: [0.5, 0, 0.2, 1] }}
+                      sx={{
+                        width: '100%',
+                        height: '100%',
+                        bgcolor: 'var(--evidence-color)',
+                        transformOrigin: 'left center',
+                        clipPath: crossClipPaths[r - 1][0],
+                      }}
+                    />
+                  </Box>
                   <Box
                     sx={{
                       position: 'absolute',
@@ -154,12 +167,24 @@ export default function CasePolaroid({ roomId, joinUrl, currentRound }: CasePola
                       left: '-4px',
                       right: '-4px',
                       height: '3px',
-                      bgcolor: 'var(--evidence-color)',
                       transform: 'rotate(25deg)',
                       transformOrigin: 'center',
-                      clipPath: crossClipPaths[r - 1][1],
                     }}
-                  />
+                  >
+                    <Box
+                      component={motion.div}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.18, delay: 0.16, ease: [0.5, 0, 0.2, 1] }}
+                      sx={{
+                        width: '100%',
+                        height: '100%',
+                        bgcolor: 'var(--evidence-color)',
+                        transformOrigin: 'left center',
+                        clipPath: crossClipPaths[r - 1][1],
+                      }}
+                    />
+                  </Box>
                 </>
               )}
             </Box>
