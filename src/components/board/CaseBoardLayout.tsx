@@ -32,6 +32,14 @@ export default function CaseBoardLayout<T>({
   const masonry = useMasonryLayout(masonryRef, items.length, columnWidth, gap);
   const { pinned } = useMotionVariants();
 
+  // Masonry is "ready" when every current item has a measured position.
+  // Until then, render plain invisible divs for measurement only — this
+  // avoids motion.div mounting at (0,0) and animating a layout-translate
+  // slide to the real position. Once ready, swap to animated motion.divs.
+  const ready =
+    masonry.styles.length === items.length &&
+    items.every((_, i) => masonry.styles[i] !== undefined);
+
   const staggerParent = {
     initial: {},
     animate: { transition: { staggerChildren: 0.08 } },
@@ -40,22 +48,43 @@ export default function CaseBoardLayout<T>({
   const cards = items.map((item, i) => {
     const style = masonry.styles[i];
     const key = getItemKey(item, i);
+    const refCallback = (el: HTMLDivElement | null) => masonry.setItemRef(i, el);
+
+    if (!ready) {
+      return (
+        <div
+          key={key}
+          ref={refCallback}
+          style={{
+            position: 'absolute',
+            width: columnWidth,
+            left: 0,
+            top: 0,
+            visibility: 'hidden',
+          }}
+        >
+          {renderItem(item, i)}
+        </div>
+      );
+    }
+
     const baseStyle = {
       width: columnWidth,
       position: 'absolute' as const,
-      left: style?.left ?? 0,
-      top: style?.top ?? 0,
+      left: style!.left,
+      top: style!.top,
     };
-    const refCallback = (el: HTMLDivElement | null) => masonry.setItemRef(i, el);
 
     if (animateItems) {
       return (
         <motion.div
           key={key}
+          layout
           variants={pinned}
           initial="initial"
           animate="animate"
           exit="exit"
+          transition={{ layout: { type: 'spring', stiffness: 300, damping: 30 } }}
           ref={refCallback}
           style={baseStyle}
         >
@@ -96,7 +125,7 @@ export default function CaseBoardLayout<T>({
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             style={{ position: 'relative', width: '100%' }}
           >
-            {animateItems ? (
+            {animateItems && ready ? (
               <motion.div variants={staggerParent} initial="initial" animate="animate">
                 <AnimatePresence>{cards}</AnimatePresence>
               </motion.div>
