@@ -83,7 +83,6 @@ export const translations: Record<string, string> = {
   // Join
   'Enter the game code:': 'Digite o código do jogo:',
   'Enter your nickname:': 'Digite seu apelido:',
-  'Game code': 'Código do jogo',
   'Nickname': 'Apelido',
   'Enter': 'Entrar',
   'Back': 'Voltar',
