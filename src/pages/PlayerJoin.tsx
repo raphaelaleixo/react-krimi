@@ -4,7 +4,9 @@ import { DirectionalLink as RouterLink } from '../router/DirectionalLink';
 import { useDirectionalNavigate } from '../router/useDirectionalNavigate';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
@@ -43,6 +45,32 @@ export default function PlayerJoin() {
     <BoardSurface>
       <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
         <CaseFile>
+          <Typography
+            component="h1"
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '2rem',
+              fontWeight: 700,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              color: '#1C1B1B',
+              mb: 1,
+              textAlign: 'center',
+            }}
+          >
+            {t('Case')}#{roomId}
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              color: '#1C1B1B',
+              textAlign: 'center',
+              mb: 3,
+            }}
+          >
+            {t('Enter your nickname for the case file.')}
+          </Typography>
+
           <Box component="form" onSubmit={handleSubmit}>
             {error && (
               <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
@@ -50,22 +78,46 @@ export default function PlayerJoin() {
               </Alert>
             )}
             <TextField
-              label={t('Game code')}
-              value={roomId}
-              fullWidth
-              variant="filled"
-              sx={{ mb: 2 }}
-              disabled
-            />
-            <TextField
               label={t('Nickname')}
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               fullWidth
-              variant="filled"
-              sx={{ mb: 3 }}
+              variant="standard"
+              sx={{
+                mb: 3,
+                '& .MuiInputLabel-root': {
+                  fontSize: '1.1rem',
+                  fontWeight: 700,
+                },
+                '& .MuiInput-input': {
+                  fontFamily: 'var(--font-script)',
+                  fontSize: '1.75rem',
+                  color: '#1C1B1B',
+                },
+              }}
               required
               autoFocus
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Box
+                        sx={{
+                          fontFamily: 'var(--font-script)',
+                          fontSize: '1.75rem',
+                          color: '#1E3A8A',
+                          opacity: 0.7,
+                          lineHeight: 1,
+                        }}
+                      >
+                        x
+                      </Box>
+                    </InputAdornment>
+                  ),
+                },
+                inputLabel: { shrink: true },
+                htmlInput: { autoComplete: 'off' },
+              }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <StampButton variant="primary" type="submit" disabled={!nickname.trim()}>
