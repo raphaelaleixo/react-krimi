@@ -167,7 +167,7 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
             subtitle={t('Waiting for the Forensic Scientist...')}
           />
         ) : !ownGuess && !hasPassed ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: -2 }}>
             <TapedNoteButton
               rotation={-2}
               onClick={handlePassTurn}
