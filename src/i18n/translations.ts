@@ -156,4 +156,11 @@ export const translations: Record<string, string> = {
 
   // PlayerJoin restyle — added 2026-04-22
   'Enter your nickname for the case file.': 'Coloque seu apelido no arquivo do caso.',
+
+  // PlayerHeader — added 2026-04-22
+  'Room:': 'Sala:',
+  'Join': 'Entrar',
+  'Join link for': 'Link de acesso para',
+  'Rejoin': 'Voltar ao jogo',
+  'Rejoin link for': 'Link de retorno para',
 };
