@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'motion/react';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
+import { useMotionVariants } from '../../motion/variants';
 
 export interface PlayerFolderProps {
   playerName: string;
@@ -39,6 +40,7 @@ export default function PlayerFolder({
   tabSubtitle,
 }: PlayerFolderProps) {
   const { t } = useI18n();
+  const { tossed } = useMotionVariants();
   const isSelect = mode === 'select';
   const tabHeight = tabSubtitle ? 56 : 40;
 
@@ -140,7 +142,13 @@ export default function PlayerFolder({
   );
 
   return (
-    <Box sx={{ position: 'relative', width: '100%', maxWidth: 360, mx: 'auto' }}>
+    <Box
+      component={motion.div}
+      variants={tossed}
+      initial="initial"
+      animate="animate"
+      sx={{ position: 'relative', width: '100%', maxWidth: 360, mx: 'auto' }}
+    >
       {/* Tab — slides down into folder body when hideTab flips true */}
       <Box
         component={motion.div}

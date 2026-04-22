@@ -14,6 +14,8 @@ import CorkBoard from '../components/board/CorkBoard';
 import PlayerHeader from '../components/board/PlayerHeader';
 import WaitingNote from '../components/board/WaitingNote';
 import { isRolesRevealed } from '../utils/rules';
+import RoundTitleCard from '../components/board/RoundTitleCard';
+import GameOverReveal from '../components/board/GameOverReveal';
 
 export default function Player() {
   const { id, playerId: playerIdParam } = useParams<{ id: string; playerId: string }>();
@@ -45,40 +47,52 @@ export default function Player() {
     </Container>
   );
 
+  const murdererName = gameState
+    ? gameState.playerNames[gameState.playerOrder[gameState.murderer]] || ''
+    : '';
+
   return (
-    <PlayerScreen
-      roomState={roomState}
-      playerId={playerId}
-      labels={{ invalidSlot: 'Player not found in this game.' }}
-      renderHeader={() => null}
-      renderEmpty={() => notFound}
-      renderReady={() => (
-        <>
-          <PlayerHeader roomState={roomState} playerId={playerId} gameState={gameState} />
-          <CorkBoard>
-            <WaitingNote subtitle={t('Waiting for the game start')} />
-          </CorkBoard>
-        </>
-      )}
-      renderStarted={() => {
-        if (!gameState) return null;
-        const playerOrderIndex = gameState.playerOrder.indexOf(playerId);
-        if (playerOrderIndex === -1) return notFound;
-        let child;
-        if (playerOrderIndex === gameState.detective) {
-          child = <ForensicAnalysis gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
-        } else if (!isRolesRevealed(gameState)) {
-          child = <PickPhase gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
-        } else {
-          child = <Detective gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
-        }
-        return (
+    <>
+      <PlayerScreen
+        roomState={roomState}
+        playerId={playerId}
+        labels={{ invalidSlot: 'Player not found in this game.' }}
+        renderHeader={() => null}
+        renderEmpty={() => notFound}
+        renderReady={() => (
           <>
             <PlayerHeader roomState={roomState} playerId={playerId} gameState={gameState} />
-            {child}
+            <CorkBoard>
+              <WaitingNote subtitle={t('Waiting for the game start')} />
+            </CorkBoard>
           </>
-        );
-      }}
-    />
+        )}
+        renderStarted={() => {
+          if (!gameState) return null;
+          const playerOrderIndex = gameState.playerOrder.indexOf(playerId);
+          if (playerOrderIndex === -1) return notFound;
+          let child;
+          if (playerOrderIndex === gameState.detective) {
+            child = <ForensicAnalysis gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+          } else if (!isRolesRevealed(gameState)) {
+            child = <PickPhase gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+          } else {
+            child = <Detective gameState={gameState} playerId={playerId} playerOrderIndex={playerOrderIndex} />;
+          }
+          return (
+            <>
+              <PlayerHeader roomState={roomState} playerId={playerId} gameState={gameState} />
+              {child}
+            </>
+          );
+        }}
+      />
+      {gameState && (
+        <>
+          <RoundTitleCard round={gameState.round} />
+          <GameOverReveal finished={gameState.finished} murdererName={murdererName} />
+        </>
+      )}
+    </>
   );
 }

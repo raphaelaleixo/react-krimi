@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { motion, AnimatePresence } from 'motion/react';
 import CorkBoard from './CorkBoard';
 import { useMasonryLayout } from '../../hooks/useMasonryLayout';
+import { useMotionVariants } from '../../motion/variants';
 
 interface CaseBoardLayoutProps<T> {
   leftPanel: ReactNode;
@@ -29,6 +30,12 @@ export default function CaseBoardLayout<T>({
 }: CaseBoardLayoutProps<T>) {
   const masonryRef = useRef<HTMLDivElement>(null);
   const masonry = useMasonryLayout(masonryRef, items.length, columnWidth, gap);
+  const { pinned } = useMotionVariants();
+
+  const staggerParent = {
+    initial: {},
+    animate: { transition: { staggerChildren: 0.08 } },
+  };
 
   const cards = items.map((item, i) => {
     const style = masonry.styles[i];
@@ -45,16 +52,10 @@ export default function CaseBoardLayout<T>({
       return (
         <motion.div
           key={key}
-          layout
-          initial={{ opacity: 0, scale: 0.7, y: -40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.6, y: 20 }}
-          transition={{
-            type: 'spring',
-            stiffness: 300,
-            damping: 25,
-            layout: { type: 'spring', stiffness: 300, damping: 30 },
-          }}
+          variants={pinned}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           ref={refCallback}
           style={baseStyle}
         >
@@ -95,7 +96,13 @@ export default function CaseBoardLayout<T>({
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             style={{ position: 'relative', width: '100%' }}
           >
-            {animateItems ? <AnimatePresence>{cards}</AnimatePresence> : cards}
+            {animateItems ? (
+              <motion.div variants={staggerParent} initial="initial" animate="animate">
+                <AnimatePresence>{cards}</AnimatePresence>
+              </motion.div>
+            ) : (
+              cards
+            )}
           </motion.div>
           {belowGrid}
         </Box>

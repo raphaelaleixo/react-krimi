@@ -165,4 +165,10 @@ export const translations: Record<string, string> = {
   'Rejoin link for': 'Link de retorno para',
   'Home': 'Início',
   'Room': 'Sala',
+
+  // State-change transitions — added 2026-04-22
+  'Round {n}': 'Rodada {n}',
+  'You may now guess': 'Você pode palpitar agora',
+  'Case Closed': 'Caso Encerrado',
+  'Tap to continue': 'Toque para continuar',
 };

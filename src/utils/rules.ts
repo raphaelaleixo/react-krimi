@@ -76,3 +76,13 @@ export function isRolesRevealed(gameState: KrimiGameState): boolean {
   const expectedPicks = gameState.playerOrder.length - 1; // forensic doesn't pick
   return pickCount === expectedPicks;
 }
+
+export function isForensicReady(gameState: KrimiGameState): boolean {
+  return (
+    gameState.availableClues > 0 &&
+    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
+    (gameState.forensicAnalysis ?? [])
+      .slice(0, gameState.availableClues)
+      .every(Boolean)
+  );
+}

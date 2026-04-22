@@ -13,6 +13,10 @@ import PassNote from "./board/PassNote";
 import WaitingNote from "./board/WaitingNote";
 
 import { useI18n } from "../hooks/useI18n";
+import { isForensicReady } from "../utils/rules";
+import { useMotionVariants } from "../motion/variants";
+import RoundTitleCard from "./board/RoundTitleCard";
+import GameOverReveal from "./board/GameOverReveal";
 
 // Deterministic hash so rotations are stable across renders without Math.random().
 function hash(seed: number): number {
@@ -30,6 +34,7 @@ function seededOffset(seed: number): number {
 export default function Board() {
   const { gameState, roomState } = useGame();
   const { t } = useI18n();
+  const { pinned, tossed } = useMotionVariants();
 
   const playerOrder = gameState?.playerOrder;
 
@@ -107,12 +112,7 @@ export default function Board() {
 
   const stillPicking = !gameState.finished && !gameState.murdererChoice;
 
-  const forensicReady =
-    gameState.availableClues > 0 &&
-    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
-    (gameState.forensicAnalysis ?? [])
-      .slice(0, gameState.availableClues)
-      .every(Boolean);
+  const forensicReady = isForensicReady(gameState);
 
   const waitingForensic =
     !gameState.finished && !stillPicking && !forensicReady;
@@ -129,26 +129,36 @@ export default function Board() {
     gameState.playerNames[gameState.playerOrder[gameState.detective]] ||
     "Detective";
 
+  const murdererName =
+    gameState.playerNames[gameState.playerOrder[gameState.murderer]] ||
+    "";
+
   return (
+    <>
+      <RoundTitleCard round={gameState.round} />
+      <GameOverReveal finished={gameState.finished} murdererName={murdererName} />
     <CaseBoardLayout
       corkRef={corkRef}
+      animateItems
       items={suspects}
       getItemKey={(p) => p.id}
       leftPanel={
         <>
           {roomState && (
-            <CasePolaroid
-              roomId={roomState.roomId}
-              joinUrl={joinUrl}
-              crossedRounds={Math.max(
-                0,
-                Math.min(
-                  3,
-                  (gameState.forensicAnalysis?.filter(Boolean).length ?? 0) -
-                    (ROUND_1_COUNT - 1),
-                ),
-              )}
-            />
+            <motion.div variants={pinned} initial="initial" animate="animate">
+              <CasePolaroid
+                roomId={roomState.roomId}
+                joinUrl={joinUrl}
+                crossedRounds={Math.max(
+                  0,
+                  Math.min(
+                    3,
+                    (gameState.forensicAnalysis?.filter(Boolean).length ?? 0) -
+                      (ROUND_1_COUNT - 1),
+                  ),
+                )}
+              />
+            </motion.div>
           )}
 
           {stillPicking && (
@@ -165,11 +175,13 @@ export default function Board() {
             />
           )}
 
-          <ForensicSheet
-            detectiveName={detectiveName}
-            analysis={gameState.analysis}
-            forensicAnalysis={gameState.forensicAnalysis}
-          />
+          <motion.div variants={tossed} initial="initial" animate="animate">
+            <ForensicSheet
+              detectiveName={detectiveName}
+              analysis={gameState.analysis}
+              forensicAnalysis={gameState.forensicAnalysis}
+            />
+          </motion.div>
         </>
       }
       renderItem={(player) => {
@@ -272,5 +284,6 @@ export default function Board() {
         );
       }}
     />
+    </>
   );
 }

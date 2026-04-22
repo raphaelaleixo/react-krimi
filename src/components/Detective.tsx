@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
+import { AnimatePresence } from 'motion/react';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -23,7 +24,9 @@ import GuessNote from './board/GuessNote';
 import StampButton from './board/StampButton';
 import TapedNoteButton from './board/TapedNoteButton';
 import WaitingNote from './board/WaitingNote';
+import GuessUnlockedStamp from './board/GuessUnlockedStamp';
 import type { KrimiGameState } from '../types';
+import { isForensicReady } from '../utils/rules';
 
 interface DetectiveProps {
   gameState: KrimiGameState;
@@ -80,12 +83,22 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
     />
   ) : null;
 
-  const forensicReady =
-    gameState.availableClues > 0 &&
-    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
-    (gameState.forensicAnalysis ?? [])
-      .slice(0, gameState.availableClues)
-      .every(Boolean);
+  const forensicReady = isForensicReady(gameState);
+  const [lastSeenForensicReady, setLastSeenForensicReady] = useState(forensicReady);
+  const [showGuessStamp, setShowGuessStamp] = useState(false);
+
+  if (forensicReady !== lastSeenForensicReady) {
+    setLastSeenForensicReady(forensicReady);
+    if (forensicReady && !lastSeenForensicReady) {
+      setShowGuessStamp(true);
+    }
+  }
+
+  useEffect(() => {
+    if (!showGuessStamp) return;
+    const timer = window.setTimeout(() => setShowGuessStamp(false), 1400);
+    return () => window.clearTimeout(timer);
+  }, [showGuessStamp]);
 
   // Other players (excluding detective and self) for guessing
   const otherPlayers = useMemo(() => {
@@ -138,6 +151,12 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           role={isMurderer ? 'murderer' : 'detective'}
           width="100%"
         />
+
+        <AnimatePresence>
+          {showGuessStamp && (
+            <GuessUnlockedStamp label={t('You may now guess')} />
+          )}
+        </AnimatePresence>
 
         <PlayerFolder
           playerName={playerName}

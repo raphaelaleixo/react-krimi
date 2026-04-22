@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { motion } from 'motion/react';
 import { buildJoinUrl, useRoomState } from 'react-gameroom';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
@@ -7,6 +8,7 @@ import CasePolaroid from './board/CasePolaroid';
 import AssigningCaseSheet from './board/AssigningCaseSheet';
 import PlayerFile from './board/PlayerFile';
 import WaitingNote from './board/WaitingNote';
+import { useMotionVariants } from '../motion/variants';
 
 function randomRotation() {
   return parseInt(String(3 - Math.random() * 6));
@@ -19,6 +21,7 @@ function randomOffset() {
 export default function Lobby() {
   const { roomState, startTheGame } = useGame();
   const { t } = useI18n();
+  const { pinned, tossed } = useMotionVariants();
   const { canStart, readyPlayers } = useRoomState(roomState!);
 
   const [activeDetective, setActiveDetective] = useState(0);
@@ -82,21 +85,25 @@ export default function Lobby() {
       getItemKey={({ slot }) => slot.id}
       leftPanel={
         <>
-          <CasePolaroid
-            roomId={roomState.roomId}
-            joinUrl={joinUrl}
-            crossedRounds={0}
-          />
-          <AssigningCaseSheet
-            detectiveName={detectiveName}
-            count={readyPlayers.length}
-            maxCount={roomState.config.maxPlayers}
-            canStart={canStart}
-            canCycle={readyPlayers.length > 1}
-            onStart={() => startTheGame(activeDetective)}
-            onPrev={cyclePrev}
-            onNext={cycleNext}
-          />
+          <motion.div variants={pinned} initial="animate" animate="animate" exit="exit">
+            <CasePolaroid
+              roomId={roomState.roomId}
+              joinUrl={joinUrl}
+              crossedRounds={0}
+            />
+          </motion.div>
+          <motion.div variants={tossed} initial="animate" animate="animate" exit="exit">
+            <AssigningCaseSheet
+              detectiveName={detectiveName}
+              count={readyPlayers.length}
+              maxCount={roomState.config.maxPlayers}
+              canStart={canStart}
+              canCycle={readyPlayers.length > 1}
+              onStart={() => startTheGame(activeDetective)}
+              onPrev={cyclePrev}
+              onNext={cycleNext}
+            />
+          </motion.div>
         </>
       }
       renderItem={({ slot, originalIndex }) => (

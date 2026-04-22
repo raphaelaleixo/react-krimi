@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { AnimatePresence } from 'motion/react';
 import { useGame } from '../contexts/GameContext';
 import Lobby from '../components/Lobby';
 import Board from '../components/Board';
@@ -22,5 +23,9 @@ export default function Room() {
     );
   }
 
-  return gameState?.started ? <Board /> : <Lobby />;
+  return (
+    <AnimatePresence mode="wait">
+      {gameState?.started ? <Board key="board" /> : <Lobby key="lobby" />}
+    </AnimatePresence>
+  );
 }

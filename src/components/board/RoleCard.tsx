@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import Pushpin from './Pushpin';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
+import { useMotionVariants } from '../../motion/variants';
 
 export interface RoleCardProps {
   playerName: string;
@@ -14,13 +15,16 @@ export interface RoleCardProps {
 export default function RoleCard({ playerName, role, width = 260 }: RoleCardProps) {
   const { t } = useI18n();
   const isMurderer = role === 'murderer';
+  const { pinned } = useMotionVariants();
 
   return (
     <Box
       component={motion.div}
-      initial={{ scale: 0.6, rotate: -8, opacity: 0, y: -20 }}
-      animate={{ scale: 1, rotate: -2, opacity: 1, y: 0 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+      variants={pinned}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      style={{ rotate: -2 }}
       sx={{
         position: 'relative',
         width,
