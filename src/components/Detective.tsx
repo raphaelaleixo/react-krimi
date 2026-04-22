@@ -50,7 +50,12 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
 
   const hasPassed = !!(gameState.passedTurns && gameState.passedTurns[playerOrderIndex]);
 
-  const forensicReady = !!gameState.forensicAnalysis?.some(Boolean);
+  const forensicReady =
+    gameState.availableClues > 0 &&
+    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
+    (gameState.forensicAnalysis ?? [])
+      .slice(0, gameState.availableClues)
+      .every(Boolean);
 
   // Other players (excluding detective and self) for guessing
   const otherPlayers = useMemo(() => {
