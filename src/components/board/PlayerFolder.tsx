@@ -17,6 +17,7 @@ export interface PlayerFolderProps {
   stamp?: string | null;
   footer?: ReactNode;
   hideTab?: boolean;
+  tabSubtitle?: string;
 }
 
 const MANILA_BODY = '#d4b87d';
@@ -35,9 +36,11 @@ export default function PlayerFolder({
   stamp,
   footer,
   hideTab = false,
+  tabSubtitle,
 }: PlayerFolderProps) {
   const { t } = useI18n();
   const isSelect = mode === 'select';
+  const tabHeight = tabSubtitle ? 56 : 40;
 
   const renderLine = (
     text: string,
@@ -141,20 +144,20 @@ export default function PlayerFolder({
       {/* Tab — slides down into folder body when hideTab flips true */}
       <Box
         component={motion.div}
-        initial={{ height: 40 }}
-        animate={{ height: hideTab ? 0 : 40 }}
+        initial={{ height: tabHeight }}
+        animate={{ height: hideTab ? 0 : tabHeight }}
         transition={{ duration: 0.45, delay: hideTab ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
         sx={{ overflow: 'hidden' }}
       >
         <Box
           component={motion.div}
           initial={{ y: 0, opacity: 1 }}
-          animate={{ y: hideTab ? 40 : 0, opacity: hideTab ? 0 : 1 }}
+          animate={{ y: hideTab ? tabHeight : 0, opacity: hideTab ? 0 : 1 }}
           transition={{ duration: 0.45, delay: hideTab ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
           sx={{
             position: 'relative',
             width: 210,
-            height: 40,
+            height: tabHeight,
             mx: 'auto',
             bgcolor: '#f8f6f0',
             borderRadius: '6px 6px 0 0',
@@ -162,6 +165,7 @@ export default function PlayerFolder({
             borderLeft: `1px solid ${MANILA_EDGE}`,
             borderRight: `1px solid ${MANILA_EDGE}`,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
@@ -180,10 +184,27 @@ export default function PlayerFolder({
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               px: 2,
+              lineHeight: 1.1,
             }}
           >
             {formatDisplayName(playerName)}
           </Typography>
+          {tabSubtitle && (
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-typewriter)',
+                fontSize: '0.7rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                color: 'var(--evidence-color)',
+                lineHeight: 1,
+                mt: 0.25,
+              }}
+            >
+              {tabSubtitle}
+            </Typography>
+          )}
         </Box>
       </Box>
 

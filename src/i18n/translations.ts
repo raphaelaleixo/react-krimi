@@ -57,6 +57,7 @@ export const translations: Record<string, string> = {
   'Round': 'Rodada',
   'of': 'de',
   'Analysis': 'Análise',
+  'Forensic Analysis': 'Análise Forense',
   'Forensic Scientist': 'Cientista Forense',
   'Case': 'Caso',
 
@@ -147,6 +148,7 @@ export const translations: Record<string, string> = {
   // Player screens redesign — added 2026-04-21
   'SUBMITTED': 'ENVIADO',
   'The Murderer': 'O Assassino',
+  'Murderer': 'Assassino',
   'Means': 'Causa',
   'Key evidence': 'Evidência principal',
   'Waiting for the Forensic Scientist...': 'Esperando o Cientista Forense...',

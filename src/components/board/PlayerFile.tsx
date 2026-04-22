@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { motion } from 'motion/react';
-import Pushpin from './Pushpin';
-import { formatDisplayName } from '../../utils/formatDisplayName';
+import { useMemo } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { motion } from "motion/react";
+import Pushpin from "./Pushpin";
+import { formatDisplayName } from "../../utils/formatDisplayName";
 
 function generateTornEdge() {
-  const points: string[] = ['0% 0%', '100% 0%'];
+  const points: string[] = ["0% 0%", "100% 0%"];
   const steps = 30;
-  points.push('100% 95%');
+  points.push("100% 95%");
   for (let i = steps; i >= 0; i--) {
     const x = (i / steps) * 100;
     const y = 95 + Math.random() * 3;
     points.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
   }
-  return `polygon(${points.join(', ')})`;
+  return `polygon(${points.join(", ")})`;
 }
 
 interface PlayerFileProps {
@@ -31,8 +31,8 @@ interface PlayerFileProps {
   slotLabel?: string;
 }
 
-const WEAPON_COLOR = 'var(--weapon-color)';
-const EVIDENCE_COLOR = 'var(--evidence-color)';
+const WEAPON_COLOR = "var(--weapon-color)";
+const EVIDENCE_COLOR = "var(--evidence-color)";
 
 export default function PlayerFile({
   name,
@@ -53,10 +53,10 @@ export default function PlayerFile({
   return (
     <Box
       sx={{
-        position: 'relative',
+        position: "relative",
         transform: `rotate(${rotation}deg)`,
         marginTop: `${offsetY}px`,
-        transition: 'transform 0.3s ease-out',
+        transition: "transform 0.3s ease-out",
       }}
     >
       <Pushpin />
@@ -66,9 +66,9 @@ export default function PlayerFile({
         sx={{
           background: `#f8f6f0 repeating-linear-gradient(transparent, transparent 23px, #e8e4da 23px, #e8e4da 24px) 0 36px`,
           p: 2,
-          boxShadow: '0 3px 8px rgba(0,0,0,0.2)',
-          position: 'relative',
-          borderLeft: '2px solid rgba(220, 80, 80, 0.3)',
+          boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
+          position: "relative",
+          borderLeft: "2px solid rgba(220, 80, 80, 0.3)",
           clipPath: tornEdge,
           pb: 4,
         }}
@@ -77,13 +77,13 @@ export default function PlayerFile({
         {guessCount > 0 ? (
           <Typography
             sx={{
-              position: 'absolute',
+              position: "absolute",
               top: 8,
               right: 10,
-              fontFamily: 'var(--font-script)',
-              fontSize: '1.6rem',
-              textTransform: 'uppercase',
-              color: 'var(--evidence-color)',
+              fontFamily: "var(--font-script)",
+              fontSize: "1.6rem",
+              textTransform: "uppercase",
+              color: "var(--evidence-color)",
             }}
           >
             {guessCount}x
@@ -94,27 +94,27 @@ export default function PlayerFile({
             aria-label="submitted"
             initial={{ scale: 2, rotate: -30, opacity: 0 }}
             animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 14 }}
+            transition={{ type: "spring", stiffness: 500, damping: 14 }}
             sx={{
-              position: 'absolute',
+              position: "absolute",
               top: 6,
               right: 8,
               width: 32,
               height: 32,
-              borderRadius: '50%',
-              border: '2px solid var(--evidence-color)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transformOrigin: 'center',
+              borderRadius: "50%",
+              border: "2px solid var(--evidence-color)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transformOrigin: "center",
             }}
           >
             <Typography
               sx={{
-                fontFamily: 'var(--font-script)',
-                fontSize: '1.5rem',
+                fontFamily: "var(--font-script)",
+                fontSize: "1.5rem",
                 lineHeight: 1,
-                color: 'var(--evidence-color)',
+                color: "var(--evidence-color)",
               }}
             >
               ✓
@@ -126,36 +126,42 @@ export default function PlayerFile({
         <Typography
           title={name}
           sx={{
-            fontFamily: 'var(--font-script)',
-            fontSize: '1.75em',
-            fontWeight: 'bold',
-            color: 'var(--text-color)',
+            fontFamily: "var(--font-script)",
+            fontSize: "1.75em",
+            fontWeight: "bold",
+            color: "var(--text-color)",
             lineHeight: 1,
             pr: 3,
             mb: 1.5,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {formatDisplayName(name)}
         </Typography>
 
         {hasGameBody && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
             {means!.map((m, i) => (
               <Typography
                 key={`m-${i}`}
                 sx={{
-                  fontFamily: 'var(--font-typewriter)',
-                  fontSize: '0.95rem',
-                  fontWeight: 'bold',
-                  color: 'var(--text-color)',
+                  fontFamily: "var(--font-typewriter)",
+                  fontSize: "1.125rem",
+                  fontWeight: "bold",
+                  color: "var(--text-color)",
                   lineHeight: 1.4,
                   px: 0.5,
                   background: `linear-gradient(color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent), color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent)) no-repeat`,
-                  backgroundSize: '100% 85%',
-                  backgroundPosition: '0 60%',
+                  backgroundSize: "100% 85%",
+                  backgroundPosition: "0 60%",
                 }}
               >
                 {m}
@@ -165,15 +171,15 @@ export default function PlayerFile({
               <Typography
                 key={`c-${i}`}
                 sx={{
-                  fontFamily: 'var(--font-typewriter)',
-                  fontSize: '0.95rem',
-                  fontWeight: 'bold',
-                  color: 'var(--text-color)',
+                  fontFamily: "var(--font-typewriter)",
+                  fontSize: "1.125rem",
+                  fontWeight: "bold",
+                  color: "var(--text-color)",
                   lineHeight: 1.4,
                   px: 0.5,
                   background: `linear-gradient(color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent), color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent)) no-repeat`,
-                  backgroundSize: '100% 85%',
-                  backgroundPosition: '0 60%',
+                  backgroundSize: "100% 85%",
+                  backgroundPosition: "0 60%",
                 }}
               >
                 {c}
@@ -185,12 +191,12 @@ export default function PlayerFile({
         {hasLobbyBody && !hasGameBody && (
           <Typography
             sx={{
-              fontFamily: 'var(--font-typewriter)',
-              fontSize: '0.95rem',
-              fontWeight: 'bold',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              color: 'var(--text-color)',
+              fontFamily: "var(--font-typewriter)",
+              fontSize: "0.95rem",
+              fontWeight: "bold",
+              letterSpacing: "1px",
+              textTransform: "uppercase",
+              color: "var(--text-color)",
               lineHeight: 1.6,
             }}
           >
@@ -202,27 +208,27 @@ export default function PlayerFile({
         {stamp && (
           <Box
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%) rotate(-15deg)',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%) rotate(-15deg)",
               zIndex: 2,
-              border: '3px solid rgba(0, 0, 0, 0.3)',
-              borderRadius: '4px',
+              border: "3px solid rgba(0, 0, 0, 0.3)",
+              borderRadius: "4px",
               px: 1.5,
               py: 0.5,
-              pointerEvents: 'none',
+              pointerEvents: "none",
             }}
           >
             <Typography
               sx={{
-                fontFamily: 'var(--font-typewriter)',
-                fontSize: '1.4rem',
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                color: 'rgba(0, 0, 0, 0.35)',
-                letterSpacing: '2px',
-                whiteSpace: 'nowrap',
+                fontFamily: "var(--font-typewriter)",
+                fontSize: "1.4rem",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                color: "rgba(0, 0, 0, 0.35)",
+                letterSpacing: "2px",
+                whiteSpace: "nowrap",
               }}
             >
               {stamp}
