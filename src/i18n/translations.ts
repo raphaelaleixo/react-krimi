@@ -163,4 +163,6 @@ export const translations: Record<string, string> = {
   'Join link for': 'Link de acesso para',
   'Rejoin': 'Resumir',
   'Rejoin link for': 'Link de retorno para',
+  'Home': 'Início',
+  'Room': 'Sala',
 };

@@ -44,7 +44,7 @@ export default function PlayerHeader({ roomState, playerId, gameState }: PlayerH
       <Box
         component={RouterLink}
         to="/"
-        aria-label="Home"
+        aria-label={t('Home')}
         sx={{ display: 'inline-flex', alignItems: 'center' }}
       >
         <Box
@@ -60,7 +60,7 @@ export default function PlayerHeader({ roomState, playerId, gameState }: PlayerH
       <Button
         variant="text"
         onClick={() => setShowInfo(true)}
-        aria-label={`${t('Room:')} ${roomState.roomId}`}
+        aria-label={`${t('Room')} ${roomState.roomId}`}
         sx={{
           fontFamily: 'var(--font-typewriter)',
           fontSize: '1rem',
