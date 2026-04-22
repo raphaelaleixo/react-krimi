@@ -150,4 +150,5 @@ export const translations: Record<string, string> = {
   'The Murderer': 'O Assassino',
   'Means': 'Causa',
   'Key evidence': 'Evidência principal',
+  'Waiting for the Forensic Scientist...': 'Esperando o Cientista Forense...',
 };

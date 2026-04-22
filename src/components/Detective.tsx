@@ -20,6 +20,7 @@ import RoleCard from './board/RoleCard';
 import PlayerFolder from './board/PlayerFolder';
 import StampButton from './board/StampButton';
 import TapedNoteButton from './board/TapedNoteButton';
+import WaitingNote from './board/WaitingNote';
 import type { KrimiGameState } from '../types';
 
 interface DetectiveProps {
@@ -48,6 +49,8 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
   }, [gameState.passedTurns, gameState.guesses, playerOrderIndex]);
 
   const hasPassed = !!(gameState.passedTurns && gameState.passedTurns[playerOrderIndex]);
+
+  const forensicReady = !!gameState.forensicAnalysis?.some(Boolean);
 
   // Other players (excluding detective and self) for guessing
   const otherPlayers = useMemo(() => {
@@ -111,26 +114,34 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           hideTab
           stamp={hasPassed ? t('Passed') : null}
           footer={
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <StampButton
-                onClick={() => setSolveSheet(true)}
-                disabled={!!disableActions}
-              >
-                {t('Accuse')}
-              </StampButton>
-            </Box>
+            forensicReady ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <StampButton
+                  onClick={() => setSolveSheet(true)}
+                  disabled={!!disableActions}
+                >
+                  {t('Accuse')}
+                </StampButton>
+              </Box>
+            ) : undefined
           }
         />
 
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <TapedNoteButton
-            rotation={-2}
-            onClick={handlePassTurn}
-            disabled={!!disableActions}
-          >
-            {t('Pass turn')}
-          </TapedNoteButton>
-        </Box>
+        {forensicReady ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TapedNoteButton
+              rotation={-2}
+              onClick={handlePassTurn}
+              disabled={!!disableActions}
+            >
+              {t('Pass turn')}
+            </TapedNoteButton>
+          </Box>
+        ) : (
+          <WaitingNote
+            subtitle={t('Waiting for the Forensic Scientist...')}
+          />
+        )}
       </Box>
 
       {/* Solve crime drawer — unchanged from previous implementation */}
