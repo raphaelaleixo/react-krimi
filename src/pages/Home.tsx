@@ -12,7 +12,7 @@ import BoardSurface from "../components/board/BoardSurface";
 import CaseFile from "../components/board/CaseFile";
 import TapedNoteButton from "../components/board/TapedNoteButton";
 import StampButton from "../components/board/StampButton";
-import logo from "../assets/logo.svg";
+import logo from "../assets/logo-wordmark.svg";
 import ludoratory from "../assets/ludoratory.svg";
 
 export default function Home() {
@@ -60,7 +60,14 @@ export default function Home() {
               <Box
                 component="img"
                 src={logo}
-                sx={{ width: 96, mx: "auto", mb: 2, display: "block" }}
+                sx={{
+                  height: 88,
+                  width: "auto",
+                  mx: "auto",
+                  mb: 2,
+                  display: "block",
+                  filter: "drop-shadow(0 0 1.5px rgba(0,0,0,0.45))",
+                }}
                 alt="Krimi"
               />
               <Typography
