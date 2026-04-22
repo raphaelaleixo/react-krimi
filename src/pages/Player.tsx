@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -11,7 +10,9 @@ import { useI18n } from '../hooks/useI18n';
 import Detective from '../components/Detective';
 import ForensicAnalysis from '../components/ForensicAnalysis';
 import PickPhase from '../components/PickPhase';
+import CorkBoard from '../components/board/CorkBoard';
 import PlayerHeader from '../components/board/PlayerHeader';
+import WaitingNote from '../components/board/WaitingNote';
 import { isRolesRevealed } from '../utils/rules';
 
 export default function Player() {
@@ -54,24 +55,9 @@ export default function Player() {
       renderReady={() => (
         <>
           <PlayerHeader roomState={roomState} playerId={playerId} gameState={gameState} />
-          <Container sx={{ height: '100vh' }}>
-            <Grid container sx={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-              <Grid size={{ xs: 12, md: 6 }} sx={{ textAlign: 'center' }}>
-                <Typography variant="h3" sx={{ mb: 2 }}>
-                  {t('You are in room')}{' '}
-                  <Box
-                    component="code"
-                    sx={{ color: 'error.main', textTransform: 'uppercase' }}
-                  >
-                    {roomState.roomId}
-                  </Box>
-                </Typography>
-                <Typography variant="subtitle1">
-                  {t('Waiting for the game start')}
-                </Typography>
-              </Grid>
-            </Grid>
-          </Container>
+          <CorkBoard>
+            <WaitingNote subtitle={t('Waiting for the game start')} />
+          </CorkBoard>
         </>
       )}
       renderStarted={() => {
