@@ -306,29 +306,29 @@ export default function ForensicSheetFillable({
           </Box>
         ))}
 
+        {Array.from({ length: laterCount }).map((_, i) => {
+          const index = ROUND_1_COUNT + i;
+          return (
+            <GluedNote
+              key={index}
+              rotation={gluedNoteRotations[i] ?? 0}
+              zIndex={1 + i}
+            >
+              <SlotRow
+                index={index}
+                title={analysis[index]?.title ?? ''}
+                value={values[index] ?? ''}
+                locked={isLocked(index)}
+                options={analysis[index]?.options ?? []}
+                onChange={(v) => handleChange(index, v)}
+                disabled={disabled}
+              />
+            </GluedNote>
+          );
+        })}
+
         {submitBlock}
       </SheetFrame>
-
-      {Array.from({ length: laterCount }).map((_, i) => {
-        const index = ROUND_1_COUNT + i;
-        return (
-          <GluedNote
-            key={index}
-            rotation={gluedNoteRotations[i] ?? 0}
-            zIndex={1 + i}
-          >
-            <SlotRow
-              index={index}
-              title={analysis[index]?.title ?? ''}
-              value={values[index] ?? ''}
-              locked={isLocked(index)}
-              options={analysis[index]?.options ?? []}
-              onChange={(v) => handleChange(index, v)}
-              disabled={disabled}
-            />
-          </GluedNote>
-        );
-      })}
     </Box>
   );
 }
