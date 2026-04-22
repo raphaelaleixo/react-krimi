@@ -16,9 +16,13 @@ export function useMasonryLayout(
   const [containerHeight, setContainerHeight] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
+  const itemObserverRef = useRef<ResizeObserver | null>(null);
 
   const setItemRef = useCallback((index: number, el: HTMLElement | null) => {
+    const prev = itemRefs.current[index];
+    if (prev && prev !== el) itemObserverRef.current?.unobserve(prev);
     itemRefs.current[index] = el;
+    if (el) itemObserverRef.current?.observe(el);
   }, []);
 
   const recalculate = useCallback(() => {
@@ -51,6 +55,23 @@ export function useMasonryLayout(
     setContainerHeight(Math.max(...columnHeights));
     setOffsetX(offsetX);
   }, [containerRef, itemCount, columnWidth, gap]);
+
+  const recalculateRef = useRef(recalculate);
+  useEffect(() => {
+    recalculateRef.current = recalculate;
+  }, [recalculate]);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => recalculateRef.current());
+    itemObserverRef.current = observer;
+    for (const el of itemRefs.current) {
+      if (el) observer.observe(el);
+    }
+    return () => {
+      observer.disconnect();
+      itemObserverRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     // Recalculate after render so items are measured

@@ -2,19 +2,14 @@ import { forwardRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useI18n } from "../../hooks/useI18n";
-import { formatDisplayName } from "../../utils/formatDisplayName";
 
-interface GuessNoteProps {
-  accusedName: string;
-  mean: string;
-  evidenceKey: string;
-  isWrong: boolean;
+interface PassNoteProps {
   rotation: number;
   fullWidth?: boolean;
 }
 
-const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
-  { accusedName, mean, evidenceKey, isWrong, rotation, fullWidth = false },
+const PassNote = forwardRef<HTMLDivElement, PassNoteProps>(function PassNote(
+  { rotation, fullWidth = false },
   ref,
 ) {
   const { t } = useI18n();
@@ -29,7 +24,7 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
     >
       <Box
         sx={{
-          bgcolor: "#f9d8d2",
+          bgcolor: "#fef3a0",
           width: "100%",
           p: 2,
           boxSizing: "border-box",
@@ -47,25 +42,14 @@ const GuessNote = forwardRef<HTMLDivElement, GuessNoteProps>(function GuessNote(
             fontWeight: "bold",
             lineHeight: 1.1,
             color: "var(--text-color)",
-            textDecoration: isWrong ? "line-through" : "none",
-            textDecorationColor: "var(--evidence-color)",
-            textDecorationThickness: "2px",
             textAlign: "center",
           }}
         >
-          {t("Accused")}{" "}
-          <span style={{ textTransform: "uppercase" }}>
-            {formatDisplayName(accusedName)}
-          </span>
-          {" ("}
-          <span style={{ color: "var(--weapon-color)" }}>{mean}</span>
-          {" / "}
-          <span style={{ color: "var(--evidence-color)" }}>{evidenceKey}</span>
-          {")"}
+          {t("Passed")}
         </Typography>
       </Box>
     </Box>
   );
 });
 
-export default GuessNote;
+export default PassNote;

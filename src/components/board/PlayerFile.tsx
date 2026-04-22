@@ -70,7 +70,7 @@ export default function PlayerFile({
           position: "relative",
           borderLeft: "2px solid rgba(220, 80, 80, 0.3)",
           clipPath: tornEdge,
-          pb: 4,
+          pb: 6,
         }}
       >
         {/* Guess count (or pick checkmark before guessing) */}
@@ -149,42 +149,62 @@ export default function PlayerFile({
               alignItems: "flex-start",
             }}
           >
-            {means!.map((m, i) => (
+            {means!.length > 0 && (
               <Typography
-                key={`m-${i}`}
                 sx={{
                   fontFamily: "var(--font-typewriter)",
                   fontSize: "1.125rem",
                   fontWeight: "bold",
                   color: "var(--text-color)",
                   lineHeight: 1.4,
-                  px: 0.5,
-                  background: `linear-gradient(color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent), color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent)) no-repeat`,
-                  backgroundSize: "100% 85%",
-                  backgroundPosition: "0 60%",
                 }}
               >
-                {m}
+                {means!.map((m, i) => (
+                  <span key={`m-${i}`}>
+                    <Box
+                      component="span"
+                      sx={{
+                        px: 0.5,
+                        background: `linear-gradient(color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent), color-mix(in srgb, ${WEAPON_COLOR} 20%, transparent)) no-repeat`,
+                        backgroundSize: "100% 85%",
+                        backgroundPosition: "0 60%",
+                      }}
+                    >
+                      {m}
+                    </Box>
+                    {i < means!.length - 1 && ", "}
+                  </span>
+                ))}
               </Typography>
-            ))}
-            {clues!.map((c, i) => (
+            )}
+            {clues!.length > 0 && (
               <Typography
-                key={`c-${i}`}
                 sx={{
                   fontFamily: "var(--font-typewriter)",
                   fontSize: "1.125rem",
                   fontWeight: "bold",
                   color: "var(--text-color)",
                   lineHeight: 1.4,
-                  px: 0.5,
-                  background: `linear-gradient(color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent), color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent)) no-repeat`,
-                  backgroundSize: "100% 85%",
-                  backgroundPosition: "0 60%",
                 }}
               >
-                {c}
+                {clues!.map((c, i) => (
+                  <span key={`c-${i}`}>
+                    <Box
+                      component="span"
+                      sx={{
+                        px: 0.5,
+                        background: `linear-gradient(color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent), color-mix(in srgb, ${EVIDENCE_COLOR} 20%, transparent)) no-repeat`,
+                        backgroundSize: "100% 85%",
+                        backgroundPosition: "0 60%",
+                      }}
+                    >
+                      {c}
+                    </Box>
+                    {i < clues!.length - 1 && ", "}
+                  </span>
+                ))}
               </Typography>
-            ))}
+            )}
           </Box>
         )}
 

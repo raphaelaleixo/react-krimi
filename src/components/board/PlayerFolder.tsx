@@ -14,7 +14,7 @@ export interface PlayerFolderProps {
   selectedKey?: string | null;
   onSelectMean?: (mean: string) => void;
   onSelectKey?: (key: string) => void;
-  stamp?: string | null;
+  note?: ReactNode;
   footer?: ReactNode;
   hideTab?: boolean;
   tabSubtitle?: string;
@@ -33,7 +33,7 @@ export default function PlayerFolder({
   selectedKey,
   onSelectMean,
   onSelectKey,
-  stamp,
+  note,
   footer,
   hideTab = false,
   tabSubtitle,
@@ -239,37 +239,13 @@ export default function PlayerFolder({
 
         {footer && <Box sx={{ mt: 2 }}>{footer}</Box>}
 
-        {stamp && (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%) rotate(-15deg)',
-              zIndex: 2,
-              border: '3px solid rgba(0, 0, 0, 0.35)',
-              borderRadius: '4px',
-              px: 1.5,
-              py: 0.5,
-              pointerEvents: 'none',
-            }}
-          >
-            <Typography
-              sx={{
-                fontFamily: 'var(--font-typewriter)',
-                fontSize: '1.4rem',
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                color: 'rgba(0, 0, 0, 0.4)',
-                letterSpacing: '2px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {stamp}
-            </Typography>
-          </Box>
-        )}
       </Box>
+
+      {note && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+          {note}
+        </Box>
+      )}
     </Box>
   );
 }

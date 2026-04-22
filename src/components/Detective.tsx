@@ -18,6 +18,8 @@ import { useI18n } from '../hooks/useI18n';
 import CorkBoard from './board/CorkBoard';
 import RoleCard from './board/RoleCard';
 import PlayerFolder from './board/PlayerFolder';
+import PassNote from './board/PassNote';
+import GuessNote from './board/GuessNote';
 import StampButton from './board/StampButton';
 import TapedNoteButton from './board/TapedNoteButton';
 import WaitingNote from './board/WaitingNote';
@@ -49,6 +51,34 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
   }, [gameState.passedTurns, gameState.guesses, playerOrderIndex]);
 
   const hasPassed = !!(gameState.passedTurns && gameState.passedTurns[playerOrderIndex]);
+
+  const ownGuess = useMemo(() => {
+    const g = gameState.guesses?.[playerOrderIndex];
+    if (!g || typeof g !== 'object') return null;
+    const accusedPid = gameState.playerOrder[g.player];
+    const accusedName = gameState.playerNames[accusedPid];
+    const isWrong =
+      gameState.finished &&
+      !(
+        gameState.murdererChoice &&
+        g.mean === gameState.murdererChoice.mean &&
+        g.key === gameState.murdererChoice.key
+      );
+    return { accusedName, mean: g.mean, evidenceKey: g.key, isWrong };
+  }, [gameState, playerOrderIndex]);
+
+  const statusNote = hasPassed ? (
+    <PassNote rotation={2} fullWidth />
+  ) : ownGuess ? (
+    <GuessNote
+      accusedName={ownGuess.accusedName}
+      mean={ownGuess.mean}
+      evidenceKey={ownGuess.evidenceKey}
+      isWrong={ownGuess.isWrong}
+      rotation={2}
+      fullWidth
+    />
+  ) : null;
 
   const forensicReady =
     gameState.availableClues > 0 &&
@@ -117,9 +147,9 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           selectedMean={isMurderer && gameState.murdererChoice ? gameState.murdererChoice.mean : null}
           selectedKey={isMurderer && gameState.murdererChoice ? gameState.murdererChoice.key : null}
           hideTab
-          stamp={hasPassed ? t('Passed') : null}
+          note={statusNote}
           footer={
-            forensicReady ? (
+            forensicReady && !ownGuess ? (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <StampButton
                   onClick={() => setSolveSheet(true)}
@@ -132,7 +162,11 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           }
         />
 
-        {forensicReady ? (
+        {!forensicReady ? (
+          <WaitingNote
+            subtitle={t('Waiting for the Forensic Scientist...')}
+          />
+        ) : !ownGuess && !hasPassed ? (
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <TapedNoteButton
               rotation={-2}
@@ -142,11 +176,7 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
               {t('Pass turn')}
             </TapedNoteButton>
           </Box>
-        ) : (
-          <WaitingNote
-            subtitle={t('Waiting for the Forensic Scientist...')}
-          />
-        )}
+        ) : null}
       </Box>
 
       {/* Solve crime drawer — unchanged from previous implementation */}

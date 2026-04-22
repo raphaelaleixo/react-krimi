@@ -50,6 +50,8 @@ export const translations: Record<string, string> = {
   // Board
   'Game': 'Jogo',
   'Suspects of the crime:': 'Suspeitos do crime:',
+  'Passed': 'Passou',
+  'Accused': 'Acusou',
   'Passed this turn': 'Passou o turno',
   'Guessed that the murderer was': 'Achou que o assassino fosse',
   'the M.O. was': 'a causa foi',
