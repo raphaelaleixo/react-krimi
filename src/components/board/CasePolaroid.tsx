@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { motion } from 'motion/react';
 import { RoomQRCode } from 'react-gameroom';
 import { useI18n } from '../../hooks/useI18n';
 import { generateDistressedCircle } from './distressedStamp';
@@ -134,15 +133,11 @@ export default function CasePolaroid({ roomId, joinUrl, crossedRounds }: CasePol
                     }}
                   >
                     <Box
-                      component={motion.div}
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ duration: 0.18, ease: [0.5, 0, 0.2, 1] }}
+                      className="krimi-anim-cross-1"
                       sx={{
                         width: '100%',
                         height: '100%',
                         bgcolor: 'var(--evidence-color)',
-                        transformOrigin: 'left center',
                         clipPath: crossClipPaths[r - 1][0],
                       }}
                     />
@@ -159,15 +154,11 @@ export default function CasePolaroid({ roomId, joinUrl, crossedRounds }: CasePol
                     }}
                   >
                     <Box
-                      component={motion.div}
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ duration: 0.18, delay: 0.16, ease: [0.5, 0, 0.2, 1] }}
+                      className="krimi-anim-cross-2"
                       sx={{
                         width: '100%',
                         height: '100%',
                         bgcolor: 'var(--evidence-color)',
-                        transformOrigin: 'left center',
                         clipPath: crossClipPaths[r - 1][1],
                       }}
                     />

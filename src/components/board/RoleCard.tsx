@@ -1,10 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { motion } from 'motion/react';
 import Pushpin from './Pushpin';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
-import { useMotionVariants } from '../../motion/variants';
 
 export interface RoleCardProps {
   playerName: string;
@@ -15,16 +13,10 @@ export interface RoleCardProps {
 export default function RoleCard({ playerName, role, width = 260 }: RoleCardProps) {
   const { t } = useI18n();
   const isMurderer = role === 'murderer';
-  const { pinned } = useMotionVariants();
 
   return (
     <Box
-      component={motion.div}
-      variants={pinned}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      style={{ rotate: -2 }}
+      className="krimi-anim-pinned"
       sx={{
         position: 'relative',
         width,
@@ -34,6 +26,7 @@ export default function RoleCard({ playerName, role, width = 260 }: RoleCardProp
         px: 3,
         py: 2.5,
         border: '1px solid rgba(0,0,0,0.1)',
+        transform: 'rotate(-2deg)',
       }}
     >
       <Pushpin color={isMurderer ? 'var(--evidence-color)' : '#3a4b5c'} />

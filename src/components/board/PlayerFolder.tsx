@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { motion } from 'motion/react';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
-import { useMotionVariants } from '../../motion/variants';
 
 export interface PlayerFolderProps {
   playerName: string;
@@ -40,7 +38,6 @@ export default function PlayerFolder({
   tabSubtitle,
 }: PlayerFolderProps) {
   const { t } = useI18n();
-  const { tossed } = useMotionVariants();
   const isSelect = mode === 'select';
   const tabHeight = tabSubtitle ? 56 : 40;
 
@@ -143,26 +140,25 @@ export default function PlayerFolder({
 
   return (
     <Box
-      component={motion.div}
-      variants={tossed}
-      initial="initial"
-      animate="animate"
+      className="krimi-anim-tossed"
       sx={{ position: 'relative', width: '100%', maxWidth: 360, mx: 'auto' }}
     >
       {/* Tab — slides down into folder body when hideTab flips true */}
       <Box
-        component={motion.div}
-        initial={{ height: tabHeight }}
-        animate={{ height: hideTab ? 0 : tabHeight }}
-        transition={{ duration: 0.45, delay: hideTab ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
-        sx={{ overflow: 'hidden' }}
+        sx={{
+          overflow: 'hidden',
+          height: hideTab ? 0 : tabHeight,
+          transition: `height 450ms cubic-bezier(0.4, 0, 0.2, 1)`,
+          transitionDelay: hideTab ? '300ms' : '0ms',
+        }}
       >
         <Box
-          component={motion.div}
-          initial={{ y: 0, opacity: 1 }}
-          animate={{ y: hideTab ? tabHeight : 0, opacity: hideTab ? 0 : 1 }}
-          transition={{ duration: 0.45, delay: hideTab ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
           sx={{
+            transform: hideTab ? `translateY(${tabHeight}px)` : 'translateY(0)',
+            opacity: hideTab ? 0 : 1,
+            transition:
+              'transform 450ms cubic-bezier(0.4, 0, 0.2, 1), opacity 450ms cubic-bezier(0.4, 0, 0.2, 1)',
+            transitionDelay: hideTab ? '300ms' : '0ms',
             position: 'relative',
             width: 210,
             height: tabHeight,

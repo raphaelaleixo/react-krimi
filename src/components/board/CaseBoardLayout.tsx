@@ -1,9 +1,7 @@
-import { type ReactNode, type Ref, useRef } from 'react';
+import { type ReactNode, type Ref, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import { motion, AnimatePresence } from 'motion/react';
 import CorkBoard from './CorkBoard';
 import { useMasonryLayout } from '../../hooks/useMasonryLayout';
-import { useMotionVariants } from '../../motion/variants';
 
 interface CaseBoardLayoutProps<T> {
   leftPanel: ReactNode;
@@ -30,20 +28,27 @@ export default function CaseBoardLayout<T>({
 }: CaseBoardLayoutProps<T>) {
   const masonryRef = useRef<HTMLDivElement>(null);
   const masonry = useMasonryLayout(masonryRef, items.length, columnWidth, gap);
-  const { pinned } = useMotionVariants();
 
   // Masonry is "ready" when every current item has a measured position.
-  // Until then, render plain invisible divs for measurement only — this
-  // avoids motion.div mounting at (0,0) and animating a layout-translate
-  // slide to the real position. Once ready, swap to animated motion.divs.
   const ready =
     masonry.styles.length === items.length &&
     items.every((_, i) => masonry.styles[i] !== undefined);
 
-  const staggerParent = {
-    initial: {},
-    animate: { transition: { staggerChildren: 0.08 } },
-  };
+  // Position transitions (smooth slide on reorder) are only safe once the
+  // first paint has landed at measured positions — otherwise the (0,0)
+  // placeholder would animate into place.
+  const [positionsAnimated, setPositionsAnimated] = useState(false);
+  useEffect(() => {
+    if (!ready || positionsAnimated) return;
+    const t = window.setTimeout(() => setPositionsAnimated(true), 500);
+    return () => window.clearTimeout(t);
+  }, [ready, positionsAnimated]);
+
+  // Stagger index for initial entrance when animateItems is true.
+  const [hasMountedOnce, setHasMountedOnce] = useState(false);
+  if (ready && !hasMountedOnce) {
+    setHasMountedOnce(true);
+  }
 
   const cards = items.map((item, i) => {
     const style = masonry.styles[i];
@@ -68,41 +73,28 @@ export default function CaseBoardLayout<T>({
       );
     }
 
-    const baseStyle = {
-      width: columnWidth,
-      position: 'absolute' as const,
-      left: style!.left,
-      top: style!.top,
-    };
-
-    if (animateItems) {
-      return (
-        <motion.div
-          key={key}
-          layout
-          variants={pinned}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={{ layout: { type: 'spring', stiffness: 300, damping: 30 } }}
-          ref={refCallback}
-          style={baseStyle}
-        >
-          {renderItem(item, i)}
-        </motion.div>
-      );
-    }
+    const isInitialBatch = !hasMountedOnce;
+    const animClass = animateItems ? 'krimi-anim-pinned' : '';
+    const animationDelay = animateItems && isInitialBatch ? `${i * 60}ms` : undefined;
 
     return (
-      <motion.div
+      <div
         key={key}
-        layout
-        transition={{ layout: { type: 'spring', stiffness: 300, damping: 30 } }}
         ref={refCallback}
-        style={baseStyle}
+        className={animClass}
+        style={{
+          position: 'absolute',
+          width: columnWidth,
+          left: style!.left,
+          top: style!.top,
+          transition: positionsAnimated
+            ? 'left 320ms cubic-bezier(0.4, 0, 0.2, 1), top 320ms cubic-bezier(0.4, 0, 0.2, 1)'
+            : undefined,
+          animationDelay,
+        }}
       >
         {renderItem(item, i)}
-      </motion.div>
+      </div>
     );
   });
 
@@ -119,20 +111,17 @@ export default function CaseBoardLayout<T>({
             justifyContent: 'center',
           }}
         >
-          <motion.div
+          <div
             ref={masonryRef}
-            animate={{ height: masonry.containerHeight }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            style={{ position: 'relative', width: '100%' }}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: masonry.containerHeight,
+              transition: 'height 320ms cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
           >
-            {animateItems && ready ? (
-              <motion.div variants={staggerParent} initial="initial" animate="animate">
-                <AnimatePresence>{cards}</AnimatePresence>
-              </motion.div>
-            ) : (
-              cards
-            )}
-          </motion.div>
+            {cards}
+          </div>
           {belowGrid}
         </Box>
       </Box>

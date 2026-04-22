@@ -121,6 +121,71 @@ export default function GlobalStyles() {
             animation: none !important;
           }
         }
+
+        /* --- State-change entrance animations ----------------------------
+         * Uses separate scale/rotate/translate CSS properties so each
+         * animation composes cleanly with any transform: rotate(...) a
+         * component may already declare for its resting tilt.
+         */
+        @keyframes krimi-pinned-in {
+          from { scale: 1.4; opacity: 0; }
+          to   { scale: 1; opacity: 1; }
+        }
+        @keyframes krimi-tossed-in {
+          from { translate: 0 50px; rotate: -3deg; opacity: 0; }
+          to   { translate: 0 0; rotate: 0deg; opacity: 1; }
+        }
+        @keyframes krimi-fade-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes krimi-stamp-in {
+          from { scale: 1.8; rotate: -30deg; opacity: 0; }
+          to   { scale: 1; rotate: -1.5deg; opacity: 1; }
+        }
+        @keyframes krimi-check-in {
+          from { scale: 2; rotate: -30deg; opacity: 0; }
+          to   { scale: 1; rotate: 0deg; opacity: 1; }
+        }
+        @keyframes krimi-cross-in {
+          from { scale: 0 1; }
+          to   { scale: 1 1; }
+        }
+
+        .krimi-anim-pinned {
+          animation: krimi-pinned-in 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .krimi-anim-tossed {
+          animation: krimi-tossed-in 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .krimi-anim-fade {
+          animation: krimi-fade-in 250ms ease-out both;
+        }
+        .krimi-anim-stamp {
+          animation: krimi-stamp-in 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .krimi-anim-check {
+          animation: krimi-check-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .krimi-anim-cross-1 {
+          transform-origin: left center;
+          animation: krimi-cross-in 180ms cubic-bezier(0.5, 0, 0.2, 1) both;
+        }
+        .krimi-anim-cross-2 {
+          transform-origin: left center;
+          animation: krimi-cross-in 180ms cubic-bezier(0.5, 0, 0.2, 1) 160ms both;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .krimi-anim-pinned,
+          .krimi-anim-tossed,
+          .krimi-anim-stamp,
+          .krimi-anim-check,
+          .krimi-anim-cross-1,
+          .krimi-anim-cross-2 {
+            animation: krimi-fade-in 200ms ease-out both;
+          }
+        }
       `}
     />
   );

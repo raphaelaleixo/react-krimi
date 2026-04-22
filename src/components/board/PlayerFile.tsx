@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { motion } from "motion/react";
 import Pushpin from "./Pushpin";
 import { formatDisplayName } from "../../utils/formatDisplayName";
 
@@ -90,11 +89,8 @@ export default function PlayerFile({
           </Typography>
         ) : hasPicked ? (
           <Box
-            component={motion.div}
+            className="krimi-anim-check"
             aria-label="submitted"
-            initial={{ scale: 2, rotate: -30, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 500, damping: 14 }}
             sx={{
               position: "absolute",
               top: 6,

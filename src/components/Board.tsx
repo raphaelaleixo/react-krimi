@@ -1,6 +1,5 @@
 import { useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
-import { motion, AnimatePresence } from "motion/react";
 import { useGame } from "../contexts/GameContext";
 import { buildJoinUrl } from "react-gameroom";
 import CaseBoardLayout from "./board/CaseBoardLayout";
@@ -14,7 +13,6 @@ import WaitingNote from "./board/WaitingNote";
 
 import { useI18n } from "../hooks/useI18n";
 import { isForensicReady } from "../utils/rules";
-import { useMotionVariants } from "../motion/variants";
 import RoundTitleCard from "./board/RoundTitleCard";
 import GameOverReveal from "./board/GameOverReveal";
 
@@ -34,7 +32,6 @@ function seededOffset(seed: number): number {
 export default function Board() {
   const { gameState, roomState } = useGame();
   const { t } = useI18n();
-  const { pinned, tossed } = useMotionVariants();
 
   const playerOrder = gameState?.playerOrder;
 
@@ -145,7 +142,7 @@ export default function Board() {
       leftPanel={
         <>
           {roomState && (
-            <motion.div variants={pinned} initial="initial" animate="animate">
+            <Box className="krimi-anim-pinned">
               <CasePolaroid
                 roomId={roomState.roomId}
                 joinUrl={joinUrl}
@@ -158,7 +155,7 @@ export default function Board() {
                   ),
                 )}
               />
-            </motion.div>
+            </Box>
           )}
 
           {stillPicking && (
@@ -175,13 +172,13 @@ export default function Board() {
             />
           )}
 
-          <motion.div variants={tossed} initial="initial" animate="animate">
+          <Box className="krimi-anim-tossed">
             <ForensicSheet
               detectiveName={detectiveName}
               analysis={gameState.analysis}
               forensicAnalysis={gameState.forensicAnalysis}
             />
-          </motion.div>
+          </Box>
         </>
       }
       renderItem={(player) => {
@@ -213,72 +210,30 @@ export default function Board() {
               }
             />
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <AnimatePresence>
-                {hasPassed && (
-                  <motion.div
-                    key="pass"
-                    initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      y: 0,
-                      rotate: noteRotation,
-                    }}
-                    exit={{ opacity: 0, scale: 0.4, y: -20 }}
-                    transition={{
-                      opacity: { duration: 0.3 },
-                      scale: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 20,
-                      },
-                      y: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 20,
-                      },
-                    }}
-                    style={{ marginTop: -40 }}
-                  >
-                    <PassNote rotation={0} />
-                  </motion.div>
-                )}
-                {!hasPassed && guess && (
-                  <motion.div
-                    key="guess"
-                    initial={{ opacity: 0, scale: 0.4, y: -30, rotate: 0 }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      y: 0,
-                      rotate: noteRotation,
-                    }}
-                    exit={{ opacity: 0, scale: 0.4, y: -20 }}
-                    transition={{
-                      opacity: { duration: 0.3 },
-                      scale: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 20,
-                      },
-                      y: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 20,
-                      },
-                    }}
-                    style={{ marginTop: -40 }}
-                  >
-                    <GuessNote
-                      accusedName={guess.accusedName}
-                      mean={guess.mean}
-                      evidenceKey={guess.evidenceKey}
-                      isWrong={guess.isWrong}
-                      rotation={0}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {hasPassed && (
+                <Box
+                  key="pass"
+                  className="krimi-anim-pinned"
+                  sx={{ marginTop: '-40px', transform: `rotate(${noteRotation}deg)` }}
+                >
+                  <PassNote rotation={0} />
+                </Box>
+              )}
+              {!hasPassed && guess && (
+                <Box
+                  key="guess"
+                  className="krimi-anim-pinned"
+                  sx={{ marginTop: '-40px', transform: `rotate(${noteRotation}deg)` }}
+                >
+                  <GuessNote
+                    accusedName={guess.accusedName}
+                    mean={guess.mean}
+                    evidenceKey={guess.evidenceKey}
+                    isWrong={guess.isWrong}
+                    rotation={0}
+                  />
+                </Box>
+              )}
             </Box>
           </>
         );

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { AnimatePresence, motion } from 'motion/react';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
 import CorkBoard from './board/CorkBoard';
@@ -63,56 +62,42 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
         minHeight: 72,
       }}
     >
-      <AnimatePresence mode="wait" initial={false}>
-        {submitted ? (
-          <motion.div
-            key="stamp"
-            initial={{ scale: 1.8, rotate: -30, opacity: 0 }}
-            animate={{ scale: 1, rotate: -1.5, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+      {submitted ? (
+        <Box
+          key="stamp"
+          className="krimi-anim-stamp"
+          sx={{
+            border: '3px solid rgba(0, 0, 0, 0.45)',
+            borderRadius: '4px',
+            px: 2,
+            py: 0.5,
+            display: 'inline-block',
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '1.4rem',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              color: 'rgba(0, 0, 0, 0.5)',
+              letterSpacing: '3px',
+              whiteSpace: 'nowrap',
+            }}
           >
-            <Box
-              sx={{
-                border: '3px solid rgba(0, 0, 0, 0.45)',
-                borderRadius: '4px',
-                px: 2,
-                py: 0.5,
-                display: 'inline-block',
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: 'var(--font-typewriter)',
-                  fontSize: '1.4rem',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  color: 'rgba(0, 0, 0, 0.5)',
-                  letterSpacing: '3px',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {t('SUBMITTED')}
-              </Typography>
-            </Box>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="button"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
+            {t('SUBMITTED')}
+          </Typography>
+        </Box>
+      ) : (
+        <Box key="button" className="krimi-anim-fade">
+          <StampButton
+            onClick={handleSubmit}
+            disabled={!selectedMean || !selectedKey || submitting}
           >
-            <StampButton
-              onClick={handleSubmit}
-              disabled={!selectedMean || !selectedKey || submitting}
-            >
-              {t('Submit pick')}
-            </StampButton>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {t('Submit pick')}
+          </StampButton>
+        </Box>
+      )}
     </Box>
   );
 
@@ -152,55 +137,44 @@ export default function PickPhase({ gameState, playerId, playerOrderIndex }: Pic
             justifyContent: 'center',
           }}
         >
-          <AnimatePresence mode="wait" initial={false}>
-            {submitted ? (
-              <motion.div
-                key="waiting"
-                style={{ width: '100%' }}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25 }}
+          {submitted ? (
+            <Box
+              key="waiting"
+              className="krimi-anim-fade"
+              sx={{ width: '100%' }}
+            >
+              <WaitingNote
+                subtitle={t('Waiting for other players to submit their picks...')}
+                width="100%"
+              />
+            </Box>
+          ) : (
+            <Box
+              key="prompt"
+              className="krimi-anim-fade"
+              sx={{
+                position: 'relative',
+                width: 320,
+                bgcolor: '#f8f6f0',
+                boxShadow: '0 3px 10px rgba(0,0,0,0.2)',
+                px: 3,
+                py: 2.5,
+              }}
+            >
+              <Pushpin color="#4a7c59" />
+              <Typography
+                sx={{
+                  fontFamily: 'var(--font-typewriter)',
+                  fontSize: '1rem',
+                  lineHeight: 1.4,
+                  color: 'var(--text-color)',
+                  textAlign: 'center',
+                }}
               >
-                <WaitingNote
-                  subtitle={t('Waiting for other players to submit their picks...')}
-                  width="100%"
-                />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="prompt"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25 }}
-              >
-                <Box
-                  sx={{
-                    position: 'relative',
-                    width: 320,
-                    bgcolor: '#f8f6f0',
-                    boxShadow: '0 3px 10px rgba(0,0,0,0.2)',
-                    px: 3,
-                    py: 2.5,
-                  }}
-                >
-                  <Pushpin color="#4a7c59" />
-                  <Typography
-                    sx={{
-                      fontFamily: 'var(--font-typewriter)',
-                      fontSize: '1rem',
-                      lineHeight: 1.4,
-                      color: 'var(--text-color)',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {t('If you were the murderer, which cards would you want found at the scene?')}
-                  </Typography>
-                </Box>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                {t('If you were the murderer, which cards would you want found at the scene?')}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </CorkBoard>

@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { AnimatePresence } from 'motion/react';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -152,11 +151,9 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           width="100%"
         />
 
-        <AnimatePresence>
-          {showGuessStamp && (
-            <GuessUnlockedStamp label={t('You may now guess')} />
-          )}
-        </AnimatePresence>
+        {showGuessStamp && (
+          <GuessUnlockedStamp label={t('You may now guess')} />
+        )}
 
         <PlayerFolder
           playerName={playerName}

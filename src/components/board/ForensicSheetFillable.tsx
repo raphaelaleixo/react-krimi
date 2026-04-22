@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { AnimatePresence, motion } from 'motion/react';
 import { useI18n } from '../../hooks/useI18n';
 import type { AnalysisItem } from '../../data/analysis';
 import { GluedNote, SheetFrame, SheetHeader } from './forensicSheetParts';
@@ -245,56 +244,42 @@ export default function ForensicSheetFillable({
         minHeight: 72,
       }}
     >
-      <AnimatePresence mode="wait" initial={false}>
-        {allSubmitted ? (
-          <motion.div
-            key="stamp"
-            initial={{ scale: 1.8, rotate: -30, opacity: 0 }}
-            animate={{ scale: 1, rotate: -1.5, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+      {allSubmitted ? (
+        <Box
+          key="stamp"
+          className="krimi-anim-stamp"
+          sx={{
+            border: '3px solid rgba(0, 0, 0, 0.45)',
+            borderRadius: '4px',
+            px: 2,
+            py: 0.5,
+            display: 'inline-block',
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-typewriter)',
+              fontSize: '1.4rem',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              color: 'rgba(0, 0, 0, 0.5)',
+              letterSpacing: '3px',
+              whiteSpace: 'nowrap',
+            }}
           >
-            <Box
-              sx={{
-                border: '3px solid rgba(0, 0, 0, 0.45)',
-                borderRadius: '4px',
-                px: 2,
-                py: 0.5,
-                display: 'inline-block',
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: 'var(--font-typewriter)',
-                  fontSize: '1.4rem',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  color: 'rgba(0, 0, 0, 0.5)',
-                  letterSpacing: '3px',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {t('SUBMITTED')}
-              </Typography>
-            </Box>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="button"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
+            {t('SUBMITTED')}
+          </Typography>
+        </Box>
+      ) : (
+        <Box key="button" className="krimi-anim-fade">
+          <StampButton
+            onClick={handleSubmit}
+            disabled={!allFilled || submitting}
           >
-            <StampButton
-              onClick={handleSubmit}
-              disabled={!allFilled || submitting}
-            >
-              {t('Send analysis')}
-            </StampButton>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {t('Send analysis')}
+          </StampButton>
+        </Box>
+      )}
     </Box>
   );
 

@@ -1,7 +1,5 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { motion } from 'motion/react';
-import { useMotionVariants } from '../../motion/variants';
 
 export interface GuessUnlockedStampProps {
   label: string;
@@ -10,16 +8,9 @@ export interface GuessUnlockedStampProps {
 const STAMP_RED = '#9E1B1B';
 
 export default function GuessUnlockedStamp({ label }: GuessUnlockedStampProps) {
-  const { pinned } = useMotionVariants();
-
   return (
     <Box
-      component={motion.div}
-      variants={pinned}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      style={{ rotate: -3 }}
+      className="krimi-anim-stamp"
       sx={{
         display: 'inline-block',
         color: STAMP_RED,
