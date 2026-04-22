@@ -81,9 +81,17 @@ export default function Board() {
 
   if (!gameState) return null;
 
-  const stillChoosing =
-    !gameState.finished &&
-    (!gameState.murdererChoice || !gameState.forensicAnalysis || gameState.forensicAnalysis.length < 6);
+  const stillPicking = !gameState.finished && !gameState.murdererChoice;
+
+  const forensicReady =
+    gameState.availableClues > 0 &&
+    (gameState.forensicAnalysis?.length ?? 0) >= gameState.availableClues &&
+    (gameState.forensicAnalysis ?? [])
+      .slice(0, gameState.availableClues)
+      .every(Boolean);
+
+  const waitingForensic =
+    !gameState.finished && !stillPicking && !forensicReady;
 
   const suspects = gameState.playerOrder
     .map((pid, idx) => ({ id: pid, index: idx, name: gameState.playerNames[pid] }))
@@ -151,9 +159,16 @@ export default function Board() {
             />
           )}
 
-          {stillChoosing && (
+          {stillPicking && (
             <WaitingNote
               subtitle={t('Waiting for all players to submit their picks...')}
+              width={340}
+            />
+          )}
+
+          {waitingForensic && (
+            <WaitingNote
+              subtitle={t('Waiting for the Forensic Scientist...')}
               width={340}
             />
           )}
@@ -200,7 +215,7 @@ export default function Board() {
                     offsetY={offsetY}
                     stamp={gameState.passedTurns?.[player.index] ? t('Passed') : undefined}
                     guessCount={guessCountByPlayer[player.id] || 0}
-                    hasPicked={stillChoosing && !!gameState.playerPicks?.[player.index]}
+                    hasPicked={stillPicking && !!gameState.playerPicks?.[player.index]}
                   />
                 </Box>
               );

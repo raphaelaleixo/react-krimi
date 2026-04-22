@@ -146,7 +146,6 @@ export const translations: Record<string, string> = {
 
   // Player screens redesign — added 2026-04-21
   'SUBMITTED': 'ENVIADO',
-  'Private Detective': 'Detetive Particular',
   'The Murderer': 'O Assassino',
   'Means': 'Causa',
   'Key evidence': 'Evidência principal',

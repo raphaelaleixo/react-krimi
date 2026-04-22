@@ -78,6 +78,7 @@ export default function PlayerFolder({
           sx={{
             fontFamily: 'var(--font-typewriter)',
             fontSize: '1rem',
+            fontWeight: 'bold',
             color: 'var(--text-color)',
             lineHeight: 1.5,
             px: 0.5,

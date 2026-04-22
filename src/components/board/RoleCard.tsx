@@ -109,7 +109,7 @@ export default function RoleCard({ playerName, role, width = 260 }: RoleCardProp
           color: isMurderer ? 'var(--evidence-color)' : 'var(--text-color)',
         }}
       >
-        {isMurderer ? t('The Murderer') : t('Private Detective')}
+        {isMurderer ? t('The Murderer') : t('Investigator')}
       </Typography>
     </Box>
   );
