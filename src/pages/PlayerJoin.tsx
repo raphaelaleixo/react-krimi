@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { DirectionalLink as RouterLink } from '../router/DirectionalLink';
 import { useDirectionalNavigate } from '../router/useDirectionalNavigate';
@@ -12,17 +12,22 @@ import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
 import BoardSurface from '../components/board/BoardSurface';
 import CaseFile from '../components/board/CaseFile';
+import PlayerHeader from '../components/board/PlayerHeader';
 import TapedNoteButton from '../components/board/TapedNoteButton';
 import StampButton from '../components/board/StampButton';
 
 export default function PlayerJoin() {
   const navigate = useDirectionalNavigate();
   const { id: roomId = '' } = useParams<{ id: string }>();
-  const { joinRoom } = useGame();
+  const { roomState, joinRoom, loadRoom } = useGame();
   const { t } = useI18n();
 
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (roomId) loadRoom(roomId);
+  }, [roomId, loadRoom]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +48,11 @@ export default function PlayerJoin() {
 
   return (
     <BoardSurface>
-      <Container maxWidth="sm" sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
+        {roomState && (
+          <PlayerHeader roomState={roomState} playerId={0} gameState={null} showRoomCode={false} />
+        )}
+        <Container maxWidth="sm" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, py: 6 }}>
         <CaseFile>
           <Typography
             component="h1"
@@ -133,6 +142,7 @@ export default function PlayerJoin() {
           </TapedNoteButton>
         </Box>
       </Container>
+      </Box>
     </BoardSurface>
   );
 }

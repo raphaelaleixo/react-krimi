@@ -8,7 +8,7 @@ export default function BoardSurface({ children }: { children: ReactNode }) {
         position: "relative",
         minHeight: "100dvh",
         color: "#f5efe3",
-        overflow: "hidden",
+        overflowX: "clip",
       }}
     >
       <Box sx={{ position: "relative", zIndex: 1 }}>{children}</Box>
