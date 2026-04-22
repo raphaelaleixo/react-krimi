@@ -122,7 +122,7 @@ Krimi does not currently render `RoomInfoModal`. Its default labels are in Engli
 | `'Room:'` | `'Sala:'` |
 | `'Join'` | `'Entrar'` |
 | `'Join link for'` | `'Link de acesso para'` |
-| `'Rejoin'` | `'Voltar ao jogo'` |
+| `'Rejoin'` | `'Resumir'` |
 | `'Rejoin link for'` | `'Link de retorno para'` |
 
 Reused existing keys: `'Close'` (line 27) and `'Case'` (line 64).

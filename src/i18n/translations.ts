@@ -161,6 +161,6 @@ export const translations: Record<string, string> = {
   'Room:': 'Sala:',
   'Join': 'Entrar',
   'Join link for': 'Link de acesso para',
-  'Rejoin': 'Voltar ao jogo',
+  'Rejoin': 'Resumir',
   'Rejoin link for': 'Link de retorno para',
 };
