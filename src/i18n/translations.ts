@@ -40,6 +40,7 @@ export const translations: Record<string, string> = {
   'Role': 'Papel',
   'Pass turn': 'Passar',
   'Solve': 'Solucionar',
+  'Accuse': 'Acusar',
   'Solve the crime': 'Solucione o crime',
   'Who is the murderer?': 'Quem é o assassino?',
   'Select the means of murder:': 'Selecione a causa de morte',

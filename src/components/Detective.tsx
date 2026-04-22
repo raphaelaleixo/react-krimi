@@ -19,6 +19,7 @@ import CorkBoard from './board/CorkBoard';
 import RoleCard from './board/RoleCard';
 import PlayerFolder from './board/PlayerFolder';
 import StampButton from './board/StampButton';
+import TapedNoteButton from './board/TapedNoteButton';
 import type { KrimiGameState } from '../types';
 
 interface DetectiveProps {
@@ -110,30 +111,26 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           hideTab
           stamp={hasPassed ? t('Passed') : null}
           footer={
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <StampButton
-                variant="text"
-                onClick={handlePassTurn}
-                disabled={!!disableActions}
-              >
-                {t('Pass turn')}
-              </StampButton>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <StampButton
                 onClick={() => setSolveSheet(true)}
                 disabled={!!disableActions}
               >
-                {t('Solve')}
+                {t('Accuse')}
               </StampButton>
             </Box>
           }
         />
+
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <TapedNoteButton
+            rotation={-2}
+            onClick={handlePassTurn}
+            disabled={!!disableActions}
+          >
+            {t('Pass turn')}
+          </TapedNoteButton>
+        </Box>
       </Box>
 
       {/* Solve crime drawer — unchanged from previous implementation */}
