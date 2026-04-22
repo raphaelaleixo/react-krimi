@@ -97,7 +97,6 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
         <RoleCard
           playerName={playerName}
           role={isMurderer ? 'murderer' : 'detective'}
-          lockedPick={isMurderer && gameState.murdererChoice ? gameState.murdererChoice : undefined}
           width="100%"
         />
 
@@ -106,6 +105,8 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           means={playerMeans}
           clues={playerClues}
           mode="display"
+          selectedMean={isMurderer && gameState.murdererChoice ? gameState.murdererChoice.mean : null}
+          selectedKey={isMurderer && gameState.murdererChoice ? gameState.murdererChoice.key : null}
           hideTab
           stamp={hasPassed ? t('Passed') : null}
           footer={

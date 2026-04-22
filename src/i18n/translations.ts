@@ -67,7 +67,6 @@ export const translations: Record<string, string> = {
   'Submit pick': 'Enviar escolha',
   'Waiting for other players to submit their picks...':
     'Esperando os outros jogadores enviarem suas escolhas...',
-  'Your locked pick': 'Sua escolha (travada)',
 
   // ForensicAnalysis
   'Waiting for all players to submit their picks...':
