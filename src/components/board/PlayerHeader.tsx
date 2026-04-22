@@ -4,21 +4,23 @@ import Button from '@mui/material/Button';
 import { RoomInfoModal, type RoomState } from 'react-gameroom';
 import { DirectionalLink as RouterLink } from '../../router/DirectionalLink';
 import { useI18n } from '../../hooks/useI18n';
-import { generateDistressedCircle } from './distressedStamp';
-import logo from '../../assets/logo.svg';
+import { generateDistressedCircle, generateTornBottomEdge } from './distressedStamp';
+import logo from '../../assets/logo-wordmark.svg';
 import type { KrimiGameState } from '../../types';
 
 interface PlayerHeaderProps {
   roomState: RoomState;
   playerId: number;
   gameState: KrimiGameState | null;
+  showRoomCode?: boolean;
 }
 
-export default function PlayerHeader({ roomState, playerId, gameState }: PlayerHeaderProps) {
+export default function PlayerHeader({ roomState, playerId, gameState, showRoomCode = true }: PlayerHeaderProps) {
   const { t } = useI18n();
   const [showInfo, setShowInfo] = useState(false);
 
   const stampClipPath = useMemo(() => generateDistressedCircle(), []);
+  const tornEdgeClipPath = useMemo(() => generateTornBottomEdge(), []);
 
   const seat =
     gameState && gameState.playerOrder.includes(playerId)
@@ -36,9 +38,12 @@ export default function PlayerHeader({ roomState, playerId, gameState }: PlayerH
         alignItems: 'center',
         gap: 2,
         px: 2,
-        py: 1,
-        minHeight: 56,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        pt: 1,
+        pb: 2,
+        minHeight: 64,
+        bgcolor: '#f8f6f0',
+        clipPath: tornEdgeClipPath,
+        filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.45))',
       }}
     >
       <Box
@@ -57,25 +62,27 @@ export default function PlayerHeader({ roomState, playerId, gameState }: PlayerH
 
       <Box sx={{ flex: 1 }} />
 
-      <Button
-        variant="text"
-        onClick={() => setShowInfo(true)}
-        aria-label={`${t('Room')} ${roomState.roomId}`}
-        sx={{
-          fontFamily: 'var(--font-typewriter)',
-          fontSize: '1rem',
-          fontWeight: 700,
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: '#1C1B1B',
-          whiteSpace: 'nowrap',
-          minWidth: 0,
-          px: 1.5,
-          py: 0.5,
-        }}
-      >
-        {t('Case')}#{roomState.roomId}
-      </Button>
+      {showRoomCode && (
+        <Button
+          variant="text"
+          onClick={() => setShowInfo(true)}
+          aria-label={`${t('Room')} ${roomState.roomId}`}
+          sx={{
+            fontFamily: 'var(--font-typewriter)',
+            fontSize: '1rem',
+            fontWeight: 700,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: '#1C1B1B',
+            whiteSpace: 'nowrap',
+            minWidth: 0,
+            px: 1.5,
+            py: 0.5,
+          }}
+        >
+          {t('Case')}#{roomState.roomId}
+        </Button>
+      )}
 
       {seat !== null && (
         <Box
@@ -110,19 +117,21 @@ export default function PlayerHeader({ roomState, playerId, gameState }: PlayerH
         </Box>
       )}
 
-      <RoomInfoModal
-        roomState={roomState}
-        open={showInfo}
-        onClose={() => setShowInfo(false)}
-        labels={{
-          close: t('Close'),
-          roomHeading: t('Room:'),
-          joinLink: t('Join'),
-          joinLinkAria: t('Join link for'),
-          rejoinLink: t('Rejoin'),
-          rejoinLinkAria: t('Rejoin link for'),
-        }}
-      />
+      {showRoomCode && (
+        <RoomInfoModal
+          roomState={roomState}
+          open={showInfo}
+          onClose={() => setShowInfo(false)}
+          labels={{
+            close: t('Close'),
+            roomHeading: t('Room:'),
+            joinLink: t('Join'),
+            joinLinkAria: t('Join link for'),
+            rejoinLink: t('Rejoin'),
+            rejoinLinkAria: t('Rejoin link for'),
+          }}
+        />
+      )}
     </Box>
   );
 }

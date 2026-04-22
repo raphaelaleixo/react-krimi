@@ -11,3 +11,15 @@ export function generateDistressedCircle(): string {
   }
   return `polygon(${points.join(', ')})`;
 }
+
+export function generateTornBottomEdge(): string {
+  const topPoints: string[] = ['0% 0%', '100% 0%'];
+  const bottomPoints: string[] = [];
+  const steps = 40;
+  for (let i = steps; i >= 0; i--) {
+    const x = (i / steps) * 100;
+    const bite = Math.random() < 0.55 ? Math.random() * 12 : 0;
+    bottomPoints.push(`${x.toFixed(1)}% ${(100 - bite).toFixed(1)}%`);
+  }
+  return `polygon(${[...topPoints, ...bottomPoints].join(', ')})`;
+}
