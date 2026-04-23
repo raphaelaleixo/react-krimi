@@ -7,7 +7,7 @@ const clipPathPoints = Array.from({ length: 21 }, (_, i) => {
 }).join(', ');
 
 const CORK_TEXTURE =
-  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch' seed='7'/><feColorMatrix type='matrix' values='0 0 0 0.22 0.14  0 0 0 0.2 0.13  0 0 0 0.18 0.12  0 0 0 1.4 -0.15'/></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>\")";
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0.25 0.13  0 0 0 0.21 0.10  0 0 0 0.17 0.06  0 0 0 1.6 -0.2'/></filter><filter id='s'><feTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='1' stitchTiles='stitch' seed='13'/><feColorMatrix values='0 0 0 0 0.28  0 0 0 0 0.20  0 0 0 0 0.12  0 0 0 1.2 -0.6'/></filter><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='2' stitchTiles='stitch' seed='21'/><feColorMatrix values='0 0 0 0 0.38  0 0 0 0 0.28  0 0 0 0 0.18  0 0 0 0.3 -0.05'/></filter><rect width='100%' height='100%' filter='url(%23b)'/><rect width='100%' height='100%' filter='url(%23s)'/><rect width='100%' height='100%' filter='url(%23m)'/></svg>\")";
 
 const VIGNETTE =
   'radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%)';
@@ -32,7 +32,7 @@ export default function GlobalStyles() {
           background-color: #0a0a0b;
           background-image: ${FOOTER_FADE}, ${VIGNETTE}, ${CORK_TEXTURE};
           background-repeat: no-repeat, no-repeat, repeat;
-          background-size: 100% 100%, 100% 100%, 240px 240px;
+          background-size: 100% 100%, 100% 100%, 400px 400px;
           background-position: top center, center center, top left;
           background-attachment: fixed, fixed, fixed;
           font-family: var(--font-typewriter);
