@@ -55,9 +55,9 @@ export default function Join() {
 
   const handleResumeAsPlayer = useCallback(async () => {
     if (!trimmed) return;
-    const status = await resolveStatus('player');
-    if (status === null) return;
-    navigate(status === 'started' ? `/room/${trimmed}/players` : `/room/${trimmed}/player`);
+    const result = await resolveStatus('player');
+    if (result === null) return;
+    navigate(`/room/${trimmed}/player`);
   }, [trimmed, resolveStatus, navigate]);
 
   return (
