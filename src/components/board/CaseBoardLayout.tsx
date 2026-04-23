@@ -1,6 +1,7 @@
 import { type ReactNode, type Ref, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import CorkBoard from './CorkBoard';
+import FullscreenButton from './FullscreenButton';
 import { useMasonryLayout } from '../../hooks/useMasonryLayout';
 import logo from '../../assets/logo-wordmark.svg';
 
@@ -115,6 +116,16 @@ export default function CaseBoardLayout<T>({
           zIndex: 2,
         }}
       />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          zIndex: 2,
+        }}
+      >
+        <FullscreenButton />
+      </Box>
       <Box sx={{ display: 'flex', p: 3, gap: 3, minHeight: '100vh' }}>
         <Box>{leftPanel}</Box>
         <Box
