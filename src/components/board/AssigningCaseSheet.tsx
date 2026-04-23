@@ -88,9 +88,9 @@ export default function AssigningCaseSheet({
                   fontSize: '1.75em',
                   fontWeight: 'bold',
                   color: 'var(--evidence-color)',
-                  minHeight: '1.75em',
+                  lineHeight: 1,
                   display: 'inline-block',
-                  maxWidth: '100%',
+                  width: '100%',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -101,7 +101,7 @@ export default function AssigningCaseSheet({
               <Box
                 sx={{
                   borderTop: '1px dashed var(--text-color)',
-                  mt: 0.5,
+                  mt: -1,
                   mx: 'auto',
                   width: '100%',
                 }}
