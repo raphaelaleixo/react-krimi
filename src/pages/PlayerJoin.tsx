@@ -171,7 +171,7 @@ function RejoinView({ roomId, roomState }: RejoinViewProps) {
           roomState={roomState}
           playerId={0}
           gameState={null}
-          showRoomCode
+          showRoomCode={false}
         />
         <Container
           maxWidth="sm"
