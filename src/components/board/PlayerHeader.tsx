@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import { RoomInfoModal, type RoomState } from 'react-gameroom';
+import Typography from '@mui/material/Typography';
+import { type RoomState } from 'react-gameroom';
 import { DirectionalLink as RouterLink } from '../../router/DirectionalLink';
 import { useI18n } from '../../hooks/useI18n';
 import { generateDistressedCircle, generateTornBottomEdge } from './distressedStamp';
@@ -17,7 +17,6 @@ interface PlayerHeaderProps {
 
 export default function PlayerHeader({ roomState, playerId, gameState, showRoomCode = true }: PlayerHeaderProps) {
   const { t } = useI18n();
-  const [showInfo, setShowInfo] = useState(false);
 
   const stampClipPath = useMemo(() => generateDistressedCircle(), []);
   const tornEdgeClipPath = useMemo(() => generateTornBottomEdge(), []);
@@ -63,9 +62,7 @@ export default function PlayerHeader({ roomState, playerId, gameState, showRoomC
       <Box sx={{ flex: 1 }} />
 
       {showRoomCode && (
-        <Button
-          variant="text"
-          onClick={() => setShowInfo(true)}
+        <Typography
           aria-label={`${t('Room')} ${roomState.roomId}`}
           sx={{
             fontFamily: 'var(--font-typewriter)',
@@ -75,13 +72,12 @@ export default function PlayerHeader({ roomState, playerId, gameState, showRoomC
             textTransform: 'uppercase',
             color: '#1C1B1B',
             whiteSpace: 'nowrap',
-            minWidth: 0,
             px: 1.5,
             py: 0.5,
           }}
         >
           {t('Case')}#{roomState.roomId}
-        </Button>
+        </Typography>
       )}
 
       {seat !== null && (
@@ -115,22 +111,6 @@ export default function PlayerHeader({ roomState, playerId, gameState, showRoomC
             {seat}
           </Box>
         </Box>
-      )}
-
-      {showRoomCode && (
-        <RoomInfoModal
-          roomState={roomState}
-          open={showInfo}
-          onClose={() => setShowInfo(false)}
-          labels={{
-            close: t('Close'),
-            roomHeading: t('Room:'),
-            joinLink: t('Join'),
-            joinLinkAria: t('Join link for'),
-            rejoinLink: t('Rejoin'),
-            rejoinLinkAria: t('Rejoin link for'),
-          }}
-        />
       )}
     </Box>
   );

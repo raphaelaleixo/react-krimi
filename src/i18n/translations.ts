@@ -23,7 +23,6 @@ export const translations: Record<string, string> = {
   'player joined.': 'jogador entrou.',
   'players joined.': 'jogadores entraram.',
   'URL Copied': 'URL Copiada',
-  'Close': 'Fechar',
   'Copy game url': 'Copiar url do jogo',
   'Start game': 'Começar jogo',
 
@@ -157,11 +156,6 @@ export const translations: Record<string, string> = {
   'Enter your nickname for the case file.': 'Coloque seu apelido no arquivo do caso.',
 
   // PlayerHeader — added 2026-04-22
-  'Room:': 'Sala:',
-  'Join': 'Entrar',
-  'Join link for': 'Link de acesso para',
-  'Rejoin': 'Resumir',
-  'Rejoin link for': 'Link de retorno para',
   'Home': 'Início',
   'Room': 'Sala',
 
