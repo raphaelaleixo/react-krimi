@@ -32,13 +32,19 @@ export default function PlayerJoin() {
   const navigate = useDirectionalNavigate();
   const { id: roomId = '' } = useParams<{ id: string }>();
   const { roomState, loading, joinRoom, loadRoom } = useGame();
+  // roomId is available synchronously from useParams. If it's present we know
+  // the effect will subscribe immediately, so initialise hasSubscribed to true
+  // right away to prevent a one-paint RoomNotFoundView flash before the effect
+  // fires and loading becomes true.
+  const hasSubscribed = Boolean(roomId);
 
   useEffect(() => {
-    if (roomId) loadRoom(roomId);
+    if (!roomId) return;
+    loadRoom(roomId);
   }, [roomId, loadRoom]);
 
-  // Loading spinner while the first Firebase snapshot resolves.
-  if (loading && !roomState) {
+  // Spinner until we've subscribed AND the first snapshot has resolved.
+  if (!hasSubscribed || loading) {
     return (
       <BoardSurface>
         <Box
@@ -55,21 +61,20 @@ export default function PlayerJoin() {
     );
   }
 
-  // Room does not exist.
-  if (!loading && !roomState) {
+  // Subscription responded with no data → room does not exist.
+  if (!roomState) {
     return <RoomNotFoundView />;
   }
 
-  // roomState is guaranteed non-null past this point.
-  if (roomState!.status === 'started') {
-    return <RejoinView roomId={roomId} roomState={roomState!} />;
+  if (roomState.status === 'started') {
+    return <RejoinView roomId={roomId} roomState={roomState} />;
   }
 
   // Lobby: existing nickname form.
   return (
     <LobbyView
       roomId={roomId}
-      roomState={roomState!}
+      roomState={roomState}
       joinRoom={joinRoom}
       onJoined={(playerId) => navigate(`/room/${roomId}/player/${playerId}`)}
     />
@@ -191,6 +196,7 @@ function RejoinView({ roomId, roomState }: RejoinViewProps) {
                 key={slot.id}
                 component={RouterLink}
                 to={`/room/${roomId}/player/${slot.id}`}
+                aria-label={`${t('Rejoin as')} ${slot.name ?? ''}`}
                 sx={{
                   textDecoration: 'none',
                   color: 'inherit',

@@ -105,6 +105,7 @@ export const translations: Record<string, string> = {
   // Rejoin (placeholder /room/:id/players) — added 2026-04-20
   'Rejoin the game': 'Voltar ao jogo',
   'Tap your name to rejoin': 'Toque no seu nome para voltar',
+  'Rejoin as': 'Voltar como',
 
   // Lobby redesign — added 2026-04-20
   'Assigning case': 'Atribuindo o caso',
