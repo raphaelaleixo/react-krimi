@@ -32,15 +32,18 @@ export default function PlayerJoin() {
   const navigate = useDirectionalNavigate();
   const { id: roomId = '' } = useParams<{ id: string }>();
   const { roomState, loading, joinRoom, loadRoom } = useGame();
-  // roomId is available synchronously from useParams. If it's present we know
-  // the effect will subscribe immediately, so initialise hasSubscribed to true
-  // right away to prevent a one-paint RoomNotFoundView flash before the effect
-  // fires and loading becomes true.
-  const hasSubscribed = Boolean(roomId);
+  const [hasSubscribed, setHasSubscribed] = useState(false);
 
   useEffect(() => {
     if (!roomId) return;
     loadRoom(roomId);
+    // Signal that the subscription has been initiated. This flag gates the
+    // "Room not found" guard below so it can't fire before loadRoom runs —
+    // which in turn prevents a one-paint flash on first mount. React
+    // Compiler discourages setState in effects, but this flag can't be
+    // derived from render-time values (roomState+loading both start false).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setHasSubscribed(true);
   }, [roomId, loadRoom]);
 
   // Spinner until we've subscribed AND the first snapshot has resolved.
