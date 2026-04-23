@@ -70,10 +70,10 @@ Layout:
 
 Per-slot card:
 
-- Filter `roomState.players` to slots with `status !== 'empty'`. Preserve original slot index so the slot label matches the lobby's numbering.
+- Derive the joined-player list using the same source `Lobby.tsx` uses: `useRoomState(roomState).readyPlayers`. Preserve each slot's original index (before the filter) so player numbers match the lobby's numbering.
 - Render each as `PlayerFile` in its lobby mode: pass `name={slot.name ?? ''}`, `slotLabel={t('Player') + ' ' + (originalIndex + 1)}`, `rotation`, `offsetY`. Do not pass `means` / `clues` / `stamp` / `guessCount` / `hasPicked`.
 - Wrap each `PlayerFile` in a `DirectionalLink` to `/room/:id/player/:playerId` (the slot id). Link styled with `textDecoration: 'none', color: 'inherit', display: 'block'`.
-- Memoize per-slot `rotation` (±3°) and `offsetY` (±10px) keyed on joined slot ids — same pattern as `Lobby.tsx`'s `cardRotations` / `cardOffsets` — so values are stable across re-renders and don't re-roll on Firebase updates.
+- Memoize per-slot `rotation` (±3°) and `offsetY` (±10px) keyed on joined slot ids — same pattern as `Lobby.tsx`'s `cardRotations` / `cardOffsets` (including the `randomRotation` / `randomOffset` helpers) — so values are stable across re-renders and don't re-roll on Firebase updates.
 
 Tappability affordance: none beyond the normal link tap. No hover transforms (mobile-first; no hover state on touch). Cards are large enough to tap comfortably from `PlayerFile`'s existing padding.
 
