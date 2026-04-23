@@ -15,7 +15,6 @@ const Room = lazy(() => import('./pages/Room'));
 const Player = lazy(() => import('./pages/Player'));
 const HowToPlay = lazy(() => import('./pages/HowToPlay'));
 const PlayerJoin = lazy(() => import('./pages/PlayerJoin'));
-const RejoinPlayers = lazy(() => import('./pages/RejoinPlayers'));
 
 const routes: RouteObject[] = [
   { path: '/', element: <Home /> },
@@ -23,7 +22,6 @@ const routes: RouteObject[] = [
   { path: '/room/:id', element: <Room /> },
   { path: '/room/:id/player', element: <PlayerJoin /> },
   { path: '/room/:id/player/:playerId', element: <Player /> },
-  { path: '/room/:id/players', element: <RejoinPlayers /> },
   { path: '/how-to-play', element: <HowToPlay /> },
 ];
 

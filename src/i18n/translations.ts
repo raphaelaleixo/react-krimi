@@ -15,7 +15,6 @@ export const translations: Record<string, string> = {
     'Você vai apresentar o jogo no que parece ser um celular. A tela do apresentador funciona melhor em uma tela maior — um laptop ou tablet.',
   'Host anyway': 'Apresentar mesmo assim',
   'Cancel': 'Cancelar',
-  'Content coming soon.': 'Em breve.',
 
   // Lobby
   'Lobby for room': 'Lobby para a sala',
@@ -101,9 +100,6 @@ export const translations: Record<string, string> = {
     'Sala não encontrada. Verifique o código e tente novamente.',
   'Room not found': 'Sala não encontrada',
   'Check the code and try again.': 'Verifique o código e tente novamente.',
-
-  // Rejoin (placeholder /room/:id/players) — added 2026-04-20
-  'Rejoin the game': 'Voltar ao jogo',
   'Tap your name to rejoin': 'Toque no seu nome para voltar',
   'Rejoin as': 'Voltar como',
 
