@@ -99,6 +99,8 @@ export const translations: Record<string, string> = {
   'Resuming…': 'Retomando…',
   'Room not found. Check the code and try again.':
     'Sala não encontrada. Verifique o código e tente novamente.',
+  'Room not found': 'Sala não encontrada',
+  'Check the code and try again.': 'Verifique o código e tente novamente.',
 
   // Rejoin (placeholder /room/:id/players) — added 2026-04-20
   'Rejoin the game': 'Voltar ao jogo',
