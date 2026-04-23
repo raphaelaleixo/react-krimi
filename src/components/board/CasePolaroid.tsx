@@ -45,16 +45,10 @@ export default function CasePolaroid({ roomId, joinUrl, crossedRounds }: CasePol
 
   return (
     <Box
-      component="a"
-      href={joinUrl}
-      target="_blank"
       sx={{
         mb: 3,
         display: 'block',
-        textDecoration: 'none',
         transform: 'rotate(2deg)',
-        transition: 'transform 0.2s ease',
-        '&:hover': { transform: 'rotate(0deg) scale(1.03)' },
       }}
     >
       <Box
