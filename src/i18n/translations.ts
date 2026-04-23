@@ -23,6 +23,8 @@ export const translations: Record<string, string> = {
   'player joined.': 'jogador entrou.',
   'players joined.': 'jogadores entraram.',
   'URL Copied': 'URL Copiada',
+  'Enter fullscreen': 'Tela cheia',
+  'Exit fullscreen': 'Sair da tela cheia',
   'Copy game url': 'Copiar url do jogo',
   'Start game': 'Começar jogo',
 
