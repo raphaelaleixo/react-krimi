@@ -27,6 +27,7 @@ import {
 import { database } from '../firebase';
 import { distributeCards, chooseRandomMurderer } from '../utils/rules';
 import type { KrimiPlayerData, KrimiGameState, GuessData } from '../types';
+import { useI18n } from '../hooks/useI18n';
 
 interface GameContextValue {
   roomState: RoomState<KrimiPlayerData> | null;
@@ -51,6 +52,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const unsubRef = useRef<Unsubscribe | null>(null);
   const currentRoomId = useRef<string | null>(null);
+  const { setLang } = useI18n();
 
   useEffect(() => {
     return () => {
@@ -87,13 +89,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (data.game) {
         setGameState(data.game as KrimiGameState);
       }
+      if (data.lang === 'en' || data.lang === 'pt_br') {
+        setLang(data.lang);
+      }
       setLoading(false);
     }, (error) => {
       console.error('[Krimi] Firebase listener error:', error);
       setLoading(false);
     });
     unsubRef.current = unsub;
-  }, []);
+  }, [setLang]);
 
   const createRoom = useCallback(async (lang: 'en' | 'pt_br') => {
     const room = createInitialRoom<KrimiPlayerData>({

@@ -18,18 +18,12 @@ import GameOverReveal from '../components/board/GameOverReveal';
 export default function Player() {
   const { id, playerId: playerIdParam } = useParams<{ id: string; playerId: string }>();
   const { roomState, gameState, loading, loadRoom } = useGame();
-  const { t, setLang } = useI18n();
+  const { t } = useI18n();
   const playerId = Number(playerIdParam);
 
   useEffect(() => {
     if (id) loadRoom(id);
   }, [id, loadRoom]);
-
-  useEffect(() => {
-    if (gameState?.lang) {
-      setLang(gameState.lang);
-    }
-  }, [gameState?.lang, setLang]);
 
   if (loading || !roomState) {
     return (
