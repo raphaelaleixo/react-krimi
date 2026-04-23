@@ -2,6 +2,7 @@ import { type ReactNode, type Ref, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import CorkBoard from './CorkBoard';
 import { useMasonryLayout } from '../../hooks/useMasonryLayout';
+import logo from '../../assets/logo-wordmark.svg';
 
 interface CaseBoardLayoutProps<T> {
   leftPanel: ReactNode;
@@ -100,6 +101,20 @@ export default function CaseBoardLayout<T>({
 
   return (
     <CorkBoard corkRef={corkRef}>
+      <Box
+        component="img"
+        src={logo}
+        alt="Krimi"
+        sx={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          height: 40,
+          display: 'block',
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}
+      />
       <Box sx={{ display: 'flex', p: 3, gap: 3, minHeight: '100vh' }}>
         <Box>{leftPanel}</Box>
         <Box
