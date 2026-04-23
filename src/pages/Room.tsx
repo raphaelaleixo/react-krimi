@@ -12,6 +12,7 @@ import Board from '../components/Board';
 import BoardSurface from '../components/board/BoardSurface';
 import CaseFile from '../components/board/CaseFile';
 import TapedNoteButton from '../components/board/TapedNoteButton';
+import logo from '../assets/logo-wordmark.svg';
 
 export default function Room() {
   const { id } = useParams<{ id: string }>();
@@ -67,6 +68,19 @@ function GameNotFoundView() {
         }}
       >
         <CaseFile>
+          <Box
+            component="img"
+            src={logo}
+            alt="Krimi"
+            sx={{
+              height: 88,
+              width: 'auto',
+              mx: 'auto',
+              mb: 2,
+              display: 'block',
+              filter: 'drop-shadow(0 0 1.5px rgba(0,0,0,0.45))',
+            }}
+          />
           <Typography
             component="h1"
             sx={{
