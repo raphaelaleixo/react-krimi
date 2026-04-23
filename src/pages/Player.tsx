@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Navigate, useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { PlayerScreen } from 'react-gameroom';
@@ -41,11 +39,11 @@ export default function Player() {
     );
   }
 
-  const notFound = (
-    <Container sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Typography>Player not found in this game.</Typography>
-    </Container>
-  );
+  const slotExists = roomState.players.some((p) => p.id === playerId);
+  if (!slotExists) {
+    return <Navigate to={`/room/${id}/player`} replace />;
+  }
+  const notFound = <Navigate to={`/room/${id}/player`} replace />;
 
   const murdererName = gameState
     ? gameState.playerNames[gameState.playerOrder[gameState.murderer]] || ''
