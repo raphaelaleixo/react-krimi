@@ -184,22 +184,18 @@ export default function GameOverReveal({
   const [visible, setVisible] = useState(false);
   const [identityRevealed, setIdentityRevealed] = useState(false);
 
+  const detectivesWon = winner === 'detectives';
+
   if (finished !== lastSeenFinished) {
     setLastSeenFinished(finished);
     if (finished && !lastSeenFinished) {
       setVisible(true);
-      setIdentityRevealed(false);
+      setIdentityRevealed(detectivesWon);
     }
   }
 
-  const detectivesWon = winner === 'detectives';
-
   useEffect(() => {
-    if (!visible) return;
-    if (detectivesWon) {
-      setIdentityRevealed(true);
-      return;
-    }
+    if (!visible || detectivesWon) return;
     const timer = window.setTimeout(() => setIdentityRevealed(true), 2200);
     return () => window.clearTimeout(timer);
   }, [visible, detectivesWon]);
