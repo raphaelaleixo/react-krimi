@@ -19,7 +19,11 @@ export default function FullscreenButton() {
       onClick={toggle}
       aria-label={label}
     >
-      {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+      {isFullscreen ? (
+        <FullscreenExitIcon fontSize="inherit" />
+      ) : (
+        <FullscreenIcon fontSize="inherit" />
+      )}
     </TapedNoteButton>
   );
 }
