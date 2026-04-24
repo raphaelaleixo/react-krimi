@@ -10,6 +10,7 @@ interface CaseBoardLayoutProps<T> {
   items: T[];
   getItemKey: (item: T, index: number) => string | number;
   renderItem: (item: T, index: number) => ReactNode;
+  gridSuffix?: ReactNode;
   belowGrid?: ReactNode;
   corkRef?: Ref<HTMLDivElement>;
   animateItems?: boolean;
@@ -22,6 +23,7 @@ export default function CaseBoardLayout<T>({
   items,
   getItemKey,
   renderItem,
+  gridSuffix,
   belowGrid,
   corkRef,
   animateItems = false,
@@ -29,12 +31,14 @@ export default function CaseBoardLayout<T>({
   gap = 24,
 }: CaseBoardLayoutProps<T>) {
   const masonryRef = useRef<HTMLDivElement>(null);
-  const masonry = useMasonryLayout(masonryRef, items.length, columnWidth, gap);
+  const suffixCells = gridSuffix ? 1 : 0;
+  const totalCells = items.length + suffixCells;
+  const masonry = useMasonryLayout(masonryRef, totalCells, columnWidth, gap);
 
-  // Masonry is "ready" when every current item has a measured position.
+  // Masonry is "ready" when every current cell has a measured position.
   const ready =
-    masonry.styles.length === items.length &&
-    items.every((_, i) => masonry.styles[i] !== undefined);
+    masonry.styles.length === totalCells &&
+    Array.from({ length: totalCells }).every((_, i) => masonry.styles[i] !== undefined);
 
   // Position transitions (smooth slide on reorder) are only safe once the
   // first paint has landed at measured positions — otherwise the (0,0)
@@ -52,10 +56,13 @@ export default function CaseBoardLayout<T>({
     setHasMountedOnce(true);
   }
 
-  const cards = items.map((item, i) => {
-    const style = masonry.styles[i];
-    const key = getItemKey(item, i);
-    const refCallback = (el: HTMLDivElement | null) => masonry.setItemRef(i, el);
+  const renderCell = (
+    key: string | number,
+    cellIndex: number,
+    content: ReactNode,
+  ) => {
+    const refCallback = (el: HTMLDivElement | null) =>
+      masonry.setItemRef(cellIndex, el);
 
     if (!ready) {
       return (
@@ -70,14 +77,16 @@ export default function CaseBoardLayout<T>({
             visibility: 'hidden',
           }}
         >
-          {renderItem(item, i)}
+          {content}
         </div>
       );
     }
 
+    const style = masonry.styles[cellIndex];
     const isInitialBatch = !hasMountedOnce;
     const animClass = animateItems ? 'krimi-anim-pinned' : '';
-    const animationDelay = animateItems && isInitialBatch ? `${i * 60}ms` : undefined;
+    const animationDelay =
+      animateItems && isInitialBatch ? `${cellIndex * 60}ms` : undefined;
 
     return (
       <div
@@ -95,10 +104,18 @@ export default function CaseBoardLayout<T>({
           animationDelay,
         }}
       >
-        {renderItem(item, i)}
+        {content}
       </div>
     );
+  };
+
+  const cards: ReactNode[] = [];
+  items.forEach((item, i) => {
+    cards.push(renderCell(getItemKey(item, i), i, renderItem(item, i)));
   });
+  if (gridSuffix) {
+    cards.push(renderCell('__grid-suffix__', items.length, gridSuffix));
+  }
 
   return (
     <CorkBoard corkRef={corkRef}>

@@ -10,6 +10,7 @@ import { ROUND_1_COUNT } from "./board/forensicSheetConfig";
 import GuessNote from "./board/GuessNote";
 import PassNote from "./board/PassNote";
 import WaitingNote from "./board/WaitingNote";
+import ColorLegend from "./board/ColorLegend";
 
 import { useI18n } from "../hooks/useI18n";
 import { isForensicReady } from "../utils/rules";
@@ -189,6 +190,7 @@ export default function Board() {
           </Box>
         </>
       }
+      gridSuffix={<ColorLegend />}
       renderItem={(player) => {
         const rotation = cardRotations[player.id]?.card || 0;
         const offsetY = cardOffsets[player.id] || 0;

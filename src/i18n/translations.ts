@@ -156,6 +156,8 @@ export const translations: Record<string, string> = {
   'Murderer': 'Assassino',
   'Means': 'Causa',
   'Key evidence': 'Evidência principal',
+  'Means of Murder': 'Meios da morte',
+  'Key Evidence': 'Evidência principal',
   'Waiting for the Forensic Scientist...': 'Esperando o Cientista Forense...',
 
   // PlayerJoin restyle — added 2026-04-22
