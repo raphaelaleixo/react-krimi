@@ -1,12 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useI18n } from '../../hooks/useI18n';
 import type { AnalysisItem } from '../../data/analysis';
-import { GluedNote, SheetFrame, SheetHeader } from './forensicSheetParts';
+import { GluedNote, SheetFrame, SheetHeader, SlotRow } from './forensicSheetParts';
 import { ROUND_1_COUNT, randomRotation } from './forensicSheetConfig';
 import StampButton from './StampButton';
 
@@ -17,153 +14,6 @@ interface ForensicSheetFillableProps {
   detectiveName: string;
   onSubmit: (values: string[]) => Promise<void> | void;
   disabled?: boolean;
-}
-
-function AnalysisTitle({ index, title }: { index: number; title: string }) {
-  return (
-    <Typography
-      sx={{
-        fontFamily: 'var(--font-typewriter)',
-        fontSize: '1rem',
-        color: 'var(--text-color)',
-      }}
-    >
-      {index + 1}. {title}:
-    </Typography>
-  );
-}
-
-function AnalysisValue({ value }: { value: string }) {
-  return (
-    <Typography
-      component="span"
-      sx={{
-        fontFamily: 'var(--font-script)',
-        fontWeight: 'bold',
-        fontSize: '1.4rem',
-        lineHeight: 1,
-        textTransform: 'uppercase',
-        color: 'var(--evidence-color)',
-      }}
-    >
-      {value}
-    </Typography>
-  );
-}
-
-function FillableSlot({
-  value,
-  options,
-  onChange,
-  disabled,
-}: {
-  value: string;
-  options: string[];
-  onChange: (v: string) => void;
-  disabled?: boolean;
-}) {
-  return (
-    <Select
-      variant="standard"
-      disableUnderline
-      value={value}
-      onChange={(e) => onChange(e.target.value as string)}
-      displayEmpty
-      fullWidth
-      disabled={disabled}
-      IconComponent={KeyboardArrowDownIcon}
-      sx={{
-        width: '100%',
-        '& .MuiSelect-select': {
-          width: '100%',
-          boxSizing: 'border-box',
-          fontFamily: 'var(--font-script)',
-          fontWeight: 'bold',
-          fontSize: '1.4rem',
-          lineHeight: 1,
-          textTransform: 'uppercase',
-          color: 'var(--evidence-color)',
-          borderBottom: '2px dashed var(--evidence-color)',
-          pt: 0,
-          pb: 0.5,
-          pr: '28px !important',
-          minHeight: '1.4em',
-        },
-        '& .MuiSelect-icon': {
-          color: 'var(--evidence-color)',
-        },
-      }}
-      renderValue={(v) => (
-        <Box
-          component="span"
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: '1.4em',
-          }}
-        >
-          {v ? <AnalysisValue value={v as string} /> : <>&nbsp;</>}
-        </Box>
-      )}
-    >
-      {options.map((opt) => (
-        <MenuItem
-          key={opt}
-          value={opt}
-          sx={{ fontFamily: 'var(--font-typewriter)' }}
-        >
-          {opt}
-        </MenuItem>
-      ))}
-    </Select>
-  );
-}
-
-function SlotRow({
-  index,
-  title,
-  value,
-  locked,
-  options,
-  onChange,
-  disabled,
-}: {
-  index: number;
-  title: string;
-  value: string;
-  locked: boolean;
-  options: string[];
-  onChange: (v: string) => void;
-  disabled?: boolean;
-}) {
-  if (locked) {
-    return (
-      <Box>
-        <Typography
-          component="span"
-          sx={{
-            fontFamily: 'var(--font-typewriter)',
-            fontSize: '1rem',
-            color: 'var(--text-color)',
-          }}
-        >
-          {index + 1}. {title}:{' '}
-        </Typography>
-        <AnalysisValue value={value} />
-      </Box>
-    );
-  }
-  return (
-    <Box>
-      <AnalysisTitle index={index} title={title} />
-      <FillableSlot
-        value={value}
-        options={options}
-        onChange={onChange}
-        disabled={disabled}
-      />
-    </Box>
-  );
 }
 
 export default function ForensicSheetFillable({

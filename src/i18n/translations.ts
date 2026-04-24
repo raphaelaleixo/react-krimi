@@ -46,6 +46,9 @@ export const translations: Record<string, string> = {
   'Select the means of murder:': 'Selecione a causa de morte',
   'Select the key evidence:': 'Selecione a evidência principal',
   'Send guess': 'Mandar palpite',
+  'Submit your accusation': 'Faça sua acusação',
+  'You only get one accusation the whole game — make it count.':
+    'Você só pode acusar uma vez por partida — escolha com cuidado.',
 
   // Board
   'Game': 'Jogo',

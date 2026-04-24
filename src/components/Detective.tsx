@@ -1,18 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Container from '@mui/material/Container';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Button from '@mui/material/Button';
-import CheckIcon from '@mui/icons-material/Check';
 import { useGame } from '../contexts/GameContext';
 import { useI18n } from '../hooks/useI18n';
 import CorkBoard from './board/CorkBoard';
@@ -24,6 +13,7 @@ import StampButton from './board/StampButton';
 import TapedNoteButton from './board/TapedNoteButton';
 import WaitingNote from './board/WaitingNote';
 import GuessUnlockedStamp from './board/GuessUnlockedStamp';
+import { SheetFrame, SlotRow } from './board/forensicSheetParts';
 import type { KrimiGameState } from '../types';
 import { isForensicReady } from '../utils/rules';
 
@@ -195,108 +185,149 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
         ) : null}
       </Box>
 
-      {/* Solve crime drawer — unchanged from previous implementation */}
       <SwipeableDrawer
         anchor="bottom"
         open={solveSheet}
         onClose={() => setSolveSheet(false)}
         onOpen={() => setSolveSheet(true)}
+        slotProps={{
+          paper: {
+            sx: {
+              bgcolor: 'transparent',
+              boxShadow: 'none',
+              maxHeight: '92dvh',
+            },
+          },
+        }}
       >
-        <Box sx={{ height: 500, textAlign: 'center', overflowY: 'auto' }}>
-          <Container>
-            <Button
-              variant="contained"
-              sx={{ mt: 6 }}
-              onClick={() => setSolveSheet(false)}
+        <Box
+          sx={{
+            px: 2,
+            pt: 3,
+            pb: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            overflowY: 'auto',
+          }}
+        >
+          <SheetFrame width="100%">
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-typewriter)',
+                fontSize: '1.75rem',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: 'var(--text-color)',
+                textAlign: 'center',
+                mb: 0.75,
+              }}
             >
-              {t('close')}
-            </Button>
-            <Typography variant="h5" sx={{ mt: 4 }}>
-              {t('Solve the crime')}
+              {t('Submit your accusation')}
             </Typography>
-            <Card sx={{ mt: 3 }}>
-              <CardContent>
-                <Typography>{t('Who is the murderer?')}</Typography>
-                <FormControl fullWidth sx={{ mt: 2 }}>
-                  <InputLabel>{t('Who is the murderer?')}</InputLabel>
-                  <Select
-                    value={guess.player ?? ''}
-                    onChange={(e) =>
-                      setGuess({ ...guess, player: e.target.value as number, mean: null, key: null })
-                    }
-                    label={t('Who is the murderer?')}
-                  >
-                    {otherPlayers.map((p) => (
-                      <MenuItem key={p.id} value={p.index}>
-                        {p.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-typewriter)',
+                fontSize: '1rem',
+                fontStyle: 'italic',
+                letterSpacing: '0.5px',
+                color: '#5f6c7b',
+                textAlign: 'center',
+                mb: 3,
+                px: 2,
+              }}
+            >
+              {t('You only get one accusation the whole game — make it count.')}
+            </Typography>
 
-                {selectedPlayer && (
-                  <Grid container spacing={2} sx={{ mt: 2 }}>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <Typography variant="body2" sx={{ textAlign: 'left', mb: 1 }}>
-                        {t('Select the means of murder:')}
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                        {gameState.means
-                          .slice(selectedPlayer.index * 4, selectedPlayer.index * 4 + 4)
-                          .map((mean) => (
-                            <Chip
-                              key={mean}
-                              label={mean}
-                              size="small"
-                              icon={guess.mean === mean ? <CheckIcon /> : undefined}
-                              onClick={() => setGuess({ ...guess, mean })}
-                              sx={{
-                                bgcolor: guess.mean === mean ? '#90caf9' : '#bbdefb',
-                                opacity: 1,
-                                cursor: 'pointer',
-                              }}
-                            />
-                          ))}
-                      </Box>
-                    </Grid>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <Typography variant="body2" sx={{ textAlign: 'left', mb: 1 }}>
-                        {t('Select the key evidence:')}
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                        {gameState.clues
-                          .slice(selectedPlayer.index * 4, selectedPlayer.index * 4 + 4)
-                          .map((clue) => (
-                            <Chip
-                              key={clue}
-                              label={clue}
-                              size="small"
-                              icon={guess.key === clue ? <CheckIcon /> : undefined}
-                              onClick={() => setGuess({ ...guess, key: clue })}
-                              sx={{
-                                bgcolor: guess.key === clue ? '#ef9a9a' : '#ffcdd2',
-                                opacity: 1,
-                                cursor: 'pointer',
-                              }}
-                            />
-                          ))}
-                      </Box>
-                    </Grid>
-                  </Grid>
-                )}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2.5,
+                width: '100%',
+                maxWidth: 300,
+                mx: 'auto',
+              }}
+            >
+              <SlotRow
+                index={0}
+                title={t('Murderer')}
+                value={selectedPlayer?.name ?? ''}
+                options={otherPlayers.map((p) => p.name)}
+                onChange={(name) => {
+                  const match = otherPlayers.find((p) => p.name === name);
+                  setGuess({ player: match?.index ?? null, mean: null, key: null });
+                }}
+              />
+              <Box
+                sx={{
+                  opacity: selectedPlayer ? 1 : 0,
+                  transition: 'opacity 300ms ease',
+                }}
+              >
+                <SlotRow
+                  index={1}
+                  title={t('Means')}
+                  value={guess.mean ?? ''}
+                  options={
+                    selectedPlayer
+                      ? gameState.means.slice(
+                          selectedPlayer.index * 4,
+                          selectedPlayer.index * 4 + 4,
+                        )
+                      : []
+                  }
+                  onChange={(mean) => setGuess({ ...guess, mean })}
+                  disabled={!selectedPlayer}
+                />
+              </Box>
+              <Box
+                sx={{
+                  opacity: selectedPlayer ? 1 : 0,
+                  transition: 'opacity 300ms ease',
+                }}
+              >
+                <SlotRow
+                  index={2}
+                  title={t('Key evidence')}
+                  value={guess.key ?? ''}
+                  options={
+                    selectedPlayer
+                      ? gameState.clues.slice(
+                          selectedPlayer.index * 4,
+                          selectedPlayer.index * 4 + 4,
+                        )
+                      : []
+                  }
+                  onChange={(key) => setGuess({ ...guess, key })}
+                  disabled={!selectedPlayer}
+                />
+              </Box>
+            </Box>
 
-                <Box sx={{ mt: 3 }}>
-                  <Button
-                    onClick={handleSendGuess}
-                    variant="contained"
-                    disabled={!guess.player || !guess.mean || !guess.key}
-                  >
-                    {t('Send guess')}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Container>
+            <Box
+              sx={{
+                mt: 4,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 2,
+                flexWrap: 'wrap',
+              }}
+            >
+              <StampButton variant="text" onClick={() => setSolveSheet(false)}>
+                {t('close')}
+              </StampButton>
+              <StampButton
+                onClick={handleSendGuess}
+                disabled={guess.player === null || !guess.mean || !guess.key}
+              >
+                {t('Send guess')}
+              </StampButton>
+            </Box>
+          </SheetFrame>
         </Box>
       </SwipeableDrawer>
     </CorkBoard>
