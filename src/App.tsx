@@ -28,9 +28,15 @@ const routes: RouteObject[] = [
 if (import.meta.env.DEV) {
   const MockBoard = lazy(() => import('./pages/MockBoard'));
   const MockChangeRound = lazy(() => import('./pages/MockChangeRound'));
+  const MockPlayerDetective = lazy(() => import('./pages/MockPlayerDetective'));
+  const MockPlayerInvestigator = lazy(() => import('./pages/MockPlayerInvestigator'));
+  const MockPlayerShell = lazy(() => import('./pages/MockPlayerShell'));
   routes.push(
     { path: '/mock', element: <MockBoard /> },
     { path: '/mock-change-round', element: <MockChangeRound /> },
+    { path: '/mock-player-detective', element: <MockPlayerDetective /> },
+    { path: '/mock-player-investigator', element: <MockPlayerInvestigator /> },
+    { path: '/mock-player/:id/:playerId', element: <MockPlayerShell /> },
   );
 }
 

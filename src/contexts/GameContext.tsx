@@ -29,7 +29,7 @@ import { distributeCards, chooseRandomMurderer } from '../utils/rules';
 import type { KrimiPlayerData, KrimiGameState, GuessData } from '../types';
 import { useI18n } from '../hooks/useI18n';
 
-interface GameContextValue {
+export interface GameContextValue {
   roomState: RoomState<KrimiPlayerData> | null;
   gameState: KrimiGameState | null;
   loading: boolean;
