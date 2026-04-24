@@ -98,14 +98,14 @@ export default function HowToPlay() {
             <p>
               {renderWithBold(
                 t(
-                  'The {bold}Forensic Scientist{/bold} knows who the Murderer is and which means and key clue point to them. They communicate only by placing forensic analysis tiles on the host board.',
+                  "The {bold}Forensic Scientist{/bold} sees the Murderer's secret means and key evidence. During analysis they communicate only by placing tiles on the board — no speaking, no writing, no gestures.",
                 ),
               )}
             </p>
             <p>
               {renderWithBold(
                 t(
-                  'The {bold}Murderer{/bold} secretly picks their weapon (means) and a key piece of evidence from their hand on their phone.',
+                  "The {bold}Murderer{/bold} is one of the Investigators. They secretly mark one means and one key evidence from their own hand — that pair is the crime the others must uncover.",
                 ),
               )}
             </p>
@@ -121,15 +121,38 @@ export default function HowToPlay() {
           <Section title={t('Setup')}>
             <p>
               {t(
-                "One device hosts the shared board on a larger screen (a TV or a large monitor) — it's a display, no one plays from it. Every player, including the Forensic Scientist, joins from their own phone using the room code. Roles and cards are dealt automatically; each player's hand appears privately on their own device.",
+                "Krimi plays with 5 to 12 players. One device hosts the shared board on a larger screen (a TV or a big monitor) — it's a display, no one plays from it. Every player, including the Forensic Scientist, joins from their own phone using the room code. Roles and cards are dealt automatically; each Investigator holds 4 means and 4 clues privately on their device.",
               )}
             </p>
           </Section>
 
-          <Section title={t('Round flow')}>
+          <Section title={t('Picks')}>
             <p>
               {t(
-                'From their phone, the Forensic Scientist reveals a forensic category and places a tile indicating a reading (e.g. "Cause of death: suffocation"); the choice appears on the host board for everyone to see. Investigators discuss and study the means and clues in play. Over successive rounds, more categories are revealed. Investigators may lock in a guess — selecting one player\'s means and key — from their phone at any time.',
+                "Before analysis begins, every Investigator secretly picks one means and one key evidence from their own hand. Only the Murderer's pick is the real crime — the rest are decoys. The Forensic Scientist already knows who the Murderer is; the camouflage is for the other Investigators, who would otherwise spot the Murderer the instant one player started submitting.",
+              )}
+            </p>
+          </Section>
+
+          <Section title={t('Analysis')}>
+            <p>
+              {t(
+                "The Forensic Scientist fills forensic categories (Cause of death, Motive, Time of death, and so on). In round 1 they place 6 tiles; each following round adds one more, up to 8 by round 3. Every category offers 6 options, and the Scientist picks the single option that best nudges Investigators toward the Murderer's means and key evidence — without speaking, writing, or reacting.",
+              )}
+            </p>
+          </Section>
+
+          <Section title={t('Accusation')}>
+            <p>
+              {renderWithBold(
+                t(
+                  "Once this round's tiles are placed, any Investigator may accuse from their phone — and {bold}each Investigator gets only one accusation the entire game{/bold}. An accusation names a suspect, then picks one means and one key evidence from that suspect's hand. All three have to match the Murderer's secret pick.",
+                ),
+              )}
+            </p>
+            <p>
+              {t(
+                'Not ready? Pass the round — passing costs nothing and lets you wait for more clues.',
               )}
             </p>
           </Section>
@@ -138,7 +161,7 @@ export default function HowToPlay() {
             <p>
               {renderWithBold(
                 t(
-                  "Investigators win if someone correctly names the Murderer's means {bold}and{/bold} key. The Murderer wins if the group runs out of rounds without a correct guess, or if all incorrect guesses are used up.",
+                  "Investigators win the moment anyone correctly names the Murderer, their means, {bold}and{/bold} their key evidence. The Murderer wins if all three rounds pass without a correct accusation — or if every other Investigator has already accused incorrectly.",
                 ),
               )}
             </p>

@@ -3,7 +3,9 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useI18n } from '../../hooks/useI18n';
 import { formatDisplayName } from '../../utils/formatDisplayName';
+import { DirectionalLink as RouterLink } from '../../router/DirectionalLink';
 import BloodSplatters from './BloodSplatters';
+import TapedNoteButton from './TapedNoteButton';
 
 export interface GameOverRevealProps {
   finished: boolean;
@@ -202,14 +204,12 @@ export default function GameOverReveal({
 
   if (!visible) return null;
 
-  const dismiss = () => setVisible(false);
   const stampText = detectivesWon ? t('Detectives Win') : t('Murderer Wins');
   const stampColor = detectivesWon ? 'var(--weapon-color)' : STAMP_RED;
 
   return (
     <Box
       className="krimi-anim-fade"
-      onClick={dismiss}
       sx={{
         position: 'fixed',
         inset: 0,
@@ -219,7 +219,6 @@ export default function GameOverReveal({
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1300,
-        cursor: 'pointer',
         px: 3,
       }}
     >
@@ -392,21 +391,14 @@ export default function GameOverReveal({
           bottom: 40,
           left: 0,
           right: 0,
-          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
           animationDelay: '1700ms',
         }}
       >
-        <Typography
-          sx={{
-            fontFamily: 'var(--font-typewriter)',
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: '0.9rem',
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-          }}
-        >
-          {t('Tap to continue')}
-        </Typography>
+        <TapedNoteButton rotation={-2} component={RouterLink} to="/">
+          {t('Back to home')}
+        </TapedNoteButton>
       </Box>
     </Box>
   );

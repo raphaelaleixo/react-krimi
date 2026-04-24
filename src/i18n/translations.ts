@@ -117,33 +117,43 @@ export const translations: Record<string, string> = {
   'Previous': 'Anterior',
   'Next': 'Próximo',
 
-  // How to play — added 2026-04-20
+  // How to play — added 2026-04-20, rewritten 2026-04-24
   'Premise': 'Premissa',
   'Roles': 'Papéis',
   'Setup': 'Preparação',
-  'Round flow': 'Andamento',
+  'Picks': 'Escolhas',
+  'Accusation': 'Acusação',
   'Winning': 'Vitória',
 
   'Late at night, a murder has happened. A team of Investigators must piece together how it was done, guided only by the cryptic forensic readings of a Forensic Scientist who cannot speak plainly. Among the Investigators, a Murderer hides in plain sight.':
     'Tarde da noite, um assassinato aconteceu. Uma equipe de Investigadores precisa juntar as peças para descobrir como foi feito, guiada apenas pelas leituras forenses enigmáticas de um Cientista Forense que não pode falar abertamente. Entre os Investigadores, um Assassino se esconde à vista de todos.',
 
-  'The {bold}Forensic Scientist{/bold} knows who the Murderer is and which means and key clue point to them. They communicate only by placing forensic analysis tiles on the host board.':
-    'O {bold}Cientista Forense{/bold} sabe quem é o Assassino e qual a causa e qual a evidência principal que apontam para ele. Ele se comunica apenas colocando peças de análise forense no quadro principal.',
+  "The {bold}Forensic Scientist{/bold} sees the Murderer's secret means and key evidence. During analysis they communicate only by placing tiles on the board — no speaking, no writing, no gestures.":
+    'O {bold}Cientista Forense{/bold} vê a causa e a evidência principal secretas do Assassino. Durante a análise, ele se comunica apenas colocando peças no quadro — nada de falar, escrever ou gesticular.',
 
-  'The {bold}Murderer{/bold} secretly picks their weapon (means) and a key piece of evidence from their hand on their phone.':
-    'O {bold}Assassino{/bold} escolhe secretamente sua arma (causa) e uma evidência principal da sua mão, no próprio celular.',
+  "The {bold}Murderer{/bold} is one of the Investigators. They secretly mark one means and one key evidence from their own hand — that pair is the crime the others must uncover.":
+    'O {bold}Assassino{/bold} é um dos Investigadores. Ele marca em segredo uma causa e uma evidência principal da própria mão — esse par é o crime que os outros precisam desvendar.',
 
   'The {bold}Investigators{/bold} study the board and debate aloud — one of them is secretly the Murderer.':
     'Os {bold}Investigadores{/bold} estudam o quadro e debatem em voz alta — um deles é secretamente o Assassino.',
 
-  'One device hosts the shared board on a larger screen (a TV or a large monitor) — it\'s a display, no one plays from it. Every player, including the Forensic Scientist, joins from their own phone using the room code. Roles and cards are dealt automatically; each player\'s hand appears privately on their own device.':
-    'Um dispositivo apresenta o quadro compartilhado em uma tela maior (uma TV ou um monitor grande) — ele é apenas um display, ninguém joga por ele. Todos os jogadores, incluindo o Cientista Forense, entram pelo próprio celular usando o código da sala. Papéis e cartas são distribuídos automaticamente; a mão de cada jogador aparece em privado no próprio dispositivo.',
+  "Krimi plays with 5 to 12 players. One device hosts the shared board on a larger screen (a TV or a big monitor) — it's a display, no one plays from it. Every player, including the Forensic Scientist, joins from their own phone using the room code. Roles and cards are dealt automatically; each Investigator holds 4 means and 4 clues privately on their device.":
+    'Krimi é jogado por 5 a 12 pessoas. Um dispositivo apresenta o quadro compartilhado em uma tela maior (uma TV ou um monitor grande) — ele é apenas um display, ninguém joga por ele. Todos os jogadores, incluindo o Cientista Forense, entram pelo próprio celular usando o código da sala. Papéis e cartas são distribuídos automaticamente; cada Investigador recebe 4 causas e 4 evidências em sigilo no próprio dispositivo.',
 
-  'From their phone, the Forensic Scientist reveals a forensic category and places a tile indicating a reading (e.g. "Cause of death: suffocation"); the choice appears on the host board for everyone to see. Investigators discuss and study the means and clues in play. Over successive rounds, more categories are revealed. Investigators may lock in a guess — selecting one player\'s means and key — from their phone at any time.':
-    'Pelo celular, o Cientista Forense revela uma categoria forense e coloca uma peça indicando uma leitura (ex.: "Causa da morte: asfixia"); a escolha aparece no quadro principal para todos verem. Os Investigadores discutem e estudam as causas e evidências em jogo. A cada rodada, mais categorias são reveladas. Os Investigadores podem travar um palpite — escolhendo a causa e a evidência principal de um jogador — pelo celular a qualquer momento.',
+  "Before analysis begins, every Investigator secretly picks one means and one key evidence from their own hand. Only the Murderer's pick is the real crime — the rest are decoys. The Forensic Scientist already knows who the Murderer is; the camouflage is for the other Investigators, who would otherwise spot the Murderer the instant one player started submitting.":
+    'Antes da análise começar, cada Investigador escolhe em segredo uma causa e uma evidência principal da própria mão. Só a escolha do Assassino é o crime de verdade — as outras são iscas. O Cientista Forense já sabe quem é o Assassino; a camuflagem é para os outros Investigadores, que descobririam o Assassino no instante em que um único jogador começasse a enviar sua escolha.',
 
-  'Investigators win if someone correctly names the Murderer\'s means {bold}and{/bold} key. The Murderer wins if the group runs out of rounds without a correct guess, or if all incorrect guesses are used up.':
-    'Os Investigadores vencem se alguém disser corretamente a causa {bold}e{/bold} a evidência principal do Assassino. O Assassino vence se as rodadas acabarem sem um palpite correto, ou se todos os palpites errados forem gastos.',
+  "The Forensic Scientist fills forensic categories (Cause of death, Motive, Time of death, and so on). In round 1 they place 6 tiles; each following round adds one more, up to 8 by round 3. Every category offers 6 options, and the Scientist picks the single option that best nudges Investigators toward the Murderer's means and key evidence — without speaking, writing, or reacting.":
+    'O Cientista Forense preenche categorias forenses (Causa da morte, Motivação, Hora da morte, e assim por diante). Na rodada 1, ele coloca 6 peças; cada rodada seguinte adiciona mais uma, até 8 na rodada 3. Cada categoria oferece 6 opções, e o Cientista escolhe a única que melhor aponta os Investigadores para a causa e a evidência principal do Assassino — sem falar, escrever ou reagir.',
+
+  "Once this round's tiles are placed, any Investigator may accuse from their phone — and {bold}each Investigator gets only one accusation the entire game{/bold}. An accusation names a suspect, then picks one means and one key evidence from that suspect's hand. All three have to match the Murderer's secret pick.":
+    'Quando as peças desta rodada estão postas, qualquer Investigador pode acusar pelo celular — e {bold}cada Investigador só pode acusar uma vez na partida toda{/bold}. Uma acusação aponta um suspeito e escolhe uma causa e uma evidência principal da mão dele. Os três precisam bater com a escolha secreta do Assassino.',
+
+  'Not ready? Pass the round — passing costs nothing and lets you wait for more clues.':
+    'Inseguro? Passe a rodada — passar não custa nada e te deixa esperar por mais pistas.',
+
+  "Investigators win the moment anyone correctly names the Murderer, their means, {bold}and{/bold} their key evidence. The Murderer wins if all three rounds pass without a correct accusation — or if every other Investigator has already accused incorrectly.":
+    'Os Investigadores vencem no instante em que alguém disser corretamente o Assassino, a causa {bold}e{/bold} a evidência principal. O Assassino vence se as três rodadas terminarem sem uma acusação correta — ou se todos os outros Investigadores já tiverem acusado errado.',
 
   // Lobby loading state — added 2026-04-21
   'Waiting...': 'Aguarde...',
@@ -178,5 +188,5 @@ export const translations: Record<string, string> = {
   'Murderer caught': 'Assassino capturado',
   'Case #{id}': 'Caso #{id}',
   'Murderer still at large': 'Assassino ainda foragido',
-  'Tap to continue': 'Toque para continuar',
+  'Back to home': 'Voltar para o início',
 };
