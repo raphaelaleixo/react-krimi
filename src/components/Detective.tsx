@@ -23,9 +23,25 @@ interface DetectiveProps {
   playerOrderIndex: number;
 }
 
+type AnnotationMark = 'cross' | 'circle';
+type PlayerAnnotations = {
+  means: Record<string, AnnotationMark>;
+  clues: Record<string, AnnotationMark>;
+};
+type AnnotationsByPlayer = Record<number, PlayerAnnotations>;
+
+const ANNOTATION_STORAGE_PREFIX = 'krimi:annotations';
+
+function nextMark(current: AnnotationMark | undefined): AnnotationMark | undefined {
+  if (current === undefined) return 'cross';
+  if (current === 'cross') return 'circle';
+  return undefined;
+}
+
 export default function Detective({ gameState, playerId, playerOrderIndex }: DetectiveProps) {
-  const { passTurn, makeGuess } = useGame();
+  const { passTurn, makeGuess, roomState } = useGame();
   const { t } = useI18n();
+  const roomId = roomState?.roomId ?? null;
   const [solveSheet, setSolveSheet] = useState(false);
   const [guess, setGuess] = useState<{ player: number | null; mean: string | null; key: string | null }>({
     player: null,
@@ -101,9 +117,6 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
     return otherPlayers.find((p) => p.index === guess.player) || null;
   }, [guess.player, otherPlayers]);
 
-  const playerMeans = gameState.means.slice(playerOrderIndex * 4, playerOrderIndex * 4 + 4);
-  const playerClues = gameState.clues.slice(playerOrderIndex * 4, playerOrderIndex * 4 + 4);
-
   const handlePassTurn = async () => {
     await passTurn(playerOrderIndex);
   };
@@ -117,6 +130,65 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
     });
     setSolveSheet(false);
   };
+
+  const openSolveWithSuspect = (suspectOrderIndex: number) => {
+    setGuess({ player: suspectOrderIndex, mean: null, key: null });
+    setSolveSheet(true);
+  };
+
+  const storageKey = roomId ? `${ANNOTATION_STORAGE_PREFIX}:${roomId}:${playerId}` : null;
+  const [annotations, setAnnotations] = useState<AnnotationsByPlayer>(() => {
+    if (typeof window === 'undefined' || !storageKey) return {};
+    try {
+      const raw = window.sessionStorage.getItem(storageKey);
+      return raw ? (JSON.parse(raw) as AnnotationsByPlayer) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !storageKey) return;
+    try {
+      window.sessionStorage.setItem(storageKey, JSON.stringify(annotations));
+    } catch {
+      // ignore quota / privacy-mode errors
+    }
+  }, [storageKey, annotations]);
+
+  const cycleAnnotation = (
+    targetOrderIndex: number,
+    kind: 'means' | 'clues',
+    value: string,
+  ) => {
+    setAnnotations((prev) => {
+      const current = prev[targetOrderIndex] ?? { means: {}, clues: {} };
+      const updated: Record<string, AnnotationMark> = { ...current[kind] };
+      const next = nextMark(updated[value]);
+      if (next === undefined) delete updated[value];
+      else updated[value] = next;
+      return {
+        ...prev,
+        [targetOrderIndex]: { ...current, [kind]: updated },
+      };
+    });
+  };
+
+  const slides = useMemo(() => {
+    const selfSlide = {
+      key: `self-${playerId}`,
+      orderIndex: playerOrderIndex,
+      name: gameState.playerNames[playerId] || `Player ${playerId}`,
+      isSelf: true,
+    };
+    const otherSlides = otherPlayers.map((p) => ({
+      key: `player-${p.id}`,
+      orderIndex: p.index,
+      name: p.name,
+      isSelf: false,
+    }));
+    return [selfSlide, ...otherSlides];
+  }, [otherPlayers, playerId, playerOrderIndex, gameState.playerNames]);
 
   const playerName = gameState.playerNames[playerId] || `Player ${playerId}`;
 
@@ -145,28 +217,123 @@ export default function Detective({ gameState, playerId, playerOrderIndex }: Det
           <GuessUnlockedStamp label={t('You may now guess')} />
         )}
 
-        <PlayerFolder
-          playerName={playerName}
-          means={playerMeans}
-          clues={playerClues}
-          mode="display"
-          selectedMean={isMurderer && gameState.murdererChoice ? gameState.murdererChoice.mean : null}
-          selectedKey={isMurderer && gameState.murdererChoice ? gameState.murdererChoice.key : null}
-          hideTab
-          note={statusNote}
-          footer={
-            forensicReady && !ownGuess ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <StampButton
-                  onClick={() => setSolveSheet(true)}
-                  disabled={!!disableActions}
-                >
-                  {t('Accuse')}
-                </StampButton>
+        <Box
+          sx={{
+            width: '100vw',
+            mx: 'calc(-50vw + 50%)',
+            overflowX: 'auto',
+            overflowY: 'visible',
+            scrollSnapType: 'x mandatory',
+            display: 'flex',
+            gap: 2,
+            py: 2,
+            px: 'max(16px, calc(50vw - 180px))',
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+          }}
+        >
+          {slides.map((slide) => {
+            const suspectMeans = gameState.means.slice(
+              slide.orderIndex * 4,
+              slide.orderIndex * 4 + 4,
+            );
+            const suspectClues = gameState.clues.slice(
+              slide.orderIndex * 4,
+              slide.orderIndex * 4 + 4,
+            );
+            const slideAnnotations = annotations[slide.orderIndex] ?? { means: {}, clues: {} };
+            const crossedMeans = Object.keys(slideAnnotations.means).filter(
+              (k) => slideAnnotations.means[k] === 'cross',
+            );
+            const circledMeans = Object.keys(slideAnnotations.means).filter(
+              (k) => slideAnnotations.means[k] === 'circle',
+            );
+            const crossedClues = Object.keys(slideAnnotations.clues).filter(
+              (k) => slideAnnotations.clues[k] === 'cross',
+            );
+            const circledClues = Object.keys(slideAnnotations.clues).filter(
+              (k) => slideAnnotations.clues[k] === 'circle',
+            );
+            const actionPhase = forensicReady && !ownGuess && !hasPassed;
+            const footerNode = actionPhase
+              ? slide.isSelf
+                ? (
+                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box
+                      sx={{
+                        border: '3px solid rgba(0, 0, 0, 0.45)',
+                        borderRadius: '4px',
+                        px: 2,
+                        py: 0.5,
+                        display: 'inline-block',
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontFamily: 'var(--font-typewriter)',
+                          fontSize: '1.4rem',
+                          fontWeight: 'bold',
+                          textTransform: 'uppercase',
+                          color: 'rgba(0, 0, 0, 0.5)',
+                          letterSpacing: '3px',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {t("That's you")}
+                      </Typography>
+                    </Box>
+                  </Box>
+                )
+                : (
+                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <StampButton
+                      onClick={() => openSolveWithSuspect(slide.orderIndex)}
+                      disabled={!!disableActions}
+                    >
+                      {t('Accuse')}
+                    </StampButton>
+                  </Box>
+                )
+              : undefined;
+
+            return (
+              <Box
+                key={slide.key}
+                sx={{
+                  flex: '0 0 360px',
+                  maxWidth: 360,
+                  scrollSnapAlign: 'center',
+                  scrollSnapStop: 'always',
+                }}
+              >
+                <PlayerFolder
+                  playerName={slide.name}
+                  means={suspectMeans}
+                  clues={suspectClues}
+                  mode="display"
+                  selectedMean={
+                    slide.isSelf && isMurderer && gameState.murdererChoice
+                      ? gameState.murdererChoice.mean
+                      : null
+                  }
+                  selectedKey={
+                    slide.isSelf && isMurderer && gameState.murdererChoice
+                      ? gameState.murdererChoice.key
+                      : null
+                  }
+                  crossedMeans={crossedMeans}
+                  crossedClues={crossedClues}
+                  circledMeans={circledMeans}
+                  circledClues={circledClues}
+                  onToggleMean={(m) => cycleAnnotation(slide.orderIndex, 'means', m)}
+                  onToggleClue={(c) => cycleAnnotation(slide.orderIndex, 'clues', c)}
+                  note={slide.isSelf ? statusNote : undefined}
+                  footer={footerNode}
+                />
               </Box>
-            ) : undefined
-          }
-        />
+            );
+          })}
+        </Box>
 
         {!forensicReady ? (
           <WaitingNote

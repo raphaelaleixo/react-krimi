@@ -13,6 +13,12 @@ export interface PlayerFolderProps {
   selectedKey?: string | null;
   onSelectMean?: (mean: string) => void;
   onSelectKey?: (key: string) => void;
+  crossedMeans?: string[];
+  crossedClues?: string[];
+  circledMeans?: string[];
+  circledClues?: string[];
+  onToggleMean?: (mean: string) => void;
+  onToggleClue?: (clue: string) => void;
   note?: ReactNode;
   footer?: ReactNode;
   hideTab?: boolean;
@@ -32,6 +38,12 @@ export default function PlayerFolder({
   selectedKey,
   onSelectMean,
   onSelectKey,
+  crossedMeans,
+  crossedClues,
+  circledMeans,
+  circledClues,
+  onToggleMean,
+  onToggleClue,
   note,
   footer,
   hideTab = false,
@@ -45,12 +57,27 @@ export default function PlayerFolder({
     text: string,
     kind: 'mean' | 'clue',
     isSelected: boolean,
+    isCrossed: boolean,
+    isCircled: boolean,
   ) => {
-    const handleClick = () => {
-      if (kind === 'mean') onSelectMean?.(text);
-      else onSelectKey?.(text);
-    };
-    const interactiveProps = isSelect
+    const showRing = isSelected || isCircled;
+    const canCross = !isSelect && (
+      (kind === 'mean' && !!onToggleMean) ||
+      (kind === 'clue' && !!onToggleClue)
+    );
+    const handleClick = isSelect
+      ? () => {
+          if (kind === 'mean') onSelectMean?.(text);
+          else onSelectKey?.(text);
+        }
+      : canCross
+        ? () => {
+            if (kind === 'mean') onToggleMean?.(text);
+            else onToggleClue?.(text);
+          }
+        : undefined;
+
+    const interactiveProps = handleClick
       ? {
           component: 'button' as const,
           type: 'button' as const,
@@ -71,7 +98,7 @@ export default function PlayerFolder({
           p: 0,
           m: 0,
           mb: 0.25,
-          cursor: isSelect ? 'pointer' : 'default',
+          cursor: handleClick ? 'pointer' : 'default',
           font: 'inherit',
           textAlign: 'left',
         }}
@@ -84,11 +111,16 @@ export default function PlayerFolder({
             color: 'var(--text-color)',
             lineHeight: 1.5,
             px: 0.5,
+            textDecoration: isCrossed ? 'line-through' : 'none',
+            textDecorationColor: 'var(--evidence-color)',
+            textDecorationThickness: '2px',
+            opacity: isCrossed ? 0.5 : 1,
+            transition: 'opacity 180ms ease',
           }}
         >
           {text}
         </Typography>
-        {isSelected && (
+        {showRing && (
           <Box
             aria-hidden
             sx={{
@@ -114,6 +146,8 @@ export default function PlayerFolder({
     items: string[],
     kind: 'mean' | 'clue',
     selected: string | null | undefined,
+    crossed: string[] | undefined,
+    circled: string[] | undefined,
     color: string,
   ) => (
     <Box sx={{ mb: kind === 'mean' ? 2 : 0 }}>
@@ -133,7 +167,15 @@ export default function PlayerFolder({
         {label}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-        {items.map((item) => renderLine(item, kind, selected === item))}
+        {items.map((item) =>
+          renderLine(
+            item,
+            kind,
+            selected === item,
+            !!crossed?.includes(item),
+            !!circled?.includes(item),
+          ),
+        )}
       </Box>
     </Box>
   );
@@ -238,8 +280,8 @@ export default function PlayerFolder({
           }}
         />
 
-        {renderSection(t('Means'), means, 'mean', selectedMean, 'var(--weapon-color)')}
-        {renderSection(t('Key evidence'), clues, 'clue', selectedKey, 'var(--evidence-color)')}
+        {renderSection(t('Means'), means, 'mean', selectedMean, crossedMeans, circledMeans, 'var(--weapon-color)')}
+        {renderSection(t('Key evidence'), clues, 'clue', selectedKey, crossedClues, circledClues, 'var(--evidence-color)')}
 
         {footer && <Box sx={{ mt: 2 }}>{footer}</Box>}
 
