@@ -145,7 +145,7 @@ export default function Home() {
             >
               {t("Made by")}{" "}
               <Link
-                href="https://aleixo.me"
+                href="https://ludoratory.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ color: "inherit", textDecorationColor: "inherit" }}
